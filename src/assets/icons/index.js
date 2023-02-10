@@ -1,0 +1,11 @@
+export { WelcomeLetter1 } from "./welcome-letter1";
+export { WelcomeLetter2 } from "./welcome-letter2";
+export { WelcomeImage1 } from "./welcome-image1";
+export { WelcomeLetter3 } from "./welcome-letter3";
+export { WelcomeLetter4 } from "./welcome-letter4";
+export { WelcomeLetter5 } from "./welcome-letter5";
+export { WelcomeLetter6 } from "./welcome-letter6";
+export { WelcomeImage2 } from "./welcome-image2";
+export { ClosePopUpIcon } from "./close-popup-icon";
+export { WelcomeImage } from "./welcome-image";
+export { WelcomeImage3 } from "./welcome-image3";

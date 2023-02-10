@@ -9,6 +9,10 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    colors: {
+      primary: "#50C3C5",
+      secondary: "#58595B",
+    },
     screens: {
       ssm: "375px",
       sm: "414px",

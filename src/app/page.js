@@ -1,10 +1,15 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import { Banner } from "@/components/WelcomeDashboardBanner/banner";
+import { Inter } from "@next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
 
 export default function Home() {
   return (
-    <>
-    <h1 className='text-red-400 text-[111px]'>aa</h1>
-    </>
-  )
+    <div className={inter.className}>
+      <Banner />
+    </div>
+  );
 }
