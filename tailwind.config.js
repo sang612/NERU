@@ -12,6 +12,8 @@ module.exports = {
     colors: {
       primary: "#50C3C5",
       secondary: "#58595B",
+      third: '#231F20',
+      error: "#f43f5e",
     },
     screens: {
       ssm: "375px",
