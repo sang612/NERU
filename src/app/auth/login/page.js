@@ -113,7 +113,7 @@ export default function LoginPage(params) {
           <div className="w-full mb-4 flex justify-end">
             <Link
               href="/auth/forgot-password-step1"
-              className="text-base text-primary"
+              className="text-base text-third"
             >
               パスワードをお忘れの場合
             </Link>

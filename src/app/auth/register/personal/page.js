@@ -11,6 +11,7 @@ import {
   validatePassword,
   validateName,
   validateEmail,
+  validateTelPhone
 } from "@/utils/validate";
 
 const inter = Inter({
@@ -22,6 +23,7 @@ export default function PersonalRegister(params) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [tel, setTel] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [errorRegister, setErrorRegister] = useState("");
@@ -40,6 +42,10 @@ export default function PersonalRegister(params) {
   const checkValidatePassword = () => {
     const checkValidatePassword = validatePassword(password, "password");
     setValidate({ ...validate, password: checkValidatePassword });
+  };
+  const checkValidateTel = () => {
+    const checkValidateTel = validateTelPhone(tel);
+    setValidate({ ...validate, tel: checkValidateTel });
   };
 
   return (
@@ -73,9 +79,31 @@ export default function PersonalRegister(params) {
             validate={email ? checkValidateEmail : () => {}}
             messageError={validate.email}
           />
+          <Input
+            name="gender"
+            type="select"
+            value={email}
+            placeholder="性 別"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            validate={email ? checkValidateEmail : () => {}}
+            messageError={validate.email}
+          />
+          <Input
+            name="phonenumber"
+            type="text"
+            value={tel}
+            placeholder="携帯電話番号"
+            onChange={(e) => {
+              setTel(e.target.value);
+            }}
+            validate={tel ? checkValidateTel : () => {}}
+            messageError={validate.tel}
+          />
           <div
             className={cx(
-              "w-full relative mb-[171.83px]",
+              "w-full relative mb-[24px]",
               css`
                 input {
                   padding-right: calc(6% + 24px);
@@ -119,7 +147,7 @@ export default function PersonalRegister(params) {
             )}
           </div>
 
-          <div className="absolute bottom-[25px] left-0 w-full px-[26px]">
+          <div className="left-0 w-full">
             <div className="w-full mb-4 flex justify-end">
               <Link
                 href="/auth/forgot-password-step1"
@@ -140,9 +168,16 @@ export default function PersonalRegister(params) {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button classname="bg-primary mt-[6.83px]">サインアップ</Button>
+            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]">
+              サインアップ
+            </Button>
           </div>
-          {errorRegister && <div className="w-full text-error text-sm mb-4 text-center">{errorRegister}</div>}
+
+          {errorRegister && (
+            <div className="w-full text-error text-sm mb-4 text-center">
+              {errorRegister}
+            </div>
+          )}
         </div>
       </div>
     </div>

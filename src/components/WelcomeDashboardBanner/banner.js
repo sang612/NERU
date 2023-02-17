@@ -18,14 +18,16 @@ export const Banner = () => {
         </div>
         <div className="mt-[32px] w-full">
           <Button
-            onClick={() => router.push("/auth/register/enterprise")}
-            classname="bg-secondary font-[700]"
+            onClick={() => router.push("/auth/register/personal")}
+            classname="bg-primary font-[700] "
+          >
+            個人でご利用のお客様
+          </Button>
+          <Button
+            onClick={() => router.push("/auth/login")}
+            classname="bg-secondary font-[700] mt-[16px]"
           >
             法人でご利用のお客様
-          </Button>
-          <Button  onClick={() => router.push("/auth/register/personal")}
-          classname="bg-primary font-[700] mt-[16px]">
-            個人でご利用のお客様
           </Button>
         </div>
       </div>
