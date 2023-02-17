@@ -32,6 +32,7 @@ export default function EnterpriseRegister(params) {
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
+    email: "",
   });
   const checkValidateName = () => {
     const checkValidateName = validateName(name);
@@ -52,10 +53,11 @@ export default function EnterpriseRegister(params) {
     >
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
-          サインアップ
+          プロフィールの更新
         </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
+            disabled
             name="company"
             type="text"
             value={company}
@@ -66,6 +68,7 @@ export default function EnterpriseRegister(params) {
             messageError={validate.company}
           />
           <Input
+            disabled
             name="department"
             type="text"
             value={department}
@@ -76,6 +79,7 @@ export default function EnterpriseRegister(params) {
             messageError={validate.department}
           />
           <Input
+            disabled
             name="employeeNumber"
             type="number"
             value={employeeNumber}
@@ -86,6 +90,7 @@ export default function EnterpriseRegister(params) {
             messageError={validate.employeeNumber}
           />
           <Input
+            disabled
             name="mr"
             type="text"
             value={mr}
@@ -96,6 +101,7 @@ export default function EnterpriseRegister(params) {
             messageError={validate.mr}
           />
           <Input
+            disabled
             name="name"
             type="text"
             value={name}
@@ -106,9 +112,20 @@ export default function EnterpriseRegister(params) {
             validate={name ? checkValidateName : () => {}}
             messageError={validate.name}
           />
+          <Input
+            name="email"
+            type="text"
+            value={email}
+            placeholder="メールアドレス"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            validate={email ? checkValidateEmail : () => {}}
+            messageError={validate.email}
+          />
           <div
             className={cx(
-              "w-full relative mb-[171.83px]",
+              "w-full relative mb-[35px]",
               css`
                 input {
                   padding-right: calc(6% + 24px);
@@ -151,8 +168,7 @@ export default function EnterpriseRegister(params) {
               </div>
             )}
           </div>
-
-          <div className="absolute bottom-[25px] left-0 w-full px-[26px]">
+          <div className="w-full">
             <div className="w-full mb-4 flex justify-end">
               <Link
                 href="/auth/forgot-password-step1"
@@ -175,7 +191,11 @@ export default function EnterpriseRegister(params) {
             </div>
             <Button classname="bg-primary mt-[6.83px]">サインアップ</Button>
           </div>
-          {errorRegister && <div className="w-full text-error text-sm mb-4 text-center">{errorRegister}</div>}
+          {errorRegister && (
+            <div className="w-full text-error text-sm mb-4 text-center">
+              {errorRegister}
+            </div>
+          )}
         </div>
       </div>
     </div>
