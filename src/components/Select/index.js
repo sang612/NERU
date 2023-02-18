@@ -3,8 +3,6 @@ import { CloseOutlined } from "@ant-design/icons";
 import { css, cx } from "@emotion/css";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-// import { getAllCompany, getAllDepartment } from "../../../services/apis/auth";
-// import { handleApi } from "../../../utils/api";
 
 const Select = ({
   options,
@@ -156,19 +154,6 @@ export const SelectCompany = ({ setValue, value, errorMessage, height }) => {
   const [optionsAfterFilter, setOtionsAfterFilter] = useState([]);
   const [filter, setFilter] = useState("");
 
-  // useEffect(() => {
-  //   const newOptions = options.filter((d) => d.name.includes(filter));
-  //   setOtionsAfterFilter(newOptions);
-  // }, [options, filter]);
-  // useEffect(() => {
-  //   const getFullCompany = async () => {
-  //     const [res] = await handleApi(getAllCompany());
-  //     if (res) {
-  //       setOptions(res.data);
-  //     }
-  //   };
-  //   getFullCompany();
-  // }, []);
   return (
     <Select
       setValue={setValue}
