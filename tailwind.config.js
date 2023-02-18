@@ -15,6 +15,8 @@ module.exports = {
       third: "#231F20",
       error: "#f43f5e",
       disabled: "#E6E6E6",
+      white: "#ffffff",
+      black: "000000"
     },
     screens: {
       sssm: '360px',

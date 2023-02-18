@@ -32,10 +32,6 @@ export const UploadItem = ({
 UploadItem.propTypes = {
   index: PropTypes.number,
   handleChange: PropTypes.func,
-  inputRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(HTMLInputElement) }),
-  ]),
   handleClick: PropTypes.func,
   defaultSrc: PropTypes.string,
   item: PropTypes.object,
