@@ -1,4 +1,5 @@
 "use client";
+
 import { Input } from "@/components/Input";
 import Link from "next/link";
 import { css, cx } from "@emotion/css";
@@ -11,8 +12,12 @@ import {
   validatePassword,
   validateName,
   validateEmail,
-  validateTelPhone
+  validateTelPhone,
+  validateGender,
+  validateRegister,
 } from "@/utils/validate";
+import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,16 +25,19 @@ const inter = Inter({
 });
 
 export default function PersonalRegister(params) {
+  const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tel, setTel] = useState("");
+  const [gender, setGender] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [errorRegister, setErrorRegister] = useState("");
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
+    gender: "",
   });
   const checkValidateName = () => {
     const checkValidateName = validateName(name);
@@ -46,6 +54,54 @@ export default function PersonalRegister(params) {
   const checkValidateTel = () => {
     const checkValidateTel = validateTelPhone(tel);
     setValidate({ ...validate, tel: checkValidateTel });
+  };
+  const checkValidateGender = () => {
+    const checkValidateGender = validateGender(gender);
+    setValidate({ ...validate, gender: checkValidateGender });
+  };
+  const router = useRouter();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const checkValidate = validateRegister(name, email, gender, tel, password);
+    if (
+      !checkValidate.name &&
+      !checkValidate.email &&
+      !checkValidate.gender &&
+      !checkValidate.tel &&
+      !checkValidate.password
+    ) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: name,
+              phone: tel,
+              gender: gender,
+              email: email,
+              password: password,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (data.status === "failure") {
+          enqueueSnackbar(data.message, { variant: "error" });
+          return;
+        } else if (data.status === "success") {
+          enqueueSnackbar("Registration successful", { variant: "success" });
+          router.push("/auth/login");
+        }
+      } catch (error) {
+        enqueueSnackbar("Registration failed", { variant: "error" });
+        throw error;
+      }
+    } else {
+      setValidate(checkValidate);
+    }
   };
 
   return (
@@ -81,14 +137,14 @@ export default function PersonalRegister(params) {
           />
           <Input
             name="gender"
-            type="select"
-            value={email}
+            type="text"
+            value={gender}
             placeholder="性 別"
             onChange={(e) => {
-              setEmail(e.target.value);
+              setGender(e.target.value);
             }}
-            validate={email ? checkValidateEmail : () => {}}
-            messageError={validate.email}
+            validate={gender ? checkValidateGender : () => {}}
+            messageError={validate.gender}
           />
           <Input
             name="phonenumber"
@@ -168,7 +224,10 @@ export default function PersonalRegister(params) {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]">
+            <Button
+              classname="bg-primary mt-[20px] ssm:mt-[60px]"
+              onClick={handleSubmit}
+            >
               サインアップ
             </Button>
           </div>

@@ -7,7 +7,13 @@ import { Inter } from "@next/font/google";
 import { RememberPasswordIcon } from "@/assets/icons";
 import { Button } from "@/components/Button/button";
 import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
-import { validatePassword, validateTelPhone } from "@/utils/validate";
+import {
+  validateLogin,
+  validatePassword,
+  validateTelPhone,
+} from "@/utils/validate";
+import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,6 +37,46 @@ export default function LoginPage(params) {
   const checkValidatePassword = () => {
     const checkValidatePassword = validatePassword(password, "password");
     setValidate({ ...validate, password: checkValidatePassword });
+  };
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const checkValidate = validateLogin(tel, password);
+    if (!checkValidate.tel && !checkValidate.password) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              phone: tel,
+              password: password,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (data.status === "failure") {
+          enqueueSnackbar(data.message, { variant: "error" });
+          return;
+        } else if (data.status === "success") {
+          let user = data.payload.user;
+          let token = data.payload.token;
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", token);
+          enqueueSnackbar("Login successful", { variant: "success" });
+          router.push("/notification");
+        }
+      } catch (error) {
+        enqueueSnackbar("Login failed", { variant: "error" });
+        throw error;
+      }
+    } else {
+      setValidate(checkValidate);
+    }
   };
 
   return (
@@ -123,7 +169,9 @@ export default function LoginPage(params) {
               {errorLogin}
             </div>
           )}
-          <Button classname="bg-primary mt-[27.93px]">サインイン</Button>
+          <Button onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
+            サインイン
+          </Button>
         </div>
       </div>
     </div>

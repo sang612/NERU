@@ -1,4 +1,7 @@
-import './globals.css'
+"use client";
+
+import { SnackbarProvider } from "notistack";
+import "./globals.css";
 
 export default function RootLayout({ children }) {
   return (
@@ -9,8 +12,8 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        {children}
-        </body>
+        <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
+      </body>
     </html>
-  )
+  );
 }
