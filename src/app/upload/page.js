@@ -45,9 +45,6 @@ export default function UploadPage(params) {
     formData.append("files", image2);
     formData.append("files", image3);
     formData.append("files", image4);
-    for (const value of formData.values()) {
-      console.log(value);
-    }
   };
 
   return (
