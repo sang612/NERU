@@ -17,6 +17,7 @@ module.exports = {
       disabled: "#E6E6E6",
     },
     screens: {
+      sssm: '360px',
       ssm: "375px",
       sm: "414px",
       xsm: "540px",
