@@ -18,12 +18,15 @@ const messageValidateName = {
 const regexName = /^[a-zA-Zａ-ｚA-Z0-9 ぁ-んァ-ヶー一-龠々]+$/;
 const regexNameKatakana = /^([ァ-ン]|ー)+$/;
 const regexPassword = /[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,24}/;
-const regexTelPhone = env.env === "development" ? /(^(\d{10})+$)/ : /(^(\d{11})+$)/;
+const regexTelPhone =
+  env.env === "development" ? /(^(\d{10})+$)/ : /(^(\d{11})+$)/;
 const regexEmail =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const validateCode = (code) => {
-  return code?.length >= 1 && code?.length <= 24 ? "" : "社員番号に誤りがあります。";
+  return code?.length >= 1 && code?.length <= 24
+    ? ""
+    : "社員番号に誤りがあります。";
 };
 
 export const validateTelPhone = (tel) => {
@@ -31,7 +34,9 @@ export const validateTelPhone = (tel) => {
     ? "携帯電話番号は、必ず入力してください。"
     : regexTelPhone.test(tel.trim())
     ? ""
-    : `携帯電話番号は${env.env === "development" ? "10" : "11"}桁で入力してください。`;
+    : `携帯電話番号は${
+        env.env === "development" ? "10" : "11"
+      }桁で入力してください。`;
 };
 export const validateEmail = (email) =>
   !email.trim()
@@ -104,29 +109,27 @@ export const validateWeight = (weight) => {
     return "30-200までの数字で入力してください。";
   }
 };
+export const validateGender = (gender) => {
+  gender = gender?.toLowerCase();
+  if (gender === "male" || gender === "female" || gender === "other") {
+    return "";
+  } else {
+    return "Please type corrent gender";
+  }
+};
 
 export const validateRegister = (
   firstName,
-  firstNameKatakana,
-  lastName,
-  lastNameKatakana,
-  // height,
-  // weight,
-  // email,
-  // birthday,
-  password,
-  confirmPassword,
+  email,
+  gender,
+  numberphone,
+  password
 ) => ({
   firstName: validateName(firstName, "firstName"),
-  firstNameKatakana: validateNameKatakana(firstNameKatakana, "firstName"),
-  lastName: validateName(lastName, "lastName"),
-  lastNameKatakana: validateNameKatakana(lastNameKatakana, "lastName"),
-  // height: validateHeight(height),
-  // weight: validateWeight(weight),
-  // email: validateEmail(email),
-  // birthday: birthday ? "" : "生年月日は、必ず指定してください。",
+  email: validateEmail(email),
+  gender: validateGender(gender),
+  tel: validateTelPhone(numberphone),
   password: validatePassword(password, "password"),
-  confirmPassword: validateConfirmPassword(confirmPassword, password),
 });
 export const validateUpdateUser = (
   firstName,
@@ -136,7 +139,7 @@ export const validateUpdateUser = (
   email,
   birthday,
   numberphone,
-  code,
+  code
 ) => ({
   firstName: validateName(firstName, "firstName"),
   firstNameKatakana: validateNameKatakana(firstNameKatakana, "firstName"),
@@ -154,7 +157,7 @@ export const validateUpdateAdmin = (
   lastNameKatakana,
   email,
   numberphone,
-  code,
+  code
 ) => ({
   firstName: validateName(firstName, "firstName"),
   firstNameKatakana: validateNameKatakana(firstNameKatakana, "firstName"),
@@ -174,7 +177,7 @@ export const validateEditProfile = (
   height,
   weight,
   birthday,
-  code,
+  code
 ) => ({
   firstName: validateName(firstName, "firstName"),
   firstNameKatakana: validateNameKatakana(firstNameKatakana, "firstName"),
