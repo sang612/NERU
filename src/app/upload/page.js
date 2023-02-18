@@ -1,8 +1,8 @@
 "use client";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Inter } from "@next/font/google";
 import { Button } from "@/components/Button/button";
-import Image from "next/image";
+import { UploadItem } from "@/components/Upload/upload-item";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,16 +24,16 @@ export default function UploadPage(params) {
   const handleChange = (event, value) => {
     switch (value) {
       case 1:
-        setImage1(event.target.files[0]);
+        event.target.files[0] && setImage1(event.target.files[0]);
         break;
       case 2:
-        setImage2(event.target.files[0]);
+        event.target.files[0] && setImage2(event.target.files[0]);
         break;
       case 3:
-        setImage3(event.target.files[0]);
+        event.target.files[0] && setImage3(event.target.files[0]);
         break;
       case 4:
-        setImage4(event.target.files[0]);
+        event.target.files[0] && setImage4(event.target.files[0]);
         break;
       default:
         break;
@@ -59,88 +59,46 @@ export default function UploadPage(params) {
           <p className="text-2xl text-third md:text-3xl xl:text-4xl">
             ＊登録前に右側と左側からの横顔画像を撮影しておいてください。
           </p>
-          <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">画像をクリックしてアップロードしてください</p>
+          <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">
+            画像をクリックしてアップロードしてください
+          </p>
           <div className="grid grid-cols-2 gap-[48px] my-[36px]">
-            <div className="h-[200px] w-half relative">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                ref={hiddenFileInput}
-                onChange={(e) => handleChange(e, 1)}
-                max="4"
-              />
-              <Image
-                onClick={() => handleClick(hiddenFileInput)}
-                src={
-                  image1
-                    ? URL.createObjectURL(image1)
-                    : `/upload-tutorial-1.svg`
-                }
-                fill
-                alt="desc-img"
-              />
-            </div>
-            <div className="h-[200px] w-half relative">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                ref={hiddenFileInput2}
-                onChange={(e) => handleChange(e, 2)}
-                max="4"
-              />
-              <Image
-                onClick={() => handleClick(hiddenFileInput2)}
-                src={
-                  image2
-                    ? URL.createObjectURL(image2)
-                    : `/upload-tutorial-2.svg`
-                }
-                fill
-                alt="desc-img"
-              />
-            </div>
-            <div className="h-[200px] w-half relative">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                ref={hiddenFileInput3}
-                onChange={(e) => handleChange(e, 3)}
-                max="4"
-              />
-              <Image
-                onClick={() => handleClick(hiddenFileInput3)}
-                src={
-                  image3
-                    ? URL.createObjectURL(image3)
-                    : `/upload-tutorial-3.svg`
-                }
-                fill
-                alt="desc-img"
-              />
-            </div>
-            <div className="h-[200px] w-half relative">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                ref={hiddenFileInput4}
-                onChange={(e) => handleChange(e, 4)}
-                max="4"
-              />
-              <Image
-                onClick={() => handleClick(hiddenFileInput4)}
-                src={
-                  image4
-                    ? URL.createObjectURL(image4)
-                    : `/upload-tutorial-4.svg`
-                }
-                fill
-                alt="desc-img"
-              />
-            </div>
+            <UploadItem
+              inputRef={hiddenFileInput}
+              handleChange={handleChange}
+              handleClick={handleClick}
+              item={image1}
+              defaultSrc="/upload-tutorial-1.svg"
+              alt="image1"
+              index={1}
+            />
+            <UploadItem
+              inputRef={hiddenFileInput2}
+              handleChange={handleChange}
+              handleClick={handleClick}
+              item={image2}
+              defaultSrc="/upload-tutorial-2.svg"
+              alt="image2"
+              index={2}
+            />
+            <UploadItem
+              inputRef={hiddenFileInput3}
+              handleChange={handleChange}
+              handleClick={handleClick}
+              item={image3}
+              defaultSrc="/upload-tutorial-3.svg"
+              alt="image3"
+              index={3}
+            />
+            <UploadItem
+              inputRef={hiddenFileInput4}
+              handleChange={handleChange}
+              handleClick={handleClick}
+              item={image4}
+              defaultSrc="/upload-tutorial-4.svg"
+              alt="image4"
+              index={4}
+            />
           </div>
           <Button classname="bg-secondary">戻　る</Button>
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]">
