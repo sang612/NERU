@@ -1,18 +1,20 @@
-import { Inter } from "@next/font/google";
+"use client";
+
 import { Button } from "@/components/Button/button";
 import { MeasureYourSleepIcon } from "@/assets/icons";
+import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "next/navigation";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 const amount = "3回分1000";
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 export default function UploadPage(params) {
+  const router = useRouter();
+
   return (
-    <div
-      className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
-    >
+    <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <div className="w-full text-primary">
           <MeasureYourSleepIcon width="100%" height={68} />
@@ -23,8 +25,22 @@ export default function UploadPage(params) {
             円をお支払いください。
           </div>
           <div className="w-full">
-            <Button classname="bg-secondary">キャンセル</Button>
-            <Button classname="bg-primary  mt-[16px]">同意</Button>
+            <Button
+              onClick={() => {
+                router.push("/auth/login");
+              }}
+              classname="bg-secondary"
+            >
+              キャンセル
+            </Button>
+
+            <form action="/api/checkout_sessions" method="POST">
+              <section>
+                <Button type="submit" classname="bg-primary  mt-[16px]">
+                  同意
+                </Button>
+              </section>
+            </form>
           </div>
         </div>
       </div>

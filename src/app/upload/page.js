@@ -1,13 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
-import { Inter } from "@next/font/google";
 import { Button } from "@/components/Button/button";
 import { UploadItem } from "@/components/Upload/upload-item";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 export default function UploadPage(params) {
   const hiddenFileInput = useRef(null);
@@ -49,7 +43,7 @@ export default function UploadPage(params) {
 
   return (
     <div
-      className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
+      className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
     >
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">

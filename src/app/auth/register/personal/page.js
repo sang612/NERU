@@ -4,7 +4,6 @@ import { Input } from "@/components/Input";
 import Link from "next/link";
 import { css, cx } from "@emotion/css";
 import { useState } from "react";
-import { Inter } from "@next/font/google";
 import { RememberPasswordIcon } from "@/assets/icons";
 import { Button } from "@/components/Button/button";
 import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
@@ -18,11 +17,6 @@ import {
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
 
 export default function PersonalRegister(params) {
   const { enqueueSnackbar } = useSnackbar();
@@ -89,14 +83,23 @@ export default function PersonalRegister(params) {
         );
         const data = await response.json();
         if (data.status === "failure") {
-          enqueueSnackbar(data.message, { variant: "error" });
+          enqueueSnackbar(data.message, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           return;
         } else if (data.status === "success") {
-          enqueueSnackbar("Registration successful", { variant: "success" });
+          enqueueSnackbar("Registration successful", {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           router.push("/auth/login");
         }
       } catch (error) {
-        enqueueSnackbar("Registration failed", { variant: "error" });
+        enqueueSnackbar("Registration failed", {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
         throw error;
       }
     } else {
@@ -106,7 +109,7 @@ export default function PersonalRegister(params) {
 
   return (
     <div
-      className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}
+      className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}
     >
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">

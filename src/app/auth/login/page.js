@@ -3,7 +3,6 @@ import { Input } from "@/components/Input";
 import Link from "next/link";
 import { css, cx } from "@emotion/css";
 import { useState } from "react";
-import { Inter } from "@next/font/google";
 import { RememberPasswordIcon } from "@/assets/icons";
 import { Button } from "@/components/Button/button";
 import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
@@ -15,10 +14,7 @@ import {
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+
 
 export default function LoginPage(params) {
   const [tel, setTel] = useState("");
@@ -60,18 +56,27 @@ export default function LoginPage(params) {
         );
         const data = await response.json();
         if (data.status === "failure") {
-          enqueueSnackbar(data.message, { variant: "error" });
+          enqueueSnackbar(data.message, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           return;
         } else if (data.status === "success") {
           let user = data.payload.user;
           let token = data.payload.token;
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("token", token);
-          enqueueSnackbar("Login successful", { variant: "success" });
+          enqueueSnackbar("Login successful", {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
           router.push("/notification");
         }
       } catch (error) {
-        enqueueSnackbar("Login failed", { variant: "error" });
+        enqueueSnackbar("Login failed", {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
         throw error;
       }
     } else {
@@ -81,7 +86,7 @@ export default function LoginPage(params) {
 
   return (
     <div
-      className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
+      className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
     >
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">

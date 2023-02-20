@@ -3,6 +3,7 @@
 import { WelcomeImage, WelcomeImage3 } from "@/assets/icons";
 import { Button } from "../Button/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const Banner = () => {
   const router = useRouter();
@@ -17,18 +18,18 @@ export const Banner = () => {
           <WelcomeImage width={250} height={250} />
         </div>
         <div className="mt-[32px] w-full">
-          <Button
-            onClick={() => router.push("/auth/register/personal")}
-            classname="bg-primary font-[700] "
-          >
-            個人でご利用のお客様
-          </Button>
-          <Button
-            onClick={() => router.push("/auth/login")}
-            classname="bg-secondary font-[700] mt-[16px]"
-          >
-            法人でご利用のお客様
-          </Button>
+          <Link href="/auth/register/personal">
+            <Button
+              classname="bg-primary font-[700] "
+            >
+              個人でご利用のお客様
+            </Button>
+          </Link>
+          <Link href="/auth/login">
+            <Button classname="bg-secondary font-[700] mt-[16px]">
+              法人でご利用のお客様
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
