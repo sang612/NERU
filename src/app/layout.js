@@ -2,6 +2,7 @@
 
 import { SnackbarProvider } from "notistack";
 import "./globals.css";
+import { Providers } from "./provider";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,7 +13,9 @@ export default function RootLayout({ children }) {
       */}
       <head />
       <body>
-        <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
+        <Providers>
+          <SnackbarProvider maxSnack={3}>{children}</SnackbarProvider>
+        </Providers>
       </body>
     </html>
   );

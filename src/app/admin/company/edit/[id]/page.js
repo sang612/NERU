@@ -7,99 +7,130 @@ import { Button } from "@/components/Button/button";
 import {
   validateEmail,
   validateName,
-  validateNameKatakana,
-  validateTelPhone,
+  validatePassword,
 } from "@/utils/validate";
 import { useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
 
-export default function EditCompanyPage({ params, searchParams }) {
+export default function EditCompanyPage({ params }) {
   const id = params?.id;
   const router = useRouter();
-  const [telPhone, setTelPhone] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [companyNameKatakana, setCompanyNameKatakana] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorSendTelPhone, setErrorSendTelPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+  const [numberEmployees, setNumberEmployees] = useState("");
+  const [taxCode, setTaxCode] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    numberphone: "",
+    password: "",
     companyName: "",
-    companyNameKatakana: "",
     email: "",
   });
-  useEffect(() => {
-    const getDataDetailCompany = async () => {
-      const [res] = await handleApi(getDetailCompany(id));
-      if (res) {
-        setTelPhone(res.data.phonenumber);
-        setCompanyName(res.data.name);
-        setCompanyNameKatakana(res.data.nameKana);
-        setEmail(res.data.email);
-      }
-    };
-    setTelPhone("123123");
-    setCompanyName("tetst");
-    setCompanyNameKatakana("tfdsawer");
-    setEmail("test@gmail.com");
-  }, []);
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
     setValidate({ ...validate, [type]: checkValidateFullName });
   };
 
-  const checkValidateTelPhone = () => {
-    const checkValidateTelPhone = validateTelPhone(telPhone);
-    setValidate({ ...validate, numberphone: checkValidateTelPhone });
-  };
   const checkValidateEmail = () => {
     const checkValidateEmail = validateEmail(email);
     setValidate({ ...validate, email: checkValidateEmail });
   };
-  const checkValidateNameKatakana = (name, type) => {
-    const checkValidateFullName = validateNameKatakana(name, type);
-    setValidate({ ...validate, [`${type}Katakana`]: checkValidateFullName });
+  const checkValidatePassword = () => {
+    const checkValidatePassword = validatePassword(password, "password");
+    setValidate({ ...validate, password: checkValidatePassword });
   };
-  const submit = () => {
-    const validateNumberPhone = validateTelPhone(telPhone);
+  useEffect(() => {
+    const getDataDetailCompany = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.status === "failure") {
+          return;
+        } else if (data.status === "success") {
+          setEmail(data?.payload.enterprise.email);
+          setCompanyName(data?.payload.enterprise.company_name);
+          setOwnerName(data?.payload.enterprise.owner_name);
+          setNumberEmployees(data?.payload.enterprise.number_employees);
+          setTaxCode(data?.payload.enterprise.tax_code);
+        }
+      } catch (error) {
+        throw error;
+      }
+    };
+    getDataDetailCompany();
+  }, []);
+  const { enqueueSnackbar } = useSnackbar();
+  const { token } = useSelector((state) => state.user);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const validateCompanyName = validateName(companyName, "companyName");
-    const validateCompanyNameKatakana = validateNameKatakana(
-      companyNameKatakana,
-      "companyName"
-    );
     const validateCompanyEmail = validateEmail(email);
+    const validateCompanyPassword =
+      password.length && validatePassword(password, "password");
     if (
-      !validateNumberPhone &&
       !validateCompanyName &&
-      !validateCompanyNameKatakana &&
-      !validateCompanyEmail
+      !validateCompanyEmail &&
+      !validateCompanyPassword
     ) {
       setIsLoading(true);
-      const callCreateUser = async () => {
-        const [res, error] = await handleApi(
-          updateCompany({
-            id,
-            name: companyName,
-            nameKana: companyNameKatakana,
-            phonenumber: telPhone,
-            email: email,
-          })
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+            body: JSON.stringify({
+              email: email,
+              company_name: companyName,
+              owner_name: ownerName,
+              number_employees: numberEmployees,
+              tax_code: taxCode,
+              password: password.length ? password : null,
+            }),
+          }
         );
+        const data = await response.json();
         setIsLoading(false);
-        if (res) {
-          toast.success("更新しました。");
-          setErrorSendTelPhone("");
-          navigate("/admin/company");
-        } else {
-          setErrorSendTelPhone(error.data.message);
+        if (data.status === "failure") {
+          enqueueSnackbar(data.message, {
+            variant: "error",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
+          return;
+        } else if (data.status === "success") {
+          enqueueSnackbar("Update successful", {
+            variant: "success",
+            anchorOrigin: { vertical: "top", horizontal: "right" },
+          });
         }
-      };
-      callCreateUser();
+      } catch (error) {
+        setIsLoading(false);
+        enqueueSnackbar("Update company failed", {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+        throw error;
+      }
     } else {
       setValidate({
-        numberphone: validateNumberPhone,
         companyName: validateCompanyName,
-        companyNameKatakana: validateCompanyNameKatakana,
         email: validateCompanyEmail,
+        password: validateCompanyPassword,
       });
     }
   };
@@ -108,12 +139,35 @@ export default function EditCompanyPage({ params, searchParams }) {
     <CardLayout>
       <div className="mt-2 w-[60%] mx-auto">
         <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">
-          会員編集
+          会社登録
         </h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
           <div className="flex justify-start items-start w-full my-2">
+            <div className="mb-4 h-14 flex items-center w-36">
+              メールアドレス
+            </div>
+            <div className="flex-1 h-20">
+              <div className="w-full h-full flex items-start">
+                <Input
+                  name="email"
+                  type="text"
+                  value={email}
+                  label="メールアドレス"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  validate={email ? checkValidateEmail : () => {}}
+                  messageError={validate.email}
+                  height="h-14"
+                  border="border-[1px]"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">会社名</div>
-            <div className="flex-1 h-24">
+            <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
                   name="companyName"
@@ -134,87 +188,95 @@ export default function EditCompanyPage({ params, searchParams }) {
               </div>
             </div>
           </div>
+
           <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">
-              {"会社名(カタカナ)"}
+              ユーザーの名前
             </div>
-            <div className="flex-1 h-24">
+            <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
-                  name="companyNameKatakana"
+                  name="ownerName"
                   type="text"
-                  value={companyNameKatakana}
+                  value={ownerName}
                   onChange={(e) => {
-                    setCompanyNameKatakana(e.target.value);
+                    setOwnerName(e.target.value);
                   }}
                   validate={
-                    companyNameKatakana
-                      ? () =>
-                          checkValidateNameKatakana(
-                            companyNameKatakana,
-                            "companyName"
-                          )
+                    ownerName
+                      ? () => checkValidateName(ownerName, "companyName")
                       : () => {}
                   }
-                  messageError={validate.companyNameKatakana}
+                  messageError={validate.ownerName}
                   height="h-14"
                   border="border-[1px]"
                 />
               </div>
             </div>
           </div>
+
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">電話番号</div>
-            <div className="flex-1 h-24">
+            <div className="mb-4 h-14 flex items-center w-36">従業員数</div>
+            <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
-                  name="number_phone"
-                  type="text"
-                  value={telPhone}
+                  name="numberEmployees"
+                  type="number"
+                  value={numberEmployees}
                   onChange={(e) => {
-                    setTelPhone(e.target.value);
+                    setNumberEmployees(e.target.value);
                   }}
-                  validate={telPhone ? checkValidateTelPhone : () => {}}
-                  messageError={validate.numberphone}
                   height="h-14"
                   border="border-[1px]"
                 />
               </div>
             </div>
           </div>
+
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">
-              メールアドレス
-            </div>
-            <div className="flex-1 h-24">
+            <div className="mb-4 h-14 flex items-center w-36">税法</div>
+            <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
-                  name="email"
+                  name="taxCode"
                   type="text"
-                  value={email}
-                  label="メールアドレス"
+                  value={taxCode}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setTaxCode(e.target.value);
                   }}
-                  validate={email ? checkValidateEmail : () => {}}
-                  messageError={validate.email}
                   height="h-14"
                   border="border-[1px]"
                 />
               </div>
             </div>
           </div>
-          {errorSendTelPhone && (
-            <div className="w-full text-rose-500 text-sm mb-4 text-center">
-              {errorSendTelPhone}
+
+          <div className="flex justify-start items-start w-full my-2">
+            <div className="mb-4 h-14 flex items-center w-36">暗証番号</div>
+            <div className="flex-1 h-20">
+              <div className="w-full h-full flex items-start">
+                <Input
+                  name="password"
+                  type="text"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  validate={password ? checkValidatePassword : () => {}}
+                  messageError={validate.password}
+                  height="h-14"
+                  border="border-[1px]"
+                />
+              </div>
             </div>
-          )}
+          </div>
+
           <div className="w-full flex justify-around">
             <div className="w-5/12">
               <Button
-                onClick={submit}
-                isLoading={isLoading}
+                onClick={handleSubmit}
                 classname="bg-primary"
+                isLoading={isLoading}
               >
                 更新
               </Button>

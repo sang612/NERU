@@ -14,6 +14,9 @@ import {
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { addNew, addToken } from "@/slices/userSlice";
+import { Role } from "@/utils/constants";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -63,12 +66,11 @@ export default function LoginPage(params) {
           enqueueSnackbar(data.message, { variant: "error" });
           return;
         } else if (data.status === "success") {
-          let user = data.payload.user;
-          let token = data.payload.token;
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
+          dispatch(addNew(data.payload.user));
+          dispatch(addToken(data.payload.token));
           enqueueSnackbar("Login successful", { variant: "success" });
-          router.push("/notification");
+          if (data.payload.user.role === Role.admin) router.push("/admin/company");
+          else router.push("/notification");
         }
       } catch (error) {
         enqueueSnackbar("Login failed", { variant: "error" });
@@ -78,6 +80,8 @@ export default function LoginPage(params) {
       setValidate(checkValidate);
     }
   };
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <div
