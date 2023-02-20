@@ -13,8 +13,9 @@ import {
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { addNew, addToken } from "@/slices/userSlice";
+import { Role } from "@/utils/constants";
 
 export default function LoginPage(params) {
   const [tel, setTel] = useState("");
@@ -62,15 +63,15 @@ export default function LoginPage(params) {
           });
           return;
         } else if (data.status === "success") {
-          let user = data.payload.user;
-          let token = data.payload.token;
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", token);
+          dispatch(addNew(data.payload.user));
+          dispatch(addToken(data.payload.token));
           enqueueSnackbar("Login successful", {
             variant: "success",
             anchorOrigin: { vertical: "top", horizontal: "right" },
           });
-          router.push("/notification");
+          if (data.payload.user.role === Role.admin)
+            router.push("/admin/company");
+          else router.push("/notification");
         }
       } catch (error) {
         enqueueSnackbar("Login failed", {
@@ -83,11 +84,11 @@ export default function LoginPage(params) {
       setValidate(checkValidate);
     }
   };
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   return (
-    <div
-      className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
-    >
+    <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
           サインイン

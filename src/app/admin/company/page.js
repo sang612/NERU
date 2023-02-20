@@ -9,55 +9,19 @@ import { Input } from "@/components/Input";
 import Link from "next/link";
 import Table from "@/components/Table";
 import Pagination from "@/components/Table/pagination";
-import { validateTelPhone } from "@/utils/validate";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import ModalDeleted from "@/components/Modal";
+import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
 
 export default function CompanyPage(params) {
-  const [listCompany, setListCompany] = useState([
-    {
-      id: 1,
-      name: "Reagen",
-      nameKana: "Devanney",
-      phonenumber: "288-152-2038",
-      email: "rdevanney0@timesonline.co.uk",
-    },
-    {
-      id: 2,
-      name: "Brandy",
-      nameKana: "Jirieck",
-      phonenumber: "494-292-7169",
-      email: "bjirieck1@fc2.com",
-    },
-    {
-      id: 3,
-      name: "Tybi",
-      nameKana: "Driver",
-      phonenumber: "761-465-3511",
-      email: "tdriver2@free.fr",
-    },
-    {
-      id: 4,
-      name: "Didi",
-      nameKana: "Whistan",
-      phonenumber: "203-674-5760",
-      email: "dwhistan3@w3.org",
-    },
-    {
-      id: 5,
-      name: "Barb",
-      nameKana: "Niche",
-      phonenumber: "963-309-7569",
-      email: "bniche4@mit.edu",
-    },
-  ]);
+  const [listCompany, setListCompany] = useState([]);
   const [company, setCompany] = useState();
   const [numberPhone, setNumberPhone] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
-  const [role, setRole] = useState("ADMIN");
   const handleSearch = async () => {
     const params = { sortType: "ASC", page: currentPage, size: 20 };
     if (company?.name) {
@@ -85,23 +49,16 @@ export default function CompanyPage(params) {
       },
       {
         title: "会社名",
-        index: "name",
+        index: "company_name",
         render: (name) => <div className="w-full text-left">{name}</div>,
         className: "max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]",
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: "会社名（カタカナ）",
-        index: "nameKana",
+        title: "ユーザーの名前",
+        index: "owner_name",
         render: (value) => <div className="w-full text-left">{value}</div>,
         className: "max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]",
-        sorter: (a, b) => a.localeCompare(b),
-      },
-      {
-        title: "電話番号",
-        index: "phonenumber",
-        render: (value) => <div className="w-full text-left">{value}</div>,
-        className: "w-[100px]",
         sorter: (a, b) => a.localeCompare(b),
       },
       {
@@ -129,7 +86,7 @@ export default function CompanyPage(params) {
                 )}
               />
             </Link>
-            {role === Role.admin && (
+            {user.role === Role.admin && (
               <DeleteFilled
                 className={cx(
                   "w-6 h-6 mx-2 text-error",
@@ -142,20 +99,16 @@ export default function CompanyPage(params) {
                 )}
                 onClick={() =>
                   setActiveItem({
-                    id: record.id,
-                    name: record.name,
+                    id: record._id,
+                    name: record.company_name,
                     data: [
                       {
                         label: "会社名",
-                        value: record.name,
+                        value: record.company_name,
                       },
                       {
-                        label: "会社名（カタカナ）",
-                        value: record.nameKana,
-                      },
-                      {
-                        label: "電話番号",
-                        value: record.phonenumber,
+                        label: "ユーザーの名前",
+                        value: record.owner_name,
                       },
                       {
                         label: "メールアドレス",
@@ -174,36 +127,71 @@ export default function CompanyPage(params) {
     []
   );
   const handleDelete = async (id) => {
-    const [res, error] = await handleApi(deleteCompany(id));
-    if (res) {
-      toast.success("削除しました。");
-      const item = listCompany.find((d) => d.id === id);
-      const index = listCompany.indexOf(item);
-      listCompany.splice(index, 1);
-      setActiveItem();
-    } else {
-      toast.error(error.data.message);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            accessToken: token,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.status === "failure") {
+        enqueueSnackbar(data.message, {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+        return;
+      } else if (data.status === "success") {
+        setActiveItem();
+        const item = listCompany.find((d) => d.id === id);
+        const index = listCompany.indexOf(item);
+        listCompany.splice(index, 1);
+        enqueueSnackbar("Delete company successful", {
+          variant: "success",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      }
+    } catch (error) {
+      enqueueSnackbar("Delete company failed", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+      console.log(error);
     }
   };
 
   useEffect(() => {
     const getListCompany = async () => {
-      const params = { sortType: "ASC", page: currentPage, size: 20 };
-      if (company?.name) {
-        params.name = company.name;
-      }
-      const checkValidateTelPhone = validateTelPhone(numberPhone);
-      if (numberPhone !== "" && !checkValidateTelPhone) {
-        params.phoneNumber = numberPhone;
-      }
-      const [res] = await handleApi(listCompanyAPI(params));
-      if (res) {
-        setListCompany(res.data.result);
-        setLastPage(res.data.lastPage);
-        setTotal(res.data.total);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.status === "failure") {
+          return;
+        } else if (data.status === "success") {
+          setListCompany(data?.payload?.enterpriseAll);
+        }
+      } catch (error) {
+        throw error;
       }
     };
+    getListCompany();
   }, [currentPage]);
+  const { user } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const { token } = useSelector((state) => state.user);
 
   return (
     <div className="w-full">
@@ -212,7 +200,7 @@ export default function CompanyPage(params) {
       </div>
       <CardLayout>
         <div className="flex justify-start mt-8">
-          {role === Role.admin && (
+          {user.role === Role.admin && (
             <div className="w-1/3 px-6 flex pb-4">
               <div className="mr-6 mb-4 h-12 leading-[48px] w-16">会社名</div>
               <div
@@ -255,7 +243,7 @@ export default function CompanyPage(params) {
           >
             検索
           </div>
-          {role === Role.admin && (
+          {user.role === Role.admin && (
             <Link href="/admin/company/create">
               <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
                 会社登録

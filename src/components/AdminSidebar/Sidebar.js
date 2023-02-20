@@ -1,29 +1,20 @@
 import { Role } from "@/utils/constants";
 import {
   ContainerFilled,
-  UnlockFilled,
-  AccountBookFilled,
   UserOutlined,
   TeamOutlined,
-  DiffFilled,
-  BankFilled,
   ArrowRightOutlined,
-  FundFilled,
 } from "@ant-design/icons";
 import { css, cx } from "@emotion/css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 
 export const Sidebar = () => {
-  const [role, setRole] = useState("ADMIN");
+  const { user } = useSelector((state) => state.user);
   const pathname = usePathname();
-  const me = {
-    userInfo: {
-      firstName: "Sang",
-      lastName: "Thanh",
-    },
-  };
+  
   return (
     <div className="fixed bg-[#d0eaeb] text-primary overflow-hidden top-0 left-0 h-screen w-56 xl:w-64 pt-12 z-50 text-lg xl:text-xl">
       <div className="w-full h-14 flex justify-start items-center pl-4 xl:pl-6">
@@ -38,13 +29,11 @@ export const Sidebar = () => {
             `
           )}
         />
-        <div className="text-xl xl:text-2xl">{`${
-          me?.userInfo?.firstName || "-"
-        }${me?.userInfo?.lastName || "-"}`}</div>
+        <div className="text-xl xl:text-2xl">{user?.name}</div>
       </div>
       <div className="h-[2px] w-full bg-white" />
 
-      {role === Role.admin && (
+      {user.role === Role.admin && (
         <>
           <Link
             href="/admin/company"
