@@ -19,7 +19,6 @@ import {
 import ModalDeleted from "@/components/Modal";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
-import { Button } from "@/components/Button/button";
 import {
   ModalCreateCompany,
   ModalCreateCompanyByFile,
