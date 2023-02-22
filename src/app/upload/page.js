@@ -2,8 +2,11 @@
 import { useRef, useState } from "react";
 import { Button } from "@/components/Button/button";
 import { UploadItem } from "@/components/Upload/upload-item";
+import { useSelector } from "react-redux";
+import { NotFound } from "@/assets/icons";
+import { useSnackbar } from "notistack";
 
-export default function UploadPage(params) {
+export default function UploadPage() {
   const hiddenFileInput = useRef(null);
   const hiddenFileInput2 = useRef(null);
   const hiddenFileInput3 = useRef(null);
@@ -33,18 +36,57 @@ export default function UploadPage(params) {
         break;
     }
   };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!image1 || !image2 || !image3 || !image4) {
+      enqueueSnackbar("Please upload all images", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+      return
+    }
+    setIsLoading(true);
     const formData = new FormData();
-    formData.append("files", image1);
-    formData.append("files", image2);
-    formData.append("files", image3);
-    formData.append("files", image4);
+    formData.append("id", user.id);
+    formData.append("right", image1);
+    formData.append("left", image2);
+    formData.append("top", image3);
+    formData.append("bottom", image4);
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-image/`,
+        {
+          method: "POST",
+          headers: {
+            accessToken: token,
+          },
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      if (data?._user) {
+        setIsLoading(false);
+        enqueueSnackbar("Upload images success", {
+          variant: "success",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      }
+    } catch (error) {
+      setIsLoading(false);
+      enqueueSnackbar("Upload images failed", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+      console.log(error);
+    }
   };
+  const { user } = useSelector((state) => state.user);
+  const { token } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
+  if (!user.id) return <NotFound />;
 
   return (
-    <div
-      className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}
-    >
+    <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
           横顔画像の登録
@@ -95,7 +137,11 @@ export default function UploadPage(params) {
             />
           </div>
           <Button classname="bg-secondary">戻　る</Button>
-          <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]">
+          <Button
+            onClick={handleSubmit}
+            classname="bg-primary mt-[10.14px]"
+            isLoading={isLoading}
+          >
             登録する
           </Button>
         </div>
