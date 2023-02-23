@@ -139,7 +139,7 @@ export default function UploadPage() {
               index={4}
             />
           </div>
-          <Button classname="bg-secondary">戻　る</Button>
+          <Button classname="bg-secondary">戻 る</Button>
           <Button
             onClick={handleSubmit}
             classname="bg-primary mt-[10.14px]"

@@ -1,7 +1,6 @@
 import { DownIcon } from "@/assets/icons/down";
 import { CloseOutlined } from "@ant-design/icons";
 import { css, cx } from "@emotion/css";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const Select = ({
@@ -150,8 +149,8 @@ const Select = ({
 };
 
 export const SelectCompany = ({ setValue, value, errorMessage, height }) => {
-  const [options, setOptions] = useState([]);
-  const [optionsAfterFilter, setOtionsAfterFilter] = useState([]);
+  const [options] = useState([]);
+  const [optionsAfterFilter] = useState([]);
   const [filter, setFilter] = useState("");
 
   return (

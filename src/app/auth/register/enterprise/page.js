@@ -18,7 +18,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export default function EnterpriseRegister(params) {
+export default function EnterpriseRegister() {
   const [company, setCompany] = useState();
   const [department, setDepartment] = useState();
   const [employeeNumber, setEmployeeNumber] = useState();
@@ -28,7 +28,6 @@ export default function EnterpriseRegister(params) {
   const [password, setPassword] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [errorRegister, setErrorRegister] = useState("");
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
@@ -191,11 +190,6 @@ export default function EnterpriseRegister(params) {
             </div>
             <Button classname="bg-primary mt-[6.83px]">サインアップ</Button>
           </div>
-          {errorRegister && (
-            <div className="w-full text-error text-sm mb-4 text-center">
-              {errorRegister}
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -2,11 +2,9 @@
 
 import { WelcomeImage, WelcomeImage3 } from "@/assets/icons";
 import { Button } from "../Button/button";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export const Banner = () => {
-  const router = useRouter();
 
   return (
     <div className="mx-auto h-full xsm:w-[540px] min-h-screen bg-[#d0eaeb]">

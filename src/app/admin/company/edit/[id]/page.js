@@ -43,29 +43,25 @@ export default function EditCompanyPage({ params }) {
   };
   useEffect(() => {
     const getDataDetailCompany = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: token,
-            },
-          }
-        );
-        const data = await response.json();
-        if (data.status === "failure") {
-          return;
-        } else if (data.status === "success") {
-          setEmail(data?.payload.enterprise.email);
-          setCompanyName(data?.payload.enterprise.company_name);
-          setOwnerName(data?.payload.enterprise.owner_name);
-          setNumberEmployees(data?.payload.enterprise.number_employees);
-          setTaxCode(data?.payload.enterprise.tax_code);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            accessToken: token,
+          },
         }
-      } catch (error) {
-        throw error;
+      );
+      const data = await response.json();
+      if (data.status === "failure") {
+        return;
+      } else if (data.status === "success") {
+        setEmail(data?.payload.enterprise.email);
+        setCompanyName(data?.payload.enterprise.company_name);
+        setOwnerName(data?.payload.enterprise.owner_name);
+        setNumberEmployees(data?.payload.enterprise.number_employees);
+        setTaxCode(data?.payload.enterprise.tax_code);
       }
     };
     getDataDetailCompany();
