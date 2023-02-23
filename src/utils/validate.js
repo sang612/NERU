@@ -18,8 +18,8 @@ const regexName = /^[a-zA-Zａ-ｚA-Z0-9 ぁ-んァ-ヶー一-龠々]+$/;
 const regexNameKatakana = /^([ァ-ン]|ー)+$/;
 const regexPassword = /[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,24}/;
 const regexTelPhone = /(^(\d{7,11})+$)/;
-const regexEmail =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//eslint-disable-next-line
+const regexEmail =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const validateCode = (code) => {
   return code?.length >= 1 && code?.length <= 24

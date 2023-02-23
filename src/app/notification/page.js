@@ -2,15 +2,11 @@
 
 import { Button } from "@/components/Button/button";
 import { MeasureYourSleepIcon } from "@/assets/icons";
-import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 
 const amount = "3回分1000";
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 
-export default function UploadPage(params) {
+export default function UploadPage() {
   const router = useRouter();
 
   return (
