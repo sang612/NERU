@@ -5,8 +5,10 @@ import { UploadItem } from "@/components/Upload/upload-item";
 import { useSelector } from "react-redux";
 import { NotFound } from "@/assets/icons";
 import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 export default function UploadPage() {
+  const router = useRouter()
   const hiddenFileInput = useRef(null);
   const hiddenFileInput2 = useRef(null);
   const hiddenFileInput3 = useRef(null);
@@ -69,6 +71,7 @@ export default function UploadPage() {
           variant: "success",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });
+        router.push('/survey')
       }
     } catch (error) {
       setIsLoading(false);
