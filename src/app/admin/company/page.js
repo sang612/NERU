@@ -25,9 +25,11 @@ import {
   ModalResultFileExport,
 } from "@/components/Modal/CreateCompany";
 import {
-  validateGender,
+  validateEmail,
   validateName,
   validateTelPhone,
+  validateNameKatakana,
+  validateCode,
 } from "@/utils/validate";
 
 export default function CompanyPage() {
@@ -102,7 +104,7 @@ export default function CompanyPage() {
             <div
               className="hover:cursor-pointer"
               onClick={() => {
-                setModalCreate(true), setEnterpriseId(id);
+                setModalCreate(true), setCompanyName(id);
               }}
             >
               <UserAddOutlined
@@ -238,30 +240,51 @@ export default function CompanyPage() {
   const { enqueueSnackbar } = useSnackbar();
   const { token } = useSelector((state) => state.user);
   const [modalCreate, setModalCreate] = useState(false);
-  const [name, setName] = useState("");
+  const [enterpriseId, setEnterpriseId] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [affiliationName, setAffiliationName] = useState("");
   const [phone, setPhone] = useState("");
   const [numberOfEmployees, setNumberOfEmployees] = useState("");
-  const [gender, setGender] = useState("");
-  const [enterpriseId, setEnterpriseId] = useState("");
-  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [firstNameKatakana, setFirstNameKatakana] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [lastNameKatakana, setLastNameKatakana] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    name: "",
+    affiliationName: "",
+    firstName: "",
+    firstNameKatakana: "",
+    lastName: "",
+    lastNameKatakana: "",
+    email: "",
     phone: "",
-    gender: "",
+    numberOfEmployees: "",
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
-    setValidate({ ...validate, name: checkValidateFullName });
+    setValidate({ ...validate, [type]: checkValidateFullName });
+  };
+  const checkValidateNameKatakana = (name, type) => {
+    const checkValidateFullName = validateNameKatakana(name, type);
+    setValidate({ ...validate, [`${type}Katakana`]: checkValidateFullName });
   };
   const checkValidateTel = () => {
     const checkValidateTel = validateTelPhone(phone);
-    setValidate({ ...validate, tel: checkValidateTel });
+    setValidate({ ...validate, phone: checkValidateTel });
   };
-  const checkValidateGender = () => {
-    const checkValidateGender = validateGender(gender);
-    setValidate({ ...validate, gender: checkValidateGender });
+  const checkValidateEmail = () => {
+    const checkValidateEmail = validateEmail(email);
+    setValidate({ ...validate, email: checkValidateEmail });
   };
+  const checkValidateNumberOfEmployee = () => {
+    const checkValidateNumberOfEmployee = validateCode(numberOfEmployees);
+    setValidate({
+      ...validate,
+      numberOfEmployees: checkValidateNumberOfEmployee,
+    });
+  };
+
   const [modalCreateByFile, setModalCreateByFile] = useState(false);
   const handleChangeFileInput = (e) => {
     setFile(e.target.files[0]);
@@ -309,14 +332,28 @@ export default function CompanyPage() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validateEmployeeName = validateName(name, "firstName");
+    const validateEmployeeFirstName = validateName(firstName, "firstName");
+    const validateEmployeeLastName = validateName(lastName, "lastName");
+    const validateEmployeeFirstNameKatakana = validateNameKatakana(
+      firstNameKatakana,
+      "firstName"
+    );
+    const validateEmployeeLastNameKatakana = validateNameKatakana(
+      lastNameKatakana,
+      "lastName"
+    );
     const validateEmployeeTel = validateTelPhone(phone);
-    const validateEmployeeGender = validateGender(gender);
+    const validateEmplyeeEmail = validateEmail(email);
+    const validateEmployeeCode = validateCode(numberOfEmployees);
     console.log(validateEmployeeTel);
     if (
-      !validateEmployeeName &&
+      !validateEmployeeFirstName &&
+      !validateEmployeeLastName &&
+      !validateEmployeeFirstNameKatakana &&
+      !validateEmployeeLastNameKatakana &&
       !validateEmployeeTel &&
-      !validateEmployeeGender
+      !validateEmplyeeEmail &&
+      !validateEmployeeCode
     ) {
       setIsLoading(true);
       try {
@@ -362,9 +399,13 @@ export default function CompanyPage() {
       }
     } else {
       setValidate({
-        name: validateEmployeeName,
+        firstName: validateEmployeeFirstName,
+        firstNameKatakana: validateEmployeeFirstNameKatakana,
+        lastName: validateEmployeeLastName,
+        lastNameKatakana: validateEmployeeLastNameKatakana,
+        email: validateEmplyeeEmail,
         phone: validateEmployeeTel,
-        gender: validateEmployeeGender,
+        numberOfEmployees: validateEmployeeCode,
       });
     }
   };
@@ -382,23 +423,30 @@ export default function CompanyPage() {
       {modalCreate && (
         <ModalCreateCompany
           validate={validate}
-          name={name}
-          setName={setName}
+          affiliationName={affiliationName}
+          setAffiliationName={setAffiliationName}
           phone={phone}
           setPhone={setPhone}
           numberOfEmployees={numberOfEmployees}
           setNumberOfEmployees={setNumberOfEmployees}
-          gender={gender}
-          setGender={setGender}
-          enterpriseId={enterpriseId}
-          password={password}
-          setPassword={setPassword}
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          firstNameKatakana={firstNameKatakana}
+          setFirstNameKatakana={setFirstNameKatakana}
+          lastNameKatakana={lastNameKatakana}
+          setLastNameKatakana={setLastNameKatakana}
+          email={email}
+          setEmail={setEmail}
           handleSubmit={handleSubmit}
           isLoading={isLoading}
           setModalCreate={setModalCreate}
           checkValidateName={checkValidateName}
           checkValidateTel={checkValidateTel}
-          checkValidateGender={checkValidateGender}
+          checkValidateNumberOfEmployee={checkValidateNumberOfEmployee}
+          checkValidateEmail={checkValidateEmail}
+          checkValidateNameKatakana={checkValidateNameKatakana}
         />
       )}
 

@@ -6,7 +6,6 @@ import { Input } from "@/components/Input";
 import {
   validateEmail,
   validateName,
-  validatePassword,
 } from "@/utils/validate";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,13 +15,8 @@ import { useSelector } from "react-redux";
 export default function CreateCompanyPage() {
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [ownerName, setOwnerName] = useState("");
-  const [numberEmployees, setNumberEmployees] = useState("");
-  const [taxCode, setTaxCode] = useState("");
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    password: "",
     companyName: "",
     email: "",
   });
@@ -36,21 +30,12 @@ export default function CreateCompanyPage() {
     const checkValidateEmail = validateEmail(email);
     setValidate({ ...validate, email: checkValidateEmail });
   };
-  const checkValidatePassword = () => {
-    const checkValidatePassword = validatePassword(password, "password");
-    setValidate({ ...validate, password: checkValidatePassword });
-  };
   const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateCompanyName = validateName(companyName, "companyName");
     const validateCompanyEmail = validateEmail(email);
-    const validateCompanyPassword = validatePassword(password, "password");
-    if (
-      !validateCompanyName &&
-      !validateCompanyEmail &&
-      !validateCompanyPassword
-    ) {
+    if (!validateCompanyName && !validateCompanyEmail) {
       setIsLoading(true);
       try {
         const response = await fetch(
@@ -64,10 +49,6 @@ export default function CreateCompanyPage() {
             body: JSON.stringify({
               email: email,
               company_name: companyName,
-              owner_name: ownerName,
-              number_employees: numberEmployees,
-              tax_code: taxCode,
-              password: password,
             }),
           }
         );
@@ -97,7 +78,6 @@ export default function CreateCompanyPage() {
       setValidate({
         companyName: validateCompanyName,
         email: validateCompanyEmail,
-        password: validateCompanyPassword,
       });
     }
   };
@@ -111,29 +91,6 @@ export default function CreateCompanyPage() {
           会社登録
         </h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
-          <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">
-              メールアドレス
-            </div>
-            <div className="flex-1 h-20">
-              <div className="w-full h-full flex items-start">
-                <Input
-                  name="email"
-                  type="text"
-                  value={email}
-                  label="メールアドレス"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  validate={email ? checkValidateEmail : () => {}}
-                  messageError={validate.email}
-                  height="h-14"
-                  border="border-[1px]"
-                />
-              </div>
-            </div>
-          </div>
-
           <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">会社名</div>
             <div className="flex-1 h-20">
@@ -157,89 +114,28 @@ export default function CreateCompanyPage() {
               </div>
             </div>
           </div>
-
           <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">
-              ユーザーの名前
+              メールアドレス
             </div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
-                  name="ownerName"
+                  name="email"
                   type="text"
-                  value={ownerName}
+                  value={email}
+                  label="メールアドレス"
                   onChange={(e) => {
-                    setOwnerName(e.target.value);
+                    setEmail(e.target.value);
                   }}
-                  validate={
-                    ownerName
-                      ? () => checkValidateName(ownerName, "companyName")
-                      : () => {}
-                  }
-                  messageError={validate.ownerName}
+                  validate={email ? checkValidateEmail : () => {}}
+                  messageError={validate.email}
                   height="h-14"
                   border="border-[1px]"
                 />
               </div>
             </div>
           </div>
-
-          <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">従業員数</div>
-            <div className="flex-1 h-20">
-              <div className="w-full h-full flex items-start">
-                <Input
-                  name="numberEmployees"
-                  type="number"
-                  value={numberEmployees}
-                  onChange={(e) => {
-                    setNumberEmployees(e.target.value);
-                  }}
-                  height="h-14"
-                  border="border-[1px]"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">税法</div>
-            <div className="flex-1 h-20">
-              <div className="w-full h-full flex items-start">
-                <Input
-                  name="taxCode"
-                  type="text"
-                  value={taxCode}
-                  onChange={(e) => {
-                    setTaxCode(e.target.value);
-                  }}
-                  height="h-14"
-                  border="border-[1px]"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">暗証番号</div>
-            <div className="flex-1 h-20">
-              <div className="w-full h-full flex items-start">
-                <Input
-                  name="password"
-                  type="text"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  validate={password ? checkValidatePassword : () => {}}
-                  messageError={validate.password}
-                  height="h-14"
-                  border="border-[1px]"
-                />
-              </div>
-            </div>
-          </div>
-
           <div className="w-full flex justify-around">
             <div className="w-5/12">
               <Button

@@ -4,23 +4,31 @@ import { Input } from "../Input";
 
 export const ModalCreateCompany = ({
   validate,
-  name,
-  setName,
+  companyName,
+  affiliationName,
+  setAffiliationName,
+  lastName,
+  setLastName,
+  lastNameKatakana,
+  setLastNameKatakana,
+  firstName,
+  setFirstName,
+  firstNameKatakana,
+  setFirstNameKatakana,
+  email,
+  setEmail,
   setPhone,
   phone,
   numberOfEmployees,
   setNumberOfEmployees,
-  gender,
-  setGender,
-  enterpriseId,
-  password,
-  setPassword,
   handleSubmit,
   isLoading,
   setModalCreate,
-  checkValidateName,
   checkValidateTel,
-  checkValidateGender,
+  checkValidateNumberOfEmployee,
+  checkValidateEmail,
+  checkValidateName,
+  checkValidateNameKatakana,
 }) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
@@ -29,21 +37,166 @@ export const ModalCreateCompany = ({
       </h1>
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
         <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">会社名</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="companyName"
+                type="text"
+                value={companyName}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">所属名</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="affiliationName"
+                type="text"
+                value={affiliationName}
+                onChange={(e) => {
+                  setAffiliationName(e.target.value);
+                }}
+                messageError={validate.affiliationName}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">社員番号</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="numberOfEmployees"
+                type="text"
+                value={numberOfEmployees}
+                onChange={(e) => {
+                  setNumberOfEmployees(e.target.value);
+                }}
+                validate={
+                  numberOfEmployees
+                    ? () => checkValidateNumberOfEmployee(numberOfEmployees)
+                    : () => {}
+                }
+                messageError={validate.numberOfEmployees}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">氏</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+                validate={
+                  lastName
+                    ? () => checkValidateName(lastName, "lastName")
+                    : () => {}
+                }
+                messageError={validate.lastName}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
           <div className="mb-4 h-14 flex items-center w-36">名</div>
           <div className="flex-1 h-20">
             <div className="w-full h-full flex items-start">
               <Input
-                name="name"
+                name="firstName"
                 type="text"
-                value={name}
-                label="メールアドレス"
+                value={firstName}
                 onChange={(e) => {
-                  setName(e.target.value);
+                  setFirstName(e.target.value);
                 }}
                 validate={
-                  name ? () => checkValidateName(name, "firstName") : () => {}
+                  firstName
+                    ? () => checkValidateName(firstName, "firstName")
+                    : () => {}
                 }
-                messageError={validate.name}
+                messageError={validate.firstName}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">氏（カタカナ）</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="lastNameKatakana"
+                type="text"
+                value={lastNameKatakana}
+                onChange={(e) => {
+                  setLastNameKatakana(e.target.value);
+                }}
+                validate={
+                  lastNameKatakana
+                    ? () =>
+                        checkValidateNameKatakana(lastNameKatakana, "lastName")
+                    : () => {}
+                }
+                messageError={validate.lastNameKatakana}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">名（カタカナ）</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="firstNameKatakana"
+                type="text"
+                value={firstNameKatakana}
+                onChange={(e) => {
+                  setFirstNameKatakana(e.target.value);
+                }}
+                validate={
+                  firstNameKatakana
+                    ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName')
+                    : () => {}
+                }
+                messageError={validate.firstNameKatakana}
+                height="h-14"
+                border="border-[1px]"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-start items-start w-full my-2">
+          <div className="mb-4 h-14 flex items-center w-36">メールアドレス</div>
+          <div className="flex-1 h-20">
+            <div className="w-full h-full flex items-start">
+              <Input
+                name="email"
+                type="text"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                validate={email ? () => checkValidateEmail(email) : () => {}}
+                messageError={validate.email}
                 height="h-14"
                 border="border-[1px]"
               />
@@ -69,75 +222,7 @@ export const ModalCreateCompany = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">社員番号</div>
-          <div className="flex-1 h-20">
-            <div className="w-full h-full flex items-start">
-              <Input
-                name="numberOfEmployees"
-                type="text"
-                value={numberOfEmployees}
-                onChange={(e) => {
-                  setNumberOfEmployees(e.target.value);
-                }}
-                height="h-14"
-                border="border-[1px]"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">性 別</div>
-          <div className="flex-1 h-20">
-            <div className="w-full h-full flex items-start">
-              <Input
-                name="gender"
-                type="text"
-                value={gender}
-                onChange={(e) => {
-                  setGender(e.target.value);
-                }}
-                validate={gender ? () => checkValidateGender(gender) : () => {}}
-                messageError={validate.gender}
-                height="h-14"
-                border="border-[1px]"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">会社番号</div>
-          <div className="flex-1 h-20">
-            <div className="w-full h-full flex items-start">
-              <Input
-                name="enterpriseId"
-                type="text"
-                value={enterpriseId}
-                disabled
-                height="h-14"
-                border="border-[1px]"
-              />
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">暗証番号</div>
-          <div className="flex-1 h-20">
-            <div className="w-full h-full flex items-start">
-              <Input
-                name="password"
-                type="text"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-                messageError={validate.password}
-                height="h-14"
-                border="border-[1px]"
-              />
-            </div>
-          </div>
-        </div>
+
         <div className="w-full flex justify-around">
           <div className="w-5/12">
             <Button
@@ -251,9 +336,7 @@ export const ModalResultFileExport = ({
                   <span className="italic">{errorMessage}</span>
                 </p>
               </div>
-              <span className="font-bold text-error">
-                電話番号リスト失敗:
-              </span>
+              <span className="font-bold text-error">電話番号リスト失敗:</span>
               <div className="overflow-scroll w-full max-h-[50vh]">
                 {failList?.map((item, index) => (
                   <li key={index}>{item?.data?.phone}&nbsp;</li>
