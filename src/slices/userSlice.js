@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: [],
   token: "",
+  legal:[],
 };
 
 const userSlice = createSlice({
@@ -15,9 +16,12 @@ const userSlice = createSlice({
     addToken: (state, action) => {
       return { ...state, token: action.payload };
     },
+    addLegal: (state, action) => {
+      return { ...state, legal: action.payload };
+    },
   },
 });
 
-export const { addNew, addToken } = userSlice.actions;
+export const { addNew, addToken, addLegal } = userSlice.actions;
 
 export default userSlice.reducer;

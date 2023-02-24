@@ -7,11 +7,7 @@ import { Inter } from "@next/font/google";
 import { RememberPasswordIcon } from "@/assets/icons";
 import { Button } from "@/components/Button/button";
 import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
-import {
-  validatePassword,
-  validateName,
-  validateEmail,
-} from "@/utils/validate";
+import { validateEmail, validatePassword } from "@/utils/validate";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 
@@ -21,12 +17,7 @@ const inter = Inter({
 });
 
 export default function EnterpriseRegister() {
-  const { user, token } = useSelector((state) => state.user);
-  const [company, setCompany] = useState();
-  const [department, setDepartment] = useState();
-  const [employeeNumber, setEmployeeNumber] = useState();
-  const [mr, setMr] = useState();
-  const [name, setName] = useState("");
+  const { user, token, legal } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -35,19 +26,10 @@ export default function EnterpriseRegister() {
   const [isShowPassConfirm, setIsShowPassConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    tel: "",
-    password: "",
     email: "",
+    password: "",
     passwordConfirm: "",
   });
-  const checkValidateName = () => {
-    const checkValidateName = validateName(name);
-    setValidate({ ...validate, name: checkValidateName });
-  };
-  const checkValidateEmail = () => {
-    const checkValidateEmail = validateEmail(email);
-    setValidate({ ...validate, email: checkValidateEmail });
-  };
   const checkValidatePassword = () => {
     const checkValidatePassword = validatePassword(password, "password");
     setValidate({ ...validate, password: checkValidatePassword });
@@ -57,32 +39,53 @@ export default function EnterpriseRegister() {
       password === passwordConfirm ? "" : "パスワードが一致しません。";
     setValidate({ ...validate, passwordConfirm: checkValidatePasswordConfirm });
   };
+  const checkValidateEmail = () => {
+    const checkValidateEmail = validateEmail(email);
+    setValidate({ ...validate, email: checkValidateEmail });
+  };
   const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = async () => {
-    const validateEmployeeEmail = validateEmail(email);
+    const validateEmployeeEmail = !user?.email ? validateEmail(email) : "";
     const validateEmployeePassword = validatePassword(password, "password");
     const validateEmployeePasswordConfirm =
       password === passwordConfirm ? "" : "パスワードが一致しません。";
     if (
-      !validateEmployeeEmail &&
       !validateEmployeePassword &&
-      !validateEmployeePasswordConfirm
+      !validateEmployeePasswordConfirm &&
+      !validateEmployeeEmail
     ) {
       setIsLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            accessToken: token,
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        }
-      );
+      let response;
+      if (email) {
+        response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+            body: JSON.stringify({
+              password: password,
+              email: email,
+            }),
+          }
+        );
+      } else {
+        response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+            body: JSON.stringify({
+              password: password,
+            }),
+          }
+        );
+      }
       const data = await response.json();
       setIsLoading(false);
       if (data.status === "failure") {
@@ -101,11 +104,10 @@ export default function EnterpriseRegister() {
       setValidate({
         email: validateEmployeeEmail,
         password: validateEmployeePassword,
-        passwordConfirm: validateEmployeePasswordConfirm
+        passwordConfirm: validateEmployeePasswordConfirm,
       });
     }
   };
-  console.log(user);
 
   return (
     <div
@@ -120,23 +122,15 @@ export default function EnterpriseRegister() {
             disabled
             name="company"
             type="text"
-            value={company}
+            value={legal?.enterprise_id?.company_name}
             placeholder="会社名"
-            onChange={(e) => {
-              setCompany(e.target.value);
-            }}
-            messageError={validate.company}
           />
           <Input
             disabled
             name="department"
             type="text"
-            value={department}
+            value={legal?.department_name}
             placeholder="所属名"
-            onChange={(e) => {
-              setDepartment(e.target.value);
-            }}
-            messageError={validate.department}
           />
           <Input
             disabled
@@ -144,45 +138,43 @@ export default function EnterpriseRegister() {
             type="text"
             value={user.id}
             placeholder="社員番号"
-            onChange={(e) => {
-              setEmployeeNumber(e.target.value);
-            }}
-            messageError={validate.employeeNumber}
           />
           <Input
             disabled
             name="mr"
             type="text"
-            value={mr}
+            value={user.last_name}
             placeholder="氏"
-            onChange={(e) => {
-              setMr(e.target.value);
-            }}
-            messageError={validate.mr}
           />
           <Input
             disabled
             name="name"
             type="text"
-            value={user.name}
+            value={user.first_name}
             placeholder="名"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            validate={name ? checkValidateName : () => {}}
-            messageError={validate.name}
           />
-          <Input
-            name="email"
-            type="text"
-            value={email}
-            placeholder="メールアドレス"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            validate={email ? checkValidateEmail : () => {}}
-            messageError={validate.email}
-          />
+          {user.email ? (
+            <Input
+              disabled
+              name="email"
+              type="text"
+              value={user.email}
+              placeholder="メールアドレス"
+            />
+          ) : (
+            <Input
+              name="email"
+              type="text"
+              value={email}
+              placeholder="メールアドレス"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              validate={email ? checkValidateEmail : () => {}}
+              messageError={validate.email}
+            />
+          )}
+
           <div
             className={cx(
               "w-full relative",
@@ -296,7 +288,11 @@ export default function EnterpriseRegister() {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button onClick={handleSubmit} classname="bg-primary mt-[6.83px]" isLoading={isLoading}>
+            <Button
+              onClick={handleSubmit}
+              classname="bg-primary mt-[6.83px]"
+              isLoading={isLoading}
+            >
               サインアップ
             </Button>
           </div>

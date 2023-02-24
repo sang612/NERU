@@ -18,7 +18,7 @@ import {
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { addNew, addToken } from "@/slices/userSlice";
+import { addLegal, addNew, addToken } from "@/slices/userSlice";
 
 export default function PersonalRegister(params) {
   const dispatch = useDispatch();
@@ -101,6 +101,7 @@ export default function PersonalRegister(params) {
           if (data?.payload?.user?.isEnterprise) {
             dispatch(addNew(data.payload.user));
             dispatch(addToken(data.payload.token));
+            dispatch(addLegal(data.payload.legal))
             router.push("/user/updateProfileEmployee");
           } else router.push("/auth/login");
         }
