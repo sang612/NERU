@@ -13,16 +13,15 @@ import {
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addNew, addToken } from "@/slices/userSlice";
 import { Role } from "@/utils/constants";
 
-export default function LoginPage(params) {
+export default function LoginPage() {
   const [tel, setTel] = useState("");
   const [password, setPassword] = useState("");
   const [rememberLogin, setRememberLogin] = useState(true);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [errorLogin, setErrorLogin] = useState();
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
@@ -84,7 +83,6 @@ export default function LoginPage(params) {
       setValidate(checkValidate);
     }
   };
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   return (
@@ -170,11 +168,6 @@ export default function LoginPage(params) {
               パスワードをお忘れの場合
             </Link>
           </div>
-          {errorLogin && (
-            <div className="w-full text-error text-sm mb-4 text-center">
-              {errorLogin}
-            </div>
-          )}
           <Button onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
             サインイン
           </Button>

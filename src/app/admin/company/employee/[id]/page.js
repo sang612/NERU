@@ -20,25 +20,9 @@ export default function Employee({ params }) {
   const [company, setCompany] = useState();
   const [numberPhone, setNumberPhone] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage, setLastPage] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [lastPage] = useState(0);
+  const [total] = useState(0);
   const [activeItem, setActiveItem] = useState();
-  const handleSearch = async () => {
-    const params = { sortType: "ASC", page: currentPage, size: 20 };
-    if (company?.name) {
-      params.name = company.name;
-    }
-    if (numberPhone !== "") {
-      params.phoneNumber = numberPhone.trim();
-    }
-    const [res] = await handleApi(listEmployeeAPI(params));
-    if (res) {
-      setListEmployee(res.data.result);
-      setLastPage(res.data.lastPage);
-      setTotal(res.data.total);
-      setCurrentPage(1);
-    }
-  };
   const columns = useMemo(
     () => [
       {
@@ -257,7 +241,6 @@ export default function Employee({ params }) {
         <div className="flex justify-start px-6 pb-6">
           <div
             className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4"
-            onClick={handleSearch}
           >
             検索
           </div>

@@ -12,13 +12,16 @@ import {
   validateName,
   validateEmail,
 } from "@/utils/validate";
+import { useSelector } from "react-redux";
+import { useSnackbar } from "notistack";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
 
-export default function EnterpriseRegister(params) {
+export default function EnterpriseRegister() {
+  const { user, token } = useSelector((state) => state.user);
   const [company, setCompany] = useState();
   const [department, setDepartment] = useState();
   const [employeeNumber, setEmployeeNumber] = useState();
@@ -26,13 +29,16 @@ export default function EnterpriseRegister(params) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [errorRegister, setErrorRegister] = useState("");
+  const [isShowPassConfirm, setIsShowPassConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
     email: "",
+    passwordConfirm: "",
   });
   const checkValidateName = () => {
     const checkValidateName = validateName(name);
@@ -46,6 +52,60 @@ export default function EnterpriseRegister(params) {
     const checkValidatePassword = validatePassword(password, "password");
     setValidate({ ...validate, password: checkValidatePassword });
   };
+  const checkValidatePasswordConfirm = () => {
+    const checkValidatePasswordConfirm =
+      password === passwordConfirm ? "" : "パスワードが一致しません。";
+    setValidate({ ...validate, passwordConfirm: checkValidatePasswordConfirm });
+  };
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSubmit = async () => {
+    const validateEmployeeEmail = validateEmail(email);
+    const validateEmployeePassword = validatePassword(password, "password");
+    const validateEmployeePasswordConfirm =
+      password === passwordConfirm ? "" : "パスワードが一致しません。";
+    if (
+      !validateEmployeeEmail &&
+      !validateEmployeePassword &&
+      !validateEmployeePasswordConfirm
+    ) {
+      setIsLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            accessToken: token,
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        }
+      );
+      const data = await response.json();
+      setIsLoading(false);
+      if (data.status === "failure") {
+        enqueueSnackbar(data.message, {
+          variant: "error",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+        return;
+      } else if (data.status === "success") {
+        enqueueSnackbar("Update profile successful", {
+          variant: "success",
+          anchorOrigin: { vertical: "top", horizontal: "right" },
+        });
+      }
+    } else {
+      setValidate({
+        email: validateEmployeeEmail,
+        password: validateEmployeePassword,
+        passwordConfirm: validateEmployeePasswordConfirm
+      });
+    }
+  };
+  console.log(user);
 
   return (
     <div
@@ -81,8 +141,8 @@ export default function EnterpriseRegister(params) {
           <Input
             disabled
             name="employeeNumber"
-            type="number"
-            value={employeeNumber}
+            type="text"
+            value={user.id}
             placeholder="社員番号"
             onChange={(e) => {
               setEmployeeNumber(e.target.value);
@@ -104,7 +164,7 @@ export default function EnterpriseRegister(params) {
             disabled
             name="name"
             type="text"
-            value={name}
+            value={user.name}
             placeholder="名"
             onChange={(e) => {
               setName(e.target.value);
@@ -125,7 +185,7 @@ export default function EnterpriseRegister(params) {
           />
           <div
             className={cx(
-              "w-full relative mb-[35px]",
+              "w-full relative",
               css`
                 input {
                   padding-right: calc(6% + 24px);
@@ -168,6 +228,53 @@ export default function EnterpriseRegister(params) {
               </div>
             )}
           </div>
+          <div
+            className={cx(
+              "w-full relative mb-[35px]",
+              css`
+                input {
+                  padding-right: calc(6% + 24px);
+                }
+              `
+            )}
+          >
+            <Input
+              name="passwordConfirm"
+              type={isShowPassConfirm ? "text" : "password"}
+              value={passwordConfirm}
+              placeholder="パスワード"
+              onChange={(e) => {
+                setPasswordConfirm(e.target.value);
+              }}
+              validate={
+                passwordConfirm ? checkValidatePasswordConfirm : () => {}
+              }
+              messageError={validate.passwordConfirm}
+            />
+            {isShowPassConfirm ? (
+              <div
+                className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}
+              >
+                <EyeInvisibleFilled
+                  onClick={() => setIsShowPassConfirm(false)}
+                  className={`${
+                    validate.passwordConfirm ? "text-error" : "text-primary"
+                  }`}
+                />
+              </div>
+            ) : (
+              <div
+                className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}
+              >
+                <EyeFilled
+                  onClick={() => setIsShowPassConfirm(true)}
+                  className={`${
+                    validate.passwordConfirm ? "text-error" : "text-primary"
+                  }`}
+                />
+              </div>
+            )}
+          </div>
           <div className="w-full">
             <div className="w-full mb-4 flex justify-end">
               <Link
@@ -189,13 +296,10 @@ export default function EnterpriseRegister(params) {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button classname="bg-primary mt-[6.83px]">サインアップ</Button>
+            <Button onClick={handleSubmit} classname="bg-primary mt-[6.83px]" isLoading={isLoading}>
+              サインアップ
+            </Button>
           </div>
-          {errorRegister && (
-            <div className="w-full text-error text-sm mb-4 text-center">
-              {errorRegister}
-            </div>
-          )}
         </div>
       </div>
     </div>

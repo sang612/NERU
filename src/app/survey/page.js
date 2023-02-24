@@ -162,7 +162,7 @@ export default function SurveyPage() {
                         name={item?.id}
                         checked={index == 0}
                         value={option?.content}
-                        onChange={(e) =>
+                        onChange={() =>
                           handleChangeRadioInput(option?._id, item?._id)
                         }
                         key={indexOption}

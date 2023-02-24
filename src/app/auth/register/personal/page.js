@@ -18,7 +18,7 @@ import {
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 
-export default function PersonalRegister(params) {
+export default function PersonalRegister() {
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,7 +27,6 @@ export default function PersonalRegister(params) {
   const [gender, setGender] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [errorRegister, setErrorRegister] = useState("");
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
@@ -234,12 +233,6 @@ export default function PersonalRegister(params) {
               サインアップ
             </Button>
           </div>
-
-          {errorRegister && (
-            <div className="w-full text-error text-sm mb-4 text-center">
-              {errorRegister}
-            </div>
-          )}
         </div>
       </div>
     </div>

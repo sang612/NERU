@@ -17,8 +17,11 @@ import {
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { addNew, addToken } from "@/slices/userSlice";
 
 export default function PersonalRegister(params) {
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -96,8 +99,9 @@ export default function PersonalRegister(params) {
             anchorOrigin: { vertical: "top", horizontal: "right" },
           });
           if (data?.payload?.user?.isEnterprise) {
-            router.push("/auth/register/enterprise");
-            setIsLoading(false);
+            dispatch(addNew(data.payload.user));
+            dispatch(addToken(data.payload.token));
+            router.push("/user/updateProfileEmployee");
           } else router.push("/auth/login");
         }
       } catch (error) {

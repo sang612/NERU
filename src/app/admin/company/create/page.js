@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack/dist";
 import { useSelector } from "react-redux";
 
-export default function CreateCompanyPage(params) {
+export default function CreateCompanyPage() {
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [ownerName, setOwnerName] = useState("");

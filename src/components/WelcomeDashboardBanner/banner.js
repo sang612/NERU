@@ -2,12 +2,10 @@
 
 import { WelcomeImage, WelcomeImage3 } from "@/assets/icons";
 import { Button } from "../Button/button";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { EmployeeWelcome } from "./EmployeeWelcome";
 export const Banner = () => {
-  const router = useRouter();
   const [modalEmployeeWelcome, setEmployeeWelcome] = useState(false);
 
   return (

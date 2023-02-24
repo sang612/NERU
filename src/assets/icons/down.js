@@ -1,6 +1,6 @@
 export const DownIcon = ({ width, height }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.44 8.6">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.44 8.6" width={width} height={height}>
       <defs></defs>
       <title>Asset 1</title>
       <g id="Layer_2" data-name="Layer 2">
