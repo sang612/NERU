@@ -3,13 +3,16 @@
 import { Button } from "@/components/Button/button";
 import { MeasureYourSleepIcon } from "@/assets/icons";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import PaymentModal from "../../components/Payment";
 
-const amount = "3回分1000";
+const amount = "3回分1100";
 
 export default function UploadPage() {
-  const router = useRouter();
+	const router = useRouter();
+	const [isOpen, setIsOpen] = useState(false);
 
-  return (
+	return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <div className="w-full text-primary">
@@ -23,21 +26,19 @@ export default function UploadPage() {
           <div className="w-full">
             <Button
               onClick={() => {
-                router.push("/auth/login");
+                router.push('/auth/login');
               }}
               classname="bg-secondary"
             >
               キャンセル
             </Button>
-
-            <form action="/api/checkout_sessions" method="POST">
-              <section>
-                <Button type="submit" classname="bg-primary  mt-[16px]">
-                  同意
-                </Button>
-              </section>
-            </form>
+            <section>
+              <button role="button" onClick={() => setIsOpen(true)} classname="bg-primary  mt-[16px]">
+                同意
+              </button>
+            </section>
           </div>
+          <PaymentModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </div>
       </div>
     </div>
