@@ -241,7 +241,7 @@ export default function CompanyPage() {
   const { token } = useSelector((state) => state.user);
   const [modalCreate, setModalCreate] = useState(false);
   const [enterpriseId, setEnterpriseId] = useState();
-  const [companyName, setCompanyName] = useState();
+  const [ setCompanyName] = useState();
   const [affiliationName, setAffiliationName] = useState("");
   const [phone, setPhone] = useState("");
   const [numberOfEmployees, setNumberOfEmployees] = useState("");
@@ -369,9 +369,7 @@ export default function CompanyPage() {
               name: name,
               phone: phone,
               number_of_employee: numberOfEmployees,
-              gender: gender,
               enterprise_id: enterpriseId,
-              password: password,
             }),
           }
         );

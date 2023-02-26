@@ -12,15 +12,13 @@ import {
   validateName,
   validateEmail,
   validateTelPhone,
-  validatesurname,
-  validateRegister,
 } from "@/utils/validate";
 import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addLegal, addNew, addToken } from "@/slices/userSlice";
 
-export default function PersonalRegister(params) {
+export default function PersonalRegister() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState("");
@@ -30,7 +28,7 @@ export default function PersonalRegister(params) {
   const [surname, setSurname] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
-  const [errorRegister, setErrorRegister] = useState("");
+  const [errorRegister] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
     surname: "",
