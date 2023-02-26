@@ -345,7 +345,6 @@ export default function CompanyPage() {
     const validateEmployeeTel = validateTelPhone(phone);
     const validateEmplyeeEmail = validateEmail(email);
     const validateEmployeeCode = validateCode(numberOfEmployees);
-    console.log(validateEmployeeTel);
     if (
       !validateEmployeeFirstName &&
       !validateEmployeeLastName &&
