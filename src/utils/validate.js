@@ -106,22 +106,27 @@ export const validateWeight = (weight) => {
   }
 };
 export const validateGender = (gender) => {
-  gender = gender?.toLowerCase();
-  if (gender === "male" || gender === "female" || gender === "other") {
+  if (gender === "Male" || gender === "Female") {
     return "";
   } else {
-    return "Please type corrent gender";
+    return `"gender" は [Male, Female] のいずれかでなければなりません`;
   }
 };
 
 export const validateRegister = (
   firstName,
+  firstNameKatakana,
+  lastName,
+  lastNameKatakana,
   email,
   gender,
   numberphone,
   password
 ) => ({
   firstName: validateName(firstName, "firstName"),
+  firstNameKatakana: validateNameKatakana(firstNameKatakana, 'firstName'),
+  lastName: validateName(lastName, "lastName"),
+  lastNameKatakana: validateNameKatakana(lastNameKatakana, 'lastName'),
   email: validateEmail(email),
   gender: validateGender(gender),
   tel: validateTelPhone(numberphone),

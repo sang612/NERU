@@ -22,6 +22,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [rememberLogin, setRememberLogin] = useState(true);
   const [isShowPass, setIsShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
     tel: "",
     password: "",
@@ -40,6 +41,7 @@ export default function LoginPage() {
     event.preventDefault();
     const checkValidate = validateLogin(tel, password);
     if (!checkValidate.tel && !checkValidate.password) {
+      setIsLoading(true);
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user`,
@@ -55,6 +57,7 @@ export default function LoginPage() {
           }
         );
         const data = await response.json();
+        setIsLoading(false)
         if (data.status === "failure") {
           enqueueSnackbar(data.message, {
             variant: "error",
@@ -168,7 +171,11 @@ export default function LoginPage() {
               パスワードをお忘れの場合
             </Link>
           </div>
-          <Button onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
+          <Button
+            isLoading={isLoading}
+            onClick={handleSubmit}
+            classname="bg-primary mt-[27.93px]"
+          >
             サインイン
           </Button>
         </div>
