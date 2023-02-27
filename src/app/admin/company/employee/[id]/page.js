@@ -33,23 +33,29 @@ export default function Employee({ params }) {
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: '携帯電話番号',
-        index: 'user_id',
-        render: (value) => <div className="w-full text-left">{value.phone}</div>,
-        className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
+        title: "携帯電話番号",
+        index: "user_id",
+        render: (value) => (
+          <div className="w-full text-left">{value?.phone}</div>
+        ),
+        className: "max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]",
       },
       {
-        title: '氏名',
-        index: 'user_id',
-        render: (value) => <div className="w-full text-left">{value.name}</div>,
-        className: 'min-w-[40px]',
-        sorter: (a, b) => a.name.localeCompare(b.name),
+        title: "氏名",
+        index: "user_id",
+        render: (value) => (
+          <div className="w-full text-left">{value?.first_name}</div>
+        ),
+        className: "min-w-[40px]",
+        sorter: (a, b) => a.first_name.localeCompare(b.first_name),
       },
       {
-        title: '区分',
-        index: 'user_id',
-        render: (value) => <div className="w-full text-left">{value.role}</div>,
-        className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
+        title: "区分",
+        index: "user_id",
+        render: (value) => (
+          <div className="w-full text-left">{value?.role}</div>
+        ),
+        className: "max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]",
         sorter: (a, b) => a.role.localeCompare(b.role),
       },
 
@@ -149,13 +155,16 @@ export default function Employee({ params }) {
   useEffect(() => {
     const getListEmployee = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/getall/${id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            accessToken: token,
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/getall/${id}?page=${currentPage}&limit=${10}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accessToken: token,
+            },
+          }
+        );
         const data = await response.json();
         if (data.status === 'failure') {
           return;

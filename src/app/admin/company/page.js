@@ -57,15 +57,8 @@ export default function CompanyPage() {
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: 'ユーザーの名前',
-        index: 'owner_name',
-        render: (value) => <div className="w-full text-left">{value}</div>,
-        className: 'max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]',
-        sorter: (a, b) => a.localeCompare(b),
-      },
-      {
-        title: 'メールアドレス',
-        index: 'email',
+        title: "メールアドレス",
+        index: "email",
         render: (value) => <div className="w-full text-left">{value}</div>,
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
         sorter: (a, b) => a.localeCompare(b),
@@ -104,7 +97,9 @@ export default function CompanyPage() {
             <div
               className="hover:cursor-pointer"
               onClick={() => {
-                setModalCreate(true), setCompanyName(id);
+                setModalCreate(true);
+                setCompanyName(record?.company_name);
+                setEnterpriseId(id);
               }}
             >
               <UserAddOutlined
@@ -150,7 +145,7 @@ export default function CompanyPage() {
                 )}
                 onClick={() =>
                   setActiveItem({
-                    id: record._id,
+                    id: record.id,
                     name: record.company_name,
                     data: [
                       {
@@ -158,11 +153,7 @@ export default function CompanyPage() {
                         value: record.company_name,
                       },
                       {
-                        label: 'ユーザーの名前',
-                        value: record.owner_name,
-                      },
-                      {
-                        label: 'メールアドレス',
+                        label: "メールアドレス",
                         value: record.email,
                       },
                     ],
@@ -214,13 +205,18 @@ export default function CompanyPage() {
 
   useEffect(() => {
     const getListCompany = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
-      });
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_ENDPOINT
+        }/admin/enterprise/?page=${currentPage}&limit=${10}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            accessToken: token,
+          },
+        }
+      );
       const data = await response.json();
       if (data.status === 'failure') {
         return;
@@ -235,7 +231,7 @@ export default function CompanyPage() {
   const { token } = useSelector((state) => state.user);
   const [modalCreate, setModalCreate] = useState(false);
   const [enterpriseId, setEnterpriseId] = useState();
-  const [ setCompanyName] = useState();
+  const [companyName, setCompanyName] = useState();
   const [affiliationName, setAffiliationName] = useState("");
   const [phone, setPhone] = useState("");
   const [numberOfEmployees, setNumberOfEmployees] = useState("");
@@ -348,7 +344,7 @@ export default function CompanyPage() {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/`,
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user`,
           {
             method: "POST",
             headers: {
@@ -356,7 +352,13 @@ export default function CompanyPage() {
               accessToken: token,
             },
             body: JSON.stringify({
-              name: name,
+              first_name: firstName,
+              first_name_kana: firstNameKatakana,
+              last_name: lastName,
+              last_name_kana: lastNameKatakana,
+              email: email,
+              department_name: affiliationName,
+              isEnterprise: true,
               phone: phone,
               number_of_employee: numberOfEmployees,
               enterprise_id: enterpriseId,
@@ -433,9 +435,9 @@ export default function CompanyPage() {
           checkValidateNumberOfEmployee={checkValidateNumberOfEmployee}
           checkValidateEmail={checkValidateEmail}
           checkValidateNameKatakana={checkValidateNameKatakana}
+          companyName={companyName}
         />
       )}
-
       {modalCreateByFile && (
         <ModalCreateCompanyByFile
           handleSubmitFile={handleSubmitFile}
@@ -445,7 +447,6 @@ export default function CompanyPage() {
           isLoading={isLoading}
         />
       )}
-
       {!modalCreate && !modalCreateByFile && !modalResultFileExport && (
         <CardLayout>
           <div className="flex justify-start mt-8">
