@@ -61,14 +61,14 @@ export default function CreateCompanyPage() {
           });
           return;
         } else if (data.status === 'success') {
-          enqueueSnackbar('Create company successful', {
+          enqueueSnackbar('会社を作ります。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar('Create company failed', {
+        enqueueSnackbar('会社を作ることは失敗します。', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });

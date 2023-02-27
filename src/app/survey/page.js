@@ -45,7 +45,7 @@ export default function SurveyPage() {
   };
   const handleSubmit = async () => {
     if (answersList.answer.length !== listQuestion.length) {
-      enqueueSnackbar('Please answer all the question', {
+      enqueueSnackbar('全ての質問を答えていただけないでしょうか。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -70,14 +70,14 @@ export default function SurveyPage() {
         });
         return;
       } else if (data.status === 'success') {
-        enqueueSnackbar('Send answers successful', {
+        enqueueSnackbar('答えを伝えるのは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
       }
     } catch (error) {
       setIsLoading(false);
-      enqueueSnackbar('Send answers failed', {
+      enqueueSnackbar('答えを伝えるのは失敗します。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -127,7 +127,7 @@ export default function SurveyPage() {
                 <label className="ml-3">{item.content}</label>
                 {(item.type === 'text' || item.answers.length === 0) && (
                   <div className="relative mt-[12px]">
-                    <Input className="pr-[72px]" type="text" onChange={(e) => handleChangeInput(e, item._id)} />
+                    <Input className="pr-[72px]" type="text" onChange={(e) => handleChangeInput(e, item.id)} />
                     {item.title === 'Q.05' && (
                       <div className="absolute right-[32px] top-1/2 -translate-y-1/2">時間</div>
                     )}
@@ -139,9 +139,8 @@ export default function SurveyPage() {
                       <InputRadio
                         text={option?.content}
                         name={item?.id}
-                        checked={index == 0}
                         value={option?.content}
-                        onChange={() => handleChangeRadioInput(option?._id, item?._id)}
+                        onChange={() => handleChangeRadioInput(option?.id, item?.id)}
                         key={indexOption}
                       />
                     ))}

@@ -198,13 +198,13 @@ export default function CompanyPage() {
         const item = listCompany.find((d) => d.id === id);
         const index = listCompany.indexOf(item);
         listCompany.splice(index, 1);
-        enqueueSnackbar('Delete company successful', {
+        enqueueSnackbar('会社を削除します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
       }
     } catch (error) {
-      enqueueSnackbar('Delete company failed', {
+      enqueueSnackbar('会社を削除することは失敗します。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -314,7 +314,7 @@ export default function CompanyPage() {
       }
     } catch (error) {
       setIsLoading(false);
-      enqueueSnackbar('Import users from file failed', {
+      enqueueSnackbar('ファイルからユーザーを取り込むことはできません。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -372,14 +372,14 @@ export default function CompanyPage() {
           });
           return;
         } else if (data.status === 'success') {
-          enqueueSnackbar('Create user successful', {
+          enqueueSnackbar('ユーザーを作成することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar('Create user failed', {
+        enqueueSnackbar('ユーザーを作成することは失敗します。', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });

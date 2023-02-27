@@ -83,14 +83,14 @@ export default function EditCompanyPage({ params }) {
           });
           return;
         } else if (data.status === 'success') {
-          enqueueSnackbar('Update successful', {
+          enqueueSnackbar('会社を更新します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar('Update company failed', {
+        enqueueSnackbar('会社を更新することは失敗します。', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
