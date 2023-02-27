@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { Button } from "@/components/Button/button";
 import CardLayout from "@/components/CardLayout";
@@ -33,7 +33,7 @@ export default function CreateCompanyPage() {
   const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validateCompanyName = validateName(companyName, "companyName");
+    const validateCompanyName = validateName(companyName, 'companyName');
     const validateCompanyEmail = validateEmail(email);
     if (!validateCompanyName && !validateCompanyEmail) {
       setIsLoading(true);
@@ -54,23 +54,23 @@ export default function CreateCompanyPage() {
         );
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === "failure") {
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
-            variant: "error",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === "success") {
-          enqueueSnackbar("Create company successful", {
-            variant: "success",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+        } else if (data.status === 'success') {
+          enqueueSnackbar('Create company successful', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar("Create company failed", {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+        enqueueSnackbar('Create company failed', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         throw error;
       }
@@ -87,9 +87,7 @@ export default function CreateCompanyPage() {
   return (
     <CardLayout>
       <div className="mt-2 w-[60%] mx-auto">
-        <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">
-          会社登録
-        </h1>
+        <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">会社登録</h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
           <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">会社名</div>
@@ -138,11 +136,7 @@ export default function CreateCompanyPage() {
           </div>
           <div className="w-full flex justify-around">
             <div className="w-5/12">
-              <Button
-                onClick={handleSubmit}
-                classname="bg-primary"
-                isLoading={isLoading}
-              >
+              <Button onClick={handleSubmit} classname="bg-primary" isLoading={isLoading}>
                 更新
               </Button>
             </div>

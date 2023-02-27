@@ -1,8 +1,8 @@
-import { Banner } from "@/components/WelcomeDashboardBanner/banner";
+import { Banner } from '@/components/WelcomeDashboardBanner/banner';
 
 export default function Home() {
   return (
-    <div >
+    <div id="root">
       <Banner />
     </div>
   );

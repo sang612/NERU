@@ -1,6 +1,6 @@
-import { Button } from "../Button/button";
-import CardLayout from "../CardLayout";
-import { Input } from "../Input";
+import { Button } from '../Button/button';
+import CardLayout from '../CardLayout';
+import { Input } from '../Input';
 
 export const ModalCreateCompany = ({
   validate,
@@ -32,9 +32,7 @@ export const ModalCreateCompany = ({
 }) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
-      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">
-        会社登録
-      </h1>
+      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">会社登録</h1>
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
         <div className="flex justify-start items-start w-full my-2">
           <div className="mb-4 h-14 flex items-center w-36">会社名</div>
@@ -230,19 +228,12 @@ export const ModalCreateCompany = ({
 
         <div className="w-full flex justify-around">
           <div className="w-5/12">
-            <Button
-              onClick={handleSubmit}
-              classname="bg-primary"
-              isLoading={isLoading}
-            >
+            <Button onClick={handleSubmit} classname="bg-primary" isLoading={isLoading}>
               更新
             </Button>
           </div>
           <div className="w-5/12">
-            <Button
-              onClick={() => setModalCreate(false)}
-              classname="bg-secondary"
-            >
+            <Button onClick={() => setModalCreate(false)} classname="bg-secondary">
               戻る
             </Button>
           </div>
@@ -261,9 +252,7 @@ export const ModalCreateCompanyByFile = ({
 }) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
-      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">
-        会社登録
-      </h1>
+      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">会社登録</h1>
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
         <div className="flex justify-start items-start w-full my-2">
           <div className="mb-4 h-14 flex items-center w-36">会社番号</div>
@@ -294,19 +283,12 @@ export const ModalCreateCompanyByFile = ({
         </div>
         <div className="w-full flex justify-around">
           <div className="w-5/12">
-            <Button
-              onClick={handleSubmitFile}
-              classname="bg-primary"
-              isLoading={isLoading}
-            >
+            <Button onClick={handleSubmitFile} classname="bg-primary" isLoading={isLoading}>
               更新
             </Button>
           </div>
           <div className="w-5/12">
-            <Button
-              onClick={() => setModalCreateByFile(false)}
-              classname="bg-secondary"
-            >
+            <Button onClick={() => setModalCreateByFile(false)} classname="bg-secondary">
               戻る
             </Button>
           </div>
@@ -316,12 +298,7 @@ export const ModalCreateCompanyByFile = ({
   </CardLayout>
 );
 
-export const ModalResultFileExport = ({
-  successList,
-  failList,
-  errorMessage,
-  setModalResultFileExport,
-}) => (
+export const ModalResultFileExport = ({ successList, failList, errorMessage, setModalResultFileExport }) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
@@ -352,10 +329,7 @@ export const ModalResultFileExport = ({
         </div>
         <div className="w-full flex justify-around mt-2">
           <div className="w-5/12">
-            <Button
-              onClick={() => setModalResultFileExport(false)}
-              classname="bg-primary"
-            >
+            <Button onClick={() => setModalResultFileExport(false)} classname="bg-primary">
               クローズ
             </Button>
           </div>

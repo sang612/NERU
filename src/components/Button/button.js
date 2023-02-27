@@ -1,11 +1,8 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 export const Button = ({ classname, children, isLoading, ...props }) => {
   return (
-    <button
-      className={`uppercase w-full py-[18px] px-[44px] rounded-[10px] text-[#ffffff] ${classname}`}
-      {...props}
-    >
+    <button className={`uppercase w-full py-[18px] px-[44px] rounded-[10px] text-[#ffffff] ${classname}`} {...props}>
       {isLoading ? (
         <div className="flex items-center">
           <svg
@@ -14,14 +11,7 @@ export const Button = ({ classname, children, isLoading, ...props }) => {
             fill="none"
             viewBox="0 0 24 24"
           >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path
               className="opacity-75"
               fill="currentColor"

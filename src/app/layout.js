@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { SnackbarProvider } from "notistack";
-import "./globals.css";
-import { Providers } from "./provider";
+import { SnackbarProvider } from 'notistack';
+import './globals.css';
+import { Providers } from './provider';
 
 export default function RootLayout({ children }) {
   return (

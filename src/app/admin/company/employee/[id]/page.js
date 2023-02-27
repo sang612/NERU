@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import CardLayout from "@/components/CardLayout";
-import { SelectCompany } from "@/components/Select";
-import { Role } from "@/utils/constants";
-import { useEffect, useMemo, useState } from "react";
-import { css, cx } from "@emotion/css";
-import { Input } from "@/components/Input";
-import Link from "next/link";
-import Table from "@/components/Table";
-import Pagination from "@/components/Table/pagination";
-import { ArrowLeftOutlined, DeleteFilled, EditFilled } from "@ant-design/icons";
-import ModalDeleted from "@/components/Modal";
-import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
+import CardLayout from '@/components/CardLayout';
+import { SelectCompany } from '@/components/Select';
+import { Role } from '@/utils/constants';
+import { useEffect, useMemo, useState } from 'react';
+import { css, cx } from '@emotion/css';
+import { Input } from '@/components/Input';
+import Link from 'next/link';
+import Table from '@/components/Table';
+import Pagination from '@/components/Table/pagination';
+import { ArrowLeftOutlined, DeleteFilled, EditFilled } from '@ant-design/icons';
+import ModalDeleted from '@/components/Modal';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 export default function Employee({ params }) {
   const id = params?.id;
   const [listEmployee, setListEmployee] = useState([]);
   const [company, setCompany] = useState();
-  const [numberPhone, setNumberPhone] = useState("");
+  const [numberPhone, setNumberPhone] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage] = useState(0);
   const [total] = useState(0);
@@ -26,12 +26,10 @@ export default function Employee({ params }) {
   const columns = useMemo(
     () => [
       {
-        title: "社員番号",
-        index: "number_of_employee",
-        render: (numberOfEmployee) => (
-          <div className="w-full text-left">{numberOfEmployee}</div>
-        ),
-        className: "max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]",
+        title: '社員番号',
+        index: 'number_of_employee',
+        render: (numberOfEmployee) => <div className="w-full text-left">{numberOfEmployee}</div>,
+        className: 'max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]',
         sorter: (a, b) => a.localeCompare(b),
       },
       {
@@ -62,14 +60,14 @@ export default function Employee({ params }) {
       },
 
       {
-        title: "アクション",
-        index: "id",
+        title: 'アクション',
+        index: 'id',
         render: (id, record) => (
           <div className="w-full flex justify-center items-center">
             <Link href={`/admin/company/edit/${id}`}>
               <EditFilled
                 className={cx(
-                  "w-6 h-6 mx-2 text-primary",
+                  'w-6 h-6 mx-2 text-primary',
                   css`
                     svg {
                       width: 100%;
@@ -82,7 +80,7 @@ export default function Employee({ params }) {
             {user.role === Role.admin && (
               <DeleteFilled
                 className={cx(
-                  "w-6 h-6 mx-2 text-error",
+                  'w-6 h-6 mx-2 text-error',
                   css`
                     svg {
                       width: 100%;
@@ -96,15 +94,15 @@ export default function Employee({ params }) {
                     name: record.company_name,
                     data: [
                       {
-                        label: "会社名",
+                        label: '会社名',
                         value: record.company_name,
                       },
                       {
-                        label: "ユーザーの名前",
+                        label: 'ユーザーの名前',
                         value: record.owner_name,
                       },
                       {
-                        label: "メールアドレス",
+                        label: 'メールアドレス',
                         value: record.email,
                       },
                     ],
@@ -114,44 +112,41 @@ export default function Employee({ params }) {
             )}
           </div>
         ),
-        className: "w-[8%]",
+        className: 'w-[8%]',
       },
     ],
     []
   );
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            accessToken: token,
-          },
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      });
       const data = await response.json();
-      if (data.status === "failure") {
+      if (data.status === 'failure') {
         enqueueSnackbar(data.message, {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === "success") {
+      } else if (data.status === 'success') {
         setActiveItem();
         const item = listEmployee.find((d) => d.id === id);
         const index = listEmployee.indexOf(item);
         listEmployee.splice(index, 1);
-        enqueueSnackbar("Delete company successful", {
-          variant: "success",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+        enqueueSnackbar('Delete company successful', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
       }
     } catch (error) {
-      enqueueSnackbar("Delete company failed", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
+      enqueueSnackbar('Delete company failed', {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
       console.log(error);
     }
@@ -171,9 +166,9 @@ export default function Employee({ params }) {
           }
         );
         const data = await response.json();
-        if (data.status === "failure") {
+        if (data.status === 'failure') {
           return;
-        } else if (data.status === "success") {
+        } else if (data.status === 'success') {
           setListEmployee(data?.payload?.allLegal);
         }
       } catch (error) {
@@ -188,14 +183,12 @@ export default function Employee({ params }) {
 
   return (
     <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">
-        会社一覧
-      </div>
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">会社一覧</div>
       <CardLayout>
         <Link href="/admin/company">
           <ArrowLeftOutlined
             className={cx(
-              "w-6 h-6 mx-2 text-primary",
+              'w-6 h-6 mx-2 text-primary',
               css`
                 svg {
                   width: 100%;
@@ -214,18 +207,12 @@ export default function Employee({ params }) {
                   width: calc(100% - 90px);
                 `}
               >
-                <SelectCompany
-                  value={company}
-                  setValue={setCompany}
-                  height="h-12"
-                />
+                <SelectCompany value={company} setValue={setCompany} height="h-12" />
               </div>
             </div>
           )}
           <div className="w-1/3 flex justify-start items-start px-6">
-            <div className="mr-6 mb-4 h-12 flex items-center w-16">
-              電話番号
-            </div>
+            <div className="mr-6 mb-4 h-12 flex items-center w-16">電話番号</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
@@ -255,20 +242,9 @@ export default function Employee({ params }) {
           )}
         </div>
         <Table columns={columns} data={listEmployee} />
-        <Pagination
-          currentPage={currentPage}
-          lastPage={lastPage}
-          setCurrentPage={setCurrentPage}
-          total={total}
-        />
+        <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
       </CardLayout>
-      {activeItem?.id && (
-        <ModalDeleted
-          action={handleDelete}
-          activeItem={activeItem}
-          setActiveItem={setActiveItem}
-        />
-      )}
+      {activeItem?.id && <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />}
     </div>
   );
 }

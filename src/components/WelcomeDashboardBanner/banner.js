@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { WelcomeImage, WelcomeImage3 } from "@/assets/icons";
 import { Button } from "../Button/button";
