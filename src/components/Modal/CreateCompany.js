@@ -41,6 +41,7 @@ export const ModalCreateCompany = ({
           <div className="flex-1 h-20">
             <div className="w-full h-full flex items-start">
               <Input
+                disabled
                 name="companyName"
                 type="text"
                 value={companyName}
@@ -174,7 +175,11 @@ export const ModalCreateCompany = ({
                 }}
                 validate={
                   firstNameKatakana
-                    ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName')
+                    ? () =>
+                        checkValidateNameKatakana(
+                          firstNameKatakana,
+                          "firstName"
+                        )
                     : () => {}
                 }
                 messageError={validate.firstNameKatakana}
