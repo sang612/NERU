@@ -14,27 +14,41 @@ import {
   validateTelPhone,
   validateGender,
   validateRegister,
-} from '@/utils/validate';
-import { useSnackbar } from 'notistack';
-import { useRouter } from 'next/navigation';
+  validateNameKatakana,
+} from "@/utils/validate";
+import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 export default function PersonalRegister() {
   const { enqueueSnackbar } = useSnackbar();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [tel, setTel] = useState('');
-  const [gender, setGender] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [firstNameKatakana, setFirstNameKatakana] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [lastNameKatakana, setLastNameKatakana] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [tel, setTel] = useState("");
+  const [gender, setGender] = useState("");
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    tel: '',
-    password: '',
-    gender: '',
+    firstName: "",
+    firstNameKatakana: "",
+    lastName: "",
+    lastNameKatakana: "",
+    email: email,
+    tel: "",
+    password: "",
+    gender: "",
   });
-  const checkValidateName = () => {
-    const checkValidateName = validateName(name);
-    setValidate({ ...validate, name: checkValidateName });
+  const checkValidateName = (name, type) => {
+    const checkValidateFullName = validateName(name, type);
+    setValidate({ ...validate, [type]: checkValidateFullName });
+  };
+  const checkValidateNameKatakana = (name, type) => {
+    const checkValidateFullName = validateNameKatakana(name, type);
+    setValidate({ ...validate, [`${type}Katakana`]: checkValidateFullName });
   };
   const checkValidateEmail = () => {
     const checkValidateEmail = validateEmail(email);
@@ -55,33 +69,50 @@ export default function PersonalRegister() {
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const checkValidate = validateRegister(name, email, gender, tel, password);
+    const checkValidate = validateRegister(
+      firstName,
+      firstNameKatakana,
+      lastName,
+      lastNameKatakana,
+      email,
+      gender,
+      tel,
+      password
+    );
     if (
-      !checkValidate.name &&
+      !checkValidate.firstName &&
+      !checkValidate.firstNameKatakana &&
+      !checkValidate.lastName &&
+      !checkValidate.lastNameKatakana &&
       !checkValidate.email &&
       !checkValidate.gender &&
       !checkValidate.tel &&
       !checkValidate.password
     ) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            first_name: 'abbc',
-            first_name_kana: 'asd',
-            last_name: 'ad',
-            last_name_kana: 'asd',
-            password: '1234567890',
-            gender: 'Male',
-            phone: '1234567890',
-            email: 'email@gmail.com',
-          }),
-        });
+        setIsLoading(true);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              first_name: firstName,
+              first_name_kana: firstNameKatakana,
+              last_name: lastName,
+              last_name_kana: lastNameKatakana,
+              phone: tel,
+              gender: gender,
+              email: email,
+              password: password,
+            }),
+          }
+        );
         const data = await response.json();
-        if (data.status === 'failure') {
+        setIsLoading(false);
+        if (data.status === "failure") {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -112,15 +143,65 @@ export default function PersonalRegister() {
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
-            name="name"
+            name="firstName"
             type="text"
-            value={name}
+            value={firstName}
             placeholder="名"
             onChange={(e) => {
-              setName(e.target.value);
+              setFirstName(e.target.value);
             }}
-            validate={name ? checkValidateName : () => {}}
-            messageError={validate.name}
+            validate={
+              firstName
+                ? () => checkValidateName(firstName, "firstName")
+                : () => {}
+            }
+            messageError={validate.firstName}
+          />
+          <Input
+            name="firstNameKatakana"
+            type="text"
+            placeholder="名（カタカナ）"
+            value={firstNameKatakana}
+            onChange={(e) => {
+              setFirstNameKatakana(e.target.value);
+            }}
+            validate={
+              firstNameKatakana
+                ? () =>
+                    checkValidateNameKatakana(firstNameKatakana, "firstName")
+                : () => {}
+            }
+            messageError={validate.firstNameKatakana}
+          />
+          <Input
+            name="lastName"
+            type="text"
+            placeholder="氏"
+            value={lastName}
+            onChange={(e) => {
+              setLastName(e.target.value);
+            }}
+            validate={
+              lastName
+                ? () => checkValidateName(lastName, "lastName")
+                : () => {}
+            }
+            messageError={validate.lastName}
+          />
+          <Input
+            name="lastNameKatakana"
+            type="text"
+            placeholder="氏（カタカナ）"
+            value={lastNameKatakana}
+            onChange={(e) => {
+              setLastNameKatakana(e.target.value);
+            }}
+            validate={
+              lastNameKatakana
+                ? () => checkValidateNameKatakana(lastNameKatakana, "lastName")
+                : () => {}
+            }
+            messageError={validate.lastNameKatakana}
           />
           <Input
             name="email"
@@ -209,7 +290,11 @@ export default function PersonalRegister() {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit}>
+            <Button
+              classname="bg-primary mt-[20px] ssm:mt-[60px]"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
               サインアップ
             </Button>
           </div>

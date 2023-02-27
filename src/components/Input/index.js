@@ -26,9 +26,11 @@ export const Input = ({
       )}
     >
       <input
-        className={`${disabled && 'bg-disabled border-none'} w-full outline-none ${border} ${
-          height ? height : 'h-14 xsm:h-16'
-        } ${messageError ? 'border-error' : 'border-primary'} border-solid rounded-md shadow-sm pl-2 font-normal`}
+        className={`${
+          disabled && "bg-disabled border-none text-secondary"
+        } w-full outline-none ${border} ${height ? height : "h-14 xsm:h-16"} ${
+          messageError ? "border-error" : "border-primary"
+        } border-solid rounded-md shadow-sm pl-2 font-normal`}
         name={name}
         type={type}
         value={value}
