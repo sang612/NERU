@@ -1,39 +1,25 @@
-"use client";
+'use client';
 
-import CardLayout from "@/components/CardLayout";
-import { SelectCompany } from "@/components/Select";
-import { Role } from "@/utils/constants";
-import { useEffect, useMemo, useState } from "react";
-import { css, cx } from "@emotion/css";
-import { Input } from "@/components/Input";
-import Link from "next/link";
-import Table from "@/components/Table";
-import Pagination from "@/components/Table/pagination";
-import {
-  DeleteFilled,
-  EditFilled,
-  EyeOutlined,
-  UserAddOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
-import ModalDeleted from "@/components/Modal";
-import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
-import {
-  ModalCreateCompany,
-  ModalCreateCompanyByFile,
-  ModalResultFileExport,
-} from "@/components/Modal/CreateCompany";
-import {
-  validateGender,
-  validateName,
-  validateTelPhone,
-} from "@/utils/validate";
+import CardLayout from '@/components/CardLayout';
+import { SelectCompany } from '@/components/Select';
+import { Role } from '@/utils/constants';
+import { useEffect, useMemo, useState } from 'react';
+import { css, cx } from '@emotion/css';
+import { Input } from '@/components/Input';
+import Link from 'next/link';
+import Table from '@/components/Table';
+import Pagination from '@/components/Table/pagination';
+import { DeleteFilled, EditFilled, EyeOutlined, UserAddOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import ModalDeleted from '@/components/Modal';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+import { ModalCreateCompany, ModalCreateCompanyByFile, ModalResultFileExport } from '@/components/Modal/CreateCompany';
+import { validateGender, validateName, validateTelPhone } from '@/utils/validate';
 
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
   const [company, setCompany] = useState();
-  const [numberPhone, setNumberPhone] = useState("");
+  const [numberPhone, setNumberPhone] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage] = useState(0);
   const [total] = useState(0);
@@ -41,42 +27,42 @@ export default function CompanyPage() {
   const columns = useMemo(
     () => [
       {
-        title: "会社番号",
-        index: "id",
+        title: '会社番号',
+        index: 'id',
         render: (id) => <div className="w-full text-left">{id}</div>,
-        className: "min-w-[40px]",
+        className: 'min-w-[40px]',
         sorter: (a, b) => a - b,
       },
       {
-        title: "会社名",
-        index: "company_name",
+        title: '会社名',
+        index: 'company_name',
         render: (name) => <div className="w-full text-left">{name}</div>,
-        className: "max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]",
+        className: 'max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]',
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: "ユーザーの名前",
-        index: "owner_name",
+        title: 'ユーザーの名前',
+        index: 'owner_name',
         render: (value) => <div className="w-full text-left">{value}</div>,
-        className: "max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]",
+        className: 'max-w-[200px] 3xl:max-w-[240px] 4xl:max-w-[280px]',
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: "メールアドレス",
-        index: "email",
+        title: 'メールアドレス',
+        index: 'email',
         render: (value) => <div className="w-full text-left">{value}</div>,
-        className: "max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]",
+        className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: "アクション",
-        index: "id",
+        title: 'アクション',
+        index: 'id',
         render: (id, record) => (
           <div className="w-full flex justify-center items-center">
             <Link href={`/admin/company/edit/${id}`}>
               <EditFilled
                 className={cx(
-                  "w-6 h-6 mx-2 text-primary",
+                  'w-6 h-6 mx-2 text-primary',
                   css`
                     svg {
                       width: 100%;
@@ -89,7 +75,7 @@ export default function CompanyPage() {
             <Link href={`/admin/company/employee/${id}`}>
               <EyeOutlined
                 className={cx(
-                  "w-6 h-6 mx-2 text-primary",
+                  'w-6 h-6 mx-2 text-primary',
                   css`
                     svg {
                       width: 100%;
@@ -107,7 +93,7 @@ export default function CompanyPage() {
             >
               <UserAddOutlined
                 className={cx(
-                  "w-6 h-6 mx-2 text-primary",
+                  'w-6 h-6 mx-2 text-primary',
                   css`
                     svg {
                       width: 100%;
@@ -125,7 +111,7 @@ export default function CompanyPage() {
             >
               <UsergroupAddOutlined
                 className={cx(
-                  "w-6 h-6 mx-2 text-primary",
+                  'w-6 h-6 mx-2 text-primary',
                   css`
                     svg {
                       width: 100%;
@@ -138,7 +124,7 @@ export default function CompanyPage() {
             {user.role === Role.admin && (
               <DeleteFilled
                 className={cx(
-                  "w-6 h-6 mx-2 text-error",
+                  'w-6 h-6 mx-2 text-error',
                   css`
                     svg {
                       width: 100%;
@@ -152,15 +138,15 @@ export default function CompanyPage() {
                     name: record.company_name,
                     data: [
                       {
-                        label: "会社名",
+                        label: '会社名',
                         value: record.company_name,
                       },
                       {
-                        label: "ユーザーの名前",
+                        label: 'ユーザーの名前',
                         value: record.owner_name,
                       },
                       {
-                        label: "メールアドレス",
+                        label: 'メールアドレス',
                         value: record.email,
                       },
                     ],
@@ -170,44 +156,41 @@ export default function CompanyPage() {
             )}
           </div>
         ),
-        className: "w-[8%]",
+        className: 'w-[8%]',
       },
     ],
     []
   );
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            accessToken: token,
-          },
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      });
       const data = await response.json();
-      if (data.status === "failure") {
+      if (data.status === 'failure') {
         enqueueSnackbar(data.message, {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === "success") {
+      } else if (data.status === 'success') {
         setActiveItem();
         const item = listCompany.find((d) => d.id === id);
         const index = listCompany.indexOf(item);
         listCompany.splice(index, 1);
-        enqueueSnackbar("Delete company successful", {
-          variant: "success",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+        enqueueSnackbar('Delete company successful', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
       }
     } catch (error) {
-      enqueueSnackbar("Delete company failed", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
+      enqueueSnackbar('Delete company failed', {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
       console.log(error);
     }
@@ -215,20 +198,17 @@ export default function CompanyPage() {
 
   useEffect(() => {
     const getListCompany = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            accessToken: token,
-          },
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      });
       const data = await response.json();
-      if (data.status === "failure") {
+      if (data.status === 'failure') {
         return;
-      } else if (data.status === "success") {
+      } else if (data.status === 'success') {
         setListCompany(data?.payload?.enterpriseAll);
       }
     };
@@ -238,17 +218,17 @@ export default function CompanyPage() {
   const { enqueueSnackbar } = useSnackbar();
   const { token } = useSelector((state) => state.user);
   const [modalCreate, setModalCreate] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [numberOfEmployees, setNumberOfEmployees] = useState("");
-  const [gender, setGender] = useState("");
-  const [enterpriseId, setEnterpriseId] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [numberOfEmployees, setNumberOfEmployees] = useState('');
+  const [gender, setGender] = useState('');
+  const [enterpriseId, setEnterpriseId] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    name: "",
-    phone: "",
-    gender: "",
+    name: '',
+    phone: '',
+    gender: '',
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
@@ -269,29 +249,26 @@ export default function CompanyPage() {
   const handleSubmitFile = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("id", enterpriseId);
-    formData.append("file", file);
+    formData.append('id', enterpriseId);
+    formData.append('file', file);
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/xlsx`,
-        {
-          method: "POST",
-          headers: {
-            accessToken: token,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/xlsx`, {
+        method: 'POST',
+        headers: {
+          accessToken: token,
+        },
+        body: formData,
+      });
       const data = await response.json();
       setIsLoading(false);
-      if (data.status === "failure") {
+      if (data.status === 'failure') {
         enqueueSnackbar(data.message, {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === "success") {
+      } else if (data.status === 'success') {
         setSuccessList(data?.payload?.User_Success);
         setFailList(data?.payload?.User_Failure);
         setErrorMessage(data?.payload?.User_Failure[0]?.message);
@@ -300,63 +277,56 @@ export default function CompanyPage() {
       }
     } catch (error) {
       setIsLoading(false);
-      enqueueSnackbar("Import users from file failed", {
-        variant: "error",
-        anchorOrigin: { vertical: "top", horizontal: "right" },
+      enqueueSnackbar('Import users from file failed', {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
       throw error;
     }
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validateEmployeeName = validateName(name, "firstName");
+    const validateEmployeeName = validateName(name, 'firstName');
     const validateEmployeeTel = validateTelPhone(phone);
     const validateEmployeeGender = validateGender(gender);
     console.log(validateEmployeeTel);
-    if (
-      !validateEmployeeName &&
-      !validateEmployeeTel &&
-      !validateEmployeeGender
-    ) {
+    if (!validateEmployeeName && !validateEmployeeTel && !validateEmployeeGender) {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: token,
-            },
-            body: JSON.stringify({
-              name: name,
-              phone: phone,
-              number_of_employee: numberOfEmployees,
-              gender: gender,
-              enterprise_id: enterpriseId,
-              password: password,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            number_of_employee: numberOfEmployees,
+            gender: gender,
+            enterprise_id: enterpriseId,
+            password: password,
+          }),
+        });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === "failure") {
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
-            variant: "error",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === "success") {
-          enqueueSnackbar("Create user successful", {
-            variant: "success",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+        } else if (data.status === 'success') {
+          enqueueSnackbar('Create user successful', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar("Create user failed", {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+        enqueueSnackbar('Create user failed', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         throw error;
       }
@@ -376,9 +346,7 @@ export default function CompanyPage() {
 
   return (
     <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">
-        会社一覧
-      </div>
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">会社一覧</div>
       {modalCreate && (
         <ModalCreateCompany
           validate={validate}
@@ -423,18 +391,12 @@ export default function CompanyPage() {
                     width: calc(100% - 90px);
                   `}
                 >
-                  <SelectCompany
-                    value={company}
-                    setValue={setCompany}
-                    height="h-12"
-                  />
+                  <SelectCompany value={company} setValue={setCompany} height="h-12" />
                 </div>
               </div>
             )}
             <div className="w-1/3 flex justify-start items-start px-6">
-              <div className="mr-6 mb-4 h-12 flex items-center w-16">
-                電話番号
-              </div>
+              <div className="mr-6 mb-4 h-12 flex items-center w-16">電話番号</div>
               <div className="flex-1 h-20">
                 <div className="w-full h-full flex items-start">
                   <Input
@@ -464,21 +426,10 @@ export default function CompanyPage() {
             )}
           </div>
           <Table columns={columns} data={listCompany} />
-          <Pagination
-            currentPage={currentPage}
-            lastPage={lastPage}
-            setCurrentPage={setCurrentPage}
-            total={total}
-          />
+          <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
         </CardLayout>
       )}
-      {activeItem?.id && (
-        <ModalDeleted
-          action={handleDelete}
-          activeItem={activeItem}
-          setActiveItem={setActiveItem}
-        />
-      )}
+      {activeItem?.id && <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />}
       {modalResultFileExport && (
         <ModalResultFileExport
           successList={successList}

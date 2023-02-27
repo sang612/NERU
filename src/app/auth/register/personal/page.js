@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Input } from "@/components/Input";
-import Link from "next/link";
-import { css, cx } from "@emotion/css";
-import { useState } from "react";
-import { RememberPasswordIcon } from "@/assets/icons";
-import { Button } from "@/components/Button/button";
-import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
+import { Input } from '@/components/Input';
+import Link from 'next/link';
+import { css, cx } from '@emotion/css';
+import { useState } from 'react';
+import { RememberPasswordIcon } from '@/assets/icons';
+import { Button } from '@/components/Button/button';
+import { EyeInvisibleFilled, EyeFilled } from '@ant-design/icons';
 import {
   validatePassword,
   validateName,
@@ -14,23 +14,23 @@ import {
   validateTelPhone,
   validateGender,
   validateRegister,
-} from "@/utils/validate";
-import { useSnackbar } from "notistack";
-import { useRouter } from "next/navigation";
+} from '@/utils/validate';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/navigation';
 
 export default function PersonalRegister() {
   const { enqueueSnackbar } = useSnackbar();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [tel, setTel] = useState("");
-  const [gender, setGender] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [tel, setTel] = useState('');
+  const [gender, setGender] = useState('');
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [validate, setValidate] = useState({
-    tel: "",
-    password: "",
-    gender: "",
+    tel: '',
+    password: '',
+    gender: '',
   });
   const checkValidateName = () => {
     const checkValidateName = validateName(name);
@@ -41,7 +41,7 @@ export default function PersonalRegister() {
     setValidate({ ...validate, email: checkValidateEmail });
   };
   const checkValidatePassword = () => {
-    const checkValidatePassword = validatePassword(password, "password");
+    const checkValidatePassword = validatePassword(password, 'password');
     setValidate({ ...validate, password: checkValidatePassword });
   };
   const checkValidateTel = () => {
@@ -64,40 +64,40 @@ export default function PersonalRegister() {
       !checkValidate.password
     ) {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: name,
-              phone: tel,
-              gender: gender,
-              email: email,
-              password: password,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            first_name: 'abbc',
+            first_name_kana: 'asd',
+            last_name: 'ad',
+            last_name_kana: 'asd',
+            password: '1234567890',
+            gender: 'Male',
+            phone: '1234567890',
+            email: 'email@gmail.com',
+          }),
+        });
         const data = await response.json();
-        if (data.status === "failure") {
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
-            variant: "error",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === "success") {
-          enqueueSnackbar("Registration successful", {
-            variant: "success",
-            anchorOrigin: { vertical: "top", horizontal: "right" },
+        } else if (data.status === 'success') {
+          enqueueSnackbar('Registration successful', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
-          router.push("/auth/login");
+          router.push('/auth/login');
         }
       } catch (error) {
-        enqueueSnackbar("Registration failed", {
-          variant: "error",
-          anchorOrigin: { vertical: "top", horizontal: "right" },
+        enqueueSnackbar('Registration failed', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         throw error;
       }
@@ -107,13 +107,9 @@ export default function PersonalRegister() {
   };
 
   return (
-    <div
-      className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}
-    >
+    <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
-          サインアップ
-        </h1>
+        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
             name="name"
@@ -161,7 +157,7 @@ export default function PersonalRegister() {
           />
           <div
             className={cx(
-              "w-full relative mb-[24px]",
+              'w-full relative mb-[24px]',
               css`
                 input {
                   padding-right: calc(6% + 24px);
@@ -171,7 +167,7 @@ export default function PersonalRegister() {
           >
             <Input
               name="password"
-              type={isShowPass ? "text" : "password"}
+              type={isShowPass ? 'text' : 'password'}
               value={password}
               placeholder="パスワード"
               onChange={(e) => {
@@ -181,25 +177,17 @@ export default function PersonalRegister() {
               messageError={validate.password}
             />
             {isShowPass ? (
-              <div
-                className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}
-              >
+              <div className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}>
                 <EyeInvisibleFilled
                   onClick={() => setIsShowPass(false)}
-                  className={`${
-                    validate.password ? "text-error" : "text-primary"
-                  }`}
+                  className={`${validate.password ? 'text-error' : 'text-primary'}`}
                 />
               </div>
             ) : (
-              <div
-                className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}
-              >
+              <div className={`h-14 xsm:h-16 absolute top-0 right-[4%] flex items-center`}>
                 <EyeFilled
                   onClick={() => setIsShowPass(true)}
-                  className={`${
-                    validate.password ? "text-error" : "text-primary"
-                  }`}
+                  className={`${validate.password ? 'text-error' : 'text-primary'}`}
                 />
               </div>
             )}
@@ -207,17 +195,12 @@ export default function PersonalRegister() {
 
           <div className="left-0 w-full">
             <div className="w-full mb-4 flex justify-end">
-              <Link
-                href="/auth/forgot-password-step1"
-                className="text-base text-primary"
-              >
+              <Link href="" className="text-base text-primary">
                 パスワードをお忘れの場合
               </Link>
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-center">
-              <div className="w-full text-base text-third flex justify-end">
-                利用規約とプライバシーポリシーに同意
-              </div>
+              <div className="w-full text-base text-third flex justify-end">利用規約とプライバシーポリシーに同意</div>
               <div
                 className="mt-[5px] w-7 h-7 outline-none border-2 border-primary border-solid rounded-md flex justify-center items-center text-third
                 cursor-pointer"
@@ -226,10 +209,7 @@ export default function PersonalRegister() {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button
-              classname="bg-primary mt-[20px] ssm:mt-[60px]"
-              onClick={handleSubmit}
-            >
+            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit}>
               サインアップ
             </Button>
           </div>

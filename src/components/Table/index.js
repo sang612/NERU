@@ -1,6 +1,6 @@
-import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { css, cx } from "@emotion/css";
-import { useEffect, useState } from "react";
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { css, cx } from '@emotion/css';
+import { useEffect, useState } from 'react';
 
 const Table = ({ columns, data }) => {
   const [indexSort, setIndexSort] = useState();
@@ -24,7 +24,7 @@ const Table = ({ columns, data }) => {
   return (
     <table
       className={cx(
-        "w-full border-collapse text-sm",
+        'w-full border-collapse text-sm',
         css`
           td,
           th {
@@ -37,22 +37,19 @@ const Table = ({ columns, data }) => {
           td {
             word-wrap: break-word;
           }
-        `,
+        `
       )}
     >
       <thead className="w-full">
         <tr className="w-full">
           {columns.map((d, index) => (
-            <th
-              className={`${d.className} bg-[#eeeeee]`}
-              key={index}
-            >
-              <div className={`flex items-center ${!d.sorter ? "justify-center" : "justify-between"}`}>
+            <th className={`${d.className} bg-[#eeeeee]`} key={index}>
+              <div className={`flex items-center ${!d.sorter ? 'justify-center' : 'justify-between'}`}>
                 {d.title}
                 {d.sorter && (
                   <div className="h-full flex flex-col">
                     <CaretUpOutlined
-                      className={`w-4 cursor-pointer ${!isAscending && indexSort === index + 1 && "text-primary"}`}
+                      className={`w-4 cursor-pointer ${!isAscending && indexSort === index + 1 && 'text-primary'}`}
                       onClick={() => {
                         if (!isAscending && indexSort === index + 1) {
                           setIndexSort();
@@ -63,7 +60,7 @@ const Table = ({ columns, data }) => {
                       }}
                     />
                     <CaretDownOutlined
-                      className={`w-4 cursor-pointer ${isAscending && indexSort === index + 1 && "text-primary"}`}
+                      className={`w-4 cursor-pointer ${isAscending && indexSort === index + 1 && 'text-primary'}`}
                       onClick={() => {
                         if (isAscending && indexSort === index + 1) {
                           setIndexSort();
@@ -82,15 +79,9 @@ const Table = ({ columns, data }) => {
       </thead>
       <tbody className="w-full">
         {tableDate.map((d, index) => (
-          <tr
-            className="w-full"
-            key={index}
-          >
+          <tr className="w-full" key={index}>
             {columns.map((_d, _index) => (
-              <td
-                className={_d.className}
-                key={_index}
-              >
+              <td className={_d.className} key={_index}>
                 {_d.render ? _d.render(d[_d.index], d) : d[_d.index]}
               </td>
             ))}

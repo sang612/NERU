@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/Button/button";
-import { MeasureYourSleepIcon } from "@/assets/icons";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import PaymentModal from "../../components/Payment";
+import { Button } from '@/components/Button/button';
+import { MeasureYourSleepIcon } from '@/assets/icons';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import PaymentModal from '../../components/Payment';
 
-const amount = "3回分1100";
+const amount = '3回分1100';
 
 export default function UploadPage() {
-	const router = useRouter();
-	const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
-	return (
+  return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <div className="w-full text-primary">

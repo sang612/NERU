@@ -1,12 +1,4 @@
-export const InputRadio = ({
-  name,
-  id,
-  value,
-  onChange,
-  checked,
-  text,
-  className,
-}) => {
+export const InputRadio = ({ name, id, value, onChange, checked, text, className }) => {
   const handleChange = (event) => {
     if (onChange) {
       onChange(event.target.value);
@@ -17,10 +9,7 @@ export const InputRadio = ({
     <div
       className={`w-full mt-4 h-16 outline-[2px] border-primary border-solid border-2 rounded-md flex items-center ${className}`}
     >
-      <label
-        htmlFor={id}
-        className="radio-label flex items-center w-full h-full hover:cursor-pointer"
-      >
+      <label htmlFor={id} className="radio-label flex items-center w-full h-full hover:cursor-pointer">
         <input
           className="radio-input m-0 invisible peer"
           type="radio"

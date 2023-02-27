@@ -1,18 +1,9 @@
-import { DownIcon } from "@/assets/icons/down";
-import { CloseOutlined } from "@ant-design/icons";
-import { css, cx } from "@emotion/css";
-import { useEffect, useRef, useState } from "react";
+import { DownIcon } from '@/assets/icons/down';
+import { CloseOutlined } from '@ant-design/icons';
+import { css, cx } from '@emotion/css';
+import { useEffect, useRef, useState } from 'react';
 
-const Select = ({
-  options,
-  setValue,
-  value,
-  errorMessage,
-  filter,
-  setFilter,
-  height,
-  disable,
-}) => {
+const Select = ({ options, setValue, value, errorMessage, filter, setFilter, height, disable }) => {
   const [visiable, setVisiable] = useState(false);
   const selectRef = useRef(null);
   const OptionRef = useRef(null);
@@ -33,27 +24,25 @@ const Select = ({
         setVisiable(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [selectRef, OptionRef]);
 
   return (
     <>
       <div
-        className={`w-full ${height ? height : "h-14 xsm:h-16"} ${
-          disable && "bg-gray-100"
-        } outline-none border-[1px] ${
-          errorMessage && !value?.id ? "border-error" : "border-primary"
+        className={`w-full ${height ? height : 'h-14 xsm:h-16'} ${disable && 'bg-gray-100'} outline-none border-[1px] ${
+          errorMessage && !value?.id ? 'border-error' : 'border-primary'
         } border-solid rounded-md shadow-sm pl-2 flex relative justify-between mb-4`}
         ref={selectRef}
       >
         <div
           className={cx(
-            "h-full flex items-center",
+            'h-full flex items-center',
             css`
-              width: calc(100% - ${value ? "56px" : "28px"});
+              width: calc(100% - ${value ? '56px' : '28px'});
             `
           )}
           onClick={() => !disable && setVisiable((prev) => !prev)}
@@ -62,10 +51,7 @@ const Select = ({
         </div>
         {value && (
           <div className="h-full flex w-7 justify-center items-center pb-2">
-            <CloseOutlined
-              className="h-5 w-5 text-base text-skyBlue-300"
-              onClick={() => setValue()}
-            />
+            <CloseOutlined className="h-5 w-5 text-base text-skyBlue-300" onClick={() => setValue()} />
           </div>
         )}
         {errorMessage && !value?.id ? (
@@ -90,9 +76,7 @@ const Select = ({
 
         <div
           className={cx(
-            `absolute w-full left-0 z-20 ${
-              visiable ? "" : "hidden"
-            } rounded-[3px] bg-white px-2 py-2 overflow-auto`,
+            `absolute w-full left-0 z-20 ${visiable ? '' : 'hidden'} rounded-[3px] bg-white px-2 py-2 overflow-auto`,
             css`
               top: calc(100% + 10px);
               box-shadow: 0px 0px 5px 1px #888;
@@ -126,7 +110,7 @@ const Select = ({
                 onClick={() => handleSelect(option)}
                 key={option.id}
                 className={`h-10 ${
-                  value?.id === option.id ? "" : "text-slate-400"
+                  value?.id === option.id ? '' : 'text-slate-400'
                 } cursor-pointer leading-10 w-full truncate`}
               >
                 {option.name}
@@ -137,11 +121,7 @@ const Select = ({
           )}
         </div>
       </div>
-      <div
-        className={`${
-          !(errorMessage && !value?.id) && "hidden"
-        } text-eborder-error text-xs mt-[-8px] h6`}
-      >
+      <div className={`${!(errorMessage && !value?.id) && 'hidden'} text-eborder-error text-xs mt-[-8px] h6`}>
         {errorMessage}
       </div>
     </>
@@ -151,7 +131,7 @@ const Select = ({
 export const SelectCompany = ({ setValue, value, errorMessage, height }) => {
   const [options] = useState([]);
   const [optionsAfterFilter] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [filter, setFilter] = useState('');
 
   return (
     <Select
