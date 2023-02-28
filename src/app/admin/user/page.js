@@ -8,7 +8,7 @@ import { Input } from '@/components/Input';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { DeleteFilled, EditFilled} from '@ant-design/icons';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -288,29 +288,7 @@ export default function CompanyPage() {
       )}
       {!modalCreate && (
         <CardLayout>
-          <div className="flex justify-start mt-8">
-            <div className="w-1/3 flex justify-start items-start px-6">
-              <div className="mr-6 mb-4 h-12 flex items-center w-16">電話番号</div>
-              <div className="flex-1 h-20">
-                <div className="w-full h-full flex items-start">
-                  <Input
-                    name="number_phone"
-                    type="text"
-                    value={numberPhone}
-                    onChange={(e) => {
-                      setNumberPhone(e.target.value);
-                    }}
-                    height="h-12"
-                    border="border-[1px]"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="flex justify-start px-6 pb-6">
-            <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
-              検索
-            </div>
             {user.role === Role.admin && (
               <div onClick={() => setModalCreate(true)}>
                 <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">

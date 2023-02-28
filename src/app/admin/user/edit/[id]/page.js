@@ -100,6 +100,7 @@ export default function EditCompanyPage({ params }) {
             last_name_kana: lastNameKatakana,
             email: email,
             phone: phone,
+            isEnterprise: false
           }),
         });
         const data = await response.json();
