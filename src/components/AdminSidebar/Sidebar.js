@@ -56,7 +56,7 @@ export const Sidebar = () => {
       <Link
         href="/admin/user"
         className={`w-full h-[60px] flex items-center justify-start ${
-          pathname == '/' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
+          pathname == '/admin/user' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
         }`}
       >
         <TeamOutlined
