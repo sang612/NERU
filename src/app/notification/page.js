@@ -33,9 +33,9 @@ export default function UploadPage() {
               キャンセル
             </Button>
             <section>
-              <button role="button" onClick={() => setIsOpen(true)} classname="bg-primary  mt-[16px]">
+              <Button role="button" onClick={() => setIsOpen(true)} classname="bg-primary  mt-[16px]">
                 同意
-              </button>
+              </Button>
             </section>
           </div>
           <PaymentModal isOpen={isOpen} setIsOpen={setIsOpen} />
