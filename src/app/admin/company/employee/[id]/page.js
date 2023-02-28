@@ -138,13 +138,13 @@ export default function Employee({ params }) {
         const item = listEmployee.find((d) => d.id === id);
         const index = listEmployee.indexOf(item);
         listEmployee.splice(index, 1);
-        enqueueSnackbar('Delete company successful', {
+        enqueueSnackbar('会社を削除します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
       }
     } catch (error) {
-      enqueueSnackbar('Delete company failed', {
+      enqueueSnackbar('会社を削除することは失敗します。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
