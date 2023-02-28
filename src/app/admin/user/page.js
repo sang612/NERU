@@ -12,7 +12,7 @@ import { DeleteFilled, EditFilled} from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { validateEmail, validateName, validateTelPhone, validateNameKatakana, validateCode } from '@/utils/validate';
+import { validateEmail, validateName, validateTelPhone, validateNameKatakana } from '@/utils/validate';
 import { ModalCreateUser } from '@/components/Modal/CreateUser';
 
 export default function CompanyPage() {
@@ -191,14 +191,6 @@ export default function CompanyPage() {
     const checkValidateEmail = validateEmail(email);
     setValidate({ ...validate, email: checkValidateEmail });
   };
-  const checkValidateNumberOfEmployee = () => {
-    const checkValidateNumberOfEmployee = validateCode(numberOfEmployees);
-    setValidate({
-      ...validate,
-      numberOfEmployees: checkValidateNumberOfEmployee,
-    });
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateEmployeeFirstName = validateName(firstName, 'firstName');
@@ -290,7 +282,6 @@ export default function CompanyPage() {
           setModalCreate={setModalCreate}
           checkValidateName={checkValidateName}
           checkValidateTel={checkValidateTel}
-          checkValidateNumberOfEmployee={checkValidateNumberOfEmployee}
           checkValidateEmail={checkValidateEmail}
           checkValidateNameKatakana={checkValidateNameKatakana}
         />
