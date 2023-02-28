@@ -43,7 +43,7 @@ export default function UploadPage() {
 
   const handleSubmit = async () => {
     if (!image1 || !image2 || !image3 || !image4) {
-      enqueueSnackbar('Please upload all images', {
+      enqueueSnackbar('全ての画像をアップロードしていただけないでしょうか。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -67,7 +67,7 @@ export default function UploadPage() {
       const data = await response.json();
       if (data?._user) {
         setIsLoading(false);
-        enqueueSnackbar('Upload images success', {
+        enqueueSnackbar('画像をアップロードすることは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
@@ -75,7 +75,7 @@ export default function UploadPage() {
       }
     } catch (error) {
       setIsLoading(false);
-      enqueueSnackbar('Upload images failed', {
+      enqueueSnackbar('画像をアップロードすることは失敗します。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });

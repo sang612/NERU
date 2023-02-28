@@ -92,7 +92,7 @@ export default function PersonalRegister() {
           });
           return;
         } else if (data.status === "success") {
-          enqueueSnackbar("Login successful", {
+          enqueueSnackbar("ロギングすることは成功します。", {
             variant: "success",
             anchorOrigin: { vertical: "top", horizontal: "right" },
           });
@@ -104,7 +104,7 @@ export default function PersonalRegister() {
           } else router.push("/auth/login");
         }
       } catch (error) {
-        enqueueSnackbar("Login failed", {
+        enqueueSnackbar("ロギングすることは失敗します。", {
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });

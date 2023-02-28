@@ -12,35 +12,35 @@ import {
   validateName,
   validateEmail,
   validateTelPhone,
-  validateGender,
   validateRegister,
   validateNameKatakana,
-} from "@/utils/validate";
-import { useSnackbar } from "notistack";
-import { useRouter } from "next/navigation";
+} from '@/utils/validate';
+import { useSnackbar } from 'notistack';
+import { useRouter } from 'next/navigation';
+import { InputRadio } from '@/components/InputRadio';
 
 export default function PersonalRegister() {
   const { enqueueSnackbar } = useSnackbar();
-  const [firstName, setFirstName] = useState("");
-  const [firstNameKatakana, setFirstNameKatakana] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameKatakana, setLastNameKatakana] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [tel, setTel] = useState("");
-  const [gender, setGender] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [firstNameKatakana, setFirstNameKatakana] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameKatakana, setLastNameKatakana] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [tel, setTel] = useState('');
+  const [gender, setGender] = useState('Male');
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    firstName: "",
-    firstNameKatakana: "",
-    lastName: "",
-    lastNameKatakana: "",
+    firstName: '',
+    firstNameKatakana: '',
+    lastName: '',
+    lastNameKatakana: '',
     email: email,
-    tel: "",
-    password: "",
-    gender: "",
+    tel: '',
+    password: '',
+    gender: '',
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
@@ -61,10 +61,6 @@ export default function PersonalRegister() {
   const checkValidateTel = () => {
     const checkValidateTel = validateTelPhone(tel);
     setValidate({ ...validate, tel: checkValidateTel });
-  };
-  const checkValidateGender = () => {
-    const checkValidateGender = validateGender(gender);
-    setValidate({ ...validate, gender: checkValidateGender });
   };
   const router = useRouter();
   const handleSubmit = async (event) => {
@@ -91,42 +87,39 @@ export default function PersonalRegister() {
     ) {
       try {
         setIsLoading(true);
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              first_name: firstName,
-              first_name_kana: firstNameKatakana,
-              last_name: lastName,
-              last_name_kana: lastNameKatakana,
-              phone: tel,
-              gender: gender,
-              email: email,
-              password: password,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            first_name_kana: firstNameKatakana,
+            last_name: lastName,
+            last_name_kana: lastNameKatakana,
+            phone: tel,
+            gender: gender,
+            email: email,
+            password: password,
+          }),
+        });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === "failure") {
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
         } else if (data.status === 'success') {
-          enqueueSnackbar('Registration successful', {
+          enqueueSnackbar('登録することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           router.push('/auth/login');
         }
       } catch (error) {
-        enqueueSnackbar('Registration failed', {
+        enqueueSnackbar('登録することは失敗します。', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
@@ -150,11 +143,7 @@ export default function PersonalRegister() {
             onChange={(e) => {
               setFirstName(e.target.value);
             }}
-            validate={
-              firstName
-                ? () => checkValidateName(firstName, "firstName")
-                : () => {}
-            }
+            validate={firstName ? () => checkValidateName(firstName, 'firstName') : () => {}}
             messageError={validate.firstName}
           />
           <Input
@@ -165,12 +154,7 @@ export default function PersonalRegister() {
             onChange={(e) => {
               setFirstNameKatakana(e.target.value);
             }}
-            validate={
-              firstNameKatakana
-                ? () =>
-                    checkValidateNameKatakana(firstNameKatakana, "firstName")
-                : () => {}
-            }
+            validate={firstNameKatakana ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName') : () => {}}
             messageError={validate.firstNameKatakana}
           />
           <Input
@@ -181,11 +165,7 @@ export default function PersonalRegister() {
             onChange={(e) => {
               setLastName(e.target.value);
             }}
-            validate={
-              lastName
-                ? () => checkValidateName(lastName, "lastName")
-                : () => {}
-            }
+            validate={lastName ? () => checkValidateName(lastName, 'lastName') : () => {}}
             messageError={validate.lastName}
           />
           <Input
@@ -196,11 +176,7 @@ export default function PersonalRegister() {
             onChange={(e) => {
               setLastNameKatakana(e.target.value);
             }}
-            validate={
-              lastNameKatakana
-                ? () => checkValidateNameKatakana(lastNameKatakana, "lastName")
-                : () => {}
-            }
+            validate={lastNameKatakana ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName') : () => {}}
             messageError={validate.lastNameKatakana}
           />
           <Input
@@ -214,17 +190,25 @@ export default function PersonalRegister() {
             validate={email ? checkValidateEmail : () => {}}
             messageError={validate.email}
           />
-          <Input
-            name="gender"
-            type="text"
-            value={gender}
-            placeholder="性 別"
-            onChange={(e) => {
-              setGender(e.target.value);
-            }}
-            validate={gender ? checkValidateGender : () => {}}
-            messageError={validate.gender}
-          />
+          <div className="flex flex-row mb-4 -mt-4">
+            <InputRadio
+              text="男"
+              name="gender"
+              checked
+              value="Male"
+              border={false}
+              className="w-1/3 sm:w-1/4"
+              onChange={(e) => setGender(e)}
+            />
+            <InputRadio
+              text="女性"
+              name="gender"
+              value="Female"
+              border={false}
+              className="w-1/3 sm:w-1/4"
+              onChange={(e) => setGender(e)}
+            />
+          </div>
           <Input
             name="phonenumber"
             type="text"
@@ -290,11 +274,7 @@ export default function PersonalRegister() {
                 {acceptPolicy && <RememberPasswordIcon />}
               </div>
             </div>
-            <Button
-              classname="bg-primary mt-[20px] ssm:mt-[60px]"
-              onClick={handleSubmit}
-              isLoading={isLoading}
-            >
+            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit} isLoading={isLoading}>
               サインアップ
             </Button>
           </div>

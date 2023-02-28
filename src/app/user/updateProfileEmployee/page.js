@@ -95,7 +95,7 @@ export default function EnterpriseRegister() {
         });
         return;
       } else if (data.status === "success") {
-        enqueueSnackbar("Update profile successful", {
+        enqueueSnackbar("プロファイルをアップロードすることは成功します。", {
           variant: "success",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });

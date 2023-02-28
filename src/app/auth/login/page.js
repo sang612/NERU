@@ -60,7 +60,7 @@ export default function LoginPage() {
         } else if (data.status === 'success') {
           dispatch(addNew(data.payload.user));
           dispatch(addToken(data.payload.token));
-          enqueueSnackbar('Login successful', {
+          enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
@@ -68,7 +68,7 @@ export default function LoginPage() {
           else router.push('/notification');
         }
       } catch (error) {
-        enqueueSnackbar('Login failed', {
+        enqueueSnackbar('ロギングすることは失敗します。', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
