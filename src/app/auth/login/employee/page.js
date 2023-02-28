@@ -1,7 +1,6 @@
 "use client";
 
 import { Input } from "@/components/Input";
-import Link from "next/link";
 import { css, cx } from "@emotion/css";
 import { useState } from "react";
 import { RememberPasswordIcon } from "@/assets/icons";
