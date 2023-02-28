@@ -44,14 +44,14 @@ export default function CreatePasswordPage({ params }) {
           });
           return;
         } else if (data.status === 'success') {
-          enqueueSnackbar('Create password success', {
+          enqueueSnackbar('パスワード更新成功', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
         }
       } catch (error) {
         setIsLoading(false);
-        enqueueSnackbar('Create password failed', {
+        enqueueSnackbar('パスワードの更新に失敗しました', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
