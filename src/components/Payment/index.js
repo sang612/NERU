@@ -3,6 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import CheckoutForm from '../CheckoutForm';
+import { useSelector } from 'react-redux';
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -29,6 +30,7 @@ const customStyles = {
 
 function PaymentModal({ isOpen, setIsOpen }) {
   const [clientSecret, setClientSecret] = useState('');
+  const { token } = useSelector((state) => state.user);
 
   function closeModal() {
     setIsOpen(false);
@@ -40,8 +42,7 @@ function PaymentModal({ isOpen, setIsOpen }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          accessToken:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2ZiODBiYWM3ODEyMTA4N2UzZjAzMDUiLCJpYXQiOjE2Nzc0NzA0NTYsImV4cCI6MTY3NzY0MzI1Nn0.BAYYUmPv25A6gmhBYXTWoLIRm_b9IPcj8FFBo6IUKNI',
+          accessToken: token,
         },
         body: JSON.stringify({ amount: 1, productId: 'prod_NLdaPYtT9DqNjE' }),
       })
@@ -60,21 +61,21 @@ function PaymentModal({ isOpen, setIsOpen }) {
 
   return (
     <div>
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        ariaHideApp={false}
-        contentLabel="Example Modal"
-      >
-        <div className="App">
-          {clientSecret && (
+      {clientSecret && (
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+          contentLabel="Example Modal"
+        >
+          <div className="App">
             <Elements options={options} stripe={stripePromise}>
               <CheckoutForm />
             </Elements>
-          )}
-        </div>
-      </Modal>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

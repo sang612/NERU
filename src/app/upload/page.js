@@ -7,6 +7,7 @@ import { NotFound } from '@/assets/icons';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 
+
 export default function UploadPage() {
   const router = useRouter();
   const hiddenFileInput = useRef(null);
@@ -17,6 +18,10 @@ export default function UploadPage() {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
+  const { token } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = (inputRef) => {
     inputRef.current.click();
@@ -91,8 +96,7 @@ export default function UploadPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2ZiODBiYWM3ODEyMTA4N2UzZjAzMDUiLCJpYXQiOjE2Nzc0Mjc3MzMsImV4cCI6MTY3NzYwMDUzM30.gbK6L9qlCvvoMuxc5JguAEYFiEipFVvU39hPHe1KzZ4',
+        accessToken: token,
       },
       body: JSON.stringify({
         payment_intent: searchParams.get('payment_intent'),
@@ -102,10 +106,7 @@ export default function UploadPage() {
     });
   }, []);
 
-  const { user } = useSelector((state) => state.user);
-  const { token } = useSelector((state) => state.user);
-  const { enqueueSnackbar } = useSnackbar();
-  const [isLoading, setIsLoading] = useState(false);
+ 
   if (!user.id) return <NotFound />;
 
   return (
