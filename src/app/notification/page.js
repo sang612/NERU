@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/Button/button';
-import { MeasureYourSleepIcon } from '@/assets/icons';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import PaymentModal from '../../components/Payment';
