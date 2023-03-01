@@ -14,6 +14,7 @@ import { Role } from '@/utils/constants';
 import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [activeItem, setActiveItem] = useState();
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
@@ -34,7 +35,6 @@ export default function LoginPage() {
     setValidate({ ...validate, password: checkValidatePassword });
   };
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const checkValidate = validateLogin(tel, password);
@@ -52,8 +52,8 @@ export default function LoginPage() {
           }),
         });
         const data = await response.json();
-        setIsLoading(false)
-        if (data.status === "failure") {
+        setIsLoading(false);
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -186,16 +186,18 @@ export default function LoginPage() {
             </div>
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>
-          <div className="w-full mb-4 flex justify-end">
+          <div className="w-full mb-4 flex justify-between">
+            <div
+              onClick={() => router.push('/auth/register/personal')}
+              className="text-base text-third hover:cursor-pointer"
+            >
+              応募
+            </div>
             <div onClick={() => setActiveItem(true)} className="text-base text-third hover:cursor-pointer">
               パスワードをお忘れの場合
             </div>
           </div>
-          <Button
-            isLoading={isLoading}
-            onClick={handleSubmit}
-            classname="bg-primary mt-[27.93px]"
-          >
+          <Button isLoading={isLoading} onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
             サインイン
           </Button>
         </div>
