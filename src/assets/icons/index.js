@@ -5,3 +5,4 @@ export { MeasureYourSleepIcon } from './measure-your-sleep';
 export { DownIcon } from './down';
 export { ClosePopUpIcon } from './close-popup-icon';
 export { NotFound } from './not-found';
+export { DownloadIcon } from './download';
