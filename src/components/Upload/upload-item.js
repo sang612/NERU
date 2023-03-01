@@ -10,11 +10,24 @@ export const UploadItem = ({
   item,
   alt,
   className,
+  title,
+  desc,
   ...props
 }) => (
-  <div className={`h-[200px] w-half relative ${className}`} {...props}>
-    <input type="file" accept="image/*" className="hidden" ref={inputRef} onChange={(e) => handleChange(e, index)} />
-    <Image onClick={() => handleClick(inputRef)} src={item ? URL.createObjectURL(item) : defaultSrc} fill alt={alt} />
+  <div className={`h-[200px] w-half ${className}`} {...props}>
+    <div className="w-full h-[80%] relative">
+      <input type="file" accept="image/*" className="hidden" ref={inputRef} onChange={(e) => handleChange(e, index)} />
+      <Image onClick={() => handleClick(inputRef)} src={item ? URL.createObjectURL(item) : defaultSrc} fill alt={alt} />
+    </div>
+    <div className={`${desc ? 'bg-[#d0eaeb] ' : '' }p-2 text-center`}>
+      <div className="text-fourth font-bold flex items-center justify-center">
+        <span className="bg-fourth rounded-full text-white w-4 h-4 justify-center flex items-center text-[10px]">
+          {index}
+        </span>
+        <h4>{title}</h4>
+      </div>
+      <p className="font-bold text-[10px]">{desc}</p>
+    </div>
   </div>
 );
 

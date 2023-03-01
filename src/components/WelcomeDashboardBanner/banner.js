@@ -1,12 +1,12 @@
 'use client';
 
-import { WelcomeImage, WelcomeImage3 } from "@/assets/icons";
-import { Button } from "../Button/button";
-import Link from "next/link";
-import { useState } from "react";
-import { EmployeeWelcome } from "./EmployeeWelcome";
+import { WelcomeImage, WelcomeImage3 } from '@/assets/icons';
+import { Button } from '../Button/button';
+import { useState } from 'react';
+import { EmployeeWelcome } from './EmployeeWelcome';
 export const Banner = () => {
   const [modalEmployeeWelcome, setEmployeeWelcome] = useState(false);
+  const [userType, setUserType] = useState('');
 
   return (
     <>
@@ -20,13 +20,20 @@ export const Banner = () => {
               <WelcomeImage width={250} height={250} />
             </div>
             <div className="mt-[32px] w-full">
-              <Link href="/auth/register/personal">
-                <Button classname="bg-primary font-[700] ">
-                  個人でご利用のお客様
-                </Button>
-              </Link>
               <Button
-                onClick={() => setEmployeeWelcome(true)}
+                onClick={() => {
+                  setEmployeeWelcome(true);
+                  setUserType('individual');
+                }}
+                classname="bg-primary font-[700] "
+              >
+                個人でご利用のお客様
+              </Button>
+              <Button
+                onClick={() => {
+                  setEmployeeWelcome(true);
+                  setUserType('employee');
+                }}
                 classname="bg-secondary font-[700] mt-[16px]"
               >
                 法人でご利用のお客様
@@ -35,9 +42,7 @@ export const Banner = () => {
           </div>
         </div>
       )}
-      {modalEmployeeWelcome && (
-        <EmployeeWelcome setEmployeeWelcome={setEmployeeWelcome} />
-      )}
+      {modalEmployeeWelcome && <EmployeeWelcome setEmployeeWelcome={setEmployeeWelcome} userType={userType} />}
     </>
   );
 };

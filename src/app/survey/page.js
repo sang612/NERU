@@ -7,10 +7,12 @@ import { useSnackbar } from 'notistack';
 import { NotFound } from '@/assets/icons';
 import { useSelector } from 'react-redux';
 import { Inter } from '@next/font/google';
+import { useRouter } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function SurveyPage() {
+  const router = useRouter();
   const { user } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.user);
   const [listQuestion, setListQuestion] = useState();
@@ -74,6 +76,7 @@ export default function SurveyPage() {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
+        router.push('/app-download');
       }
     } catch (error) {
       setIsLoading(false);
