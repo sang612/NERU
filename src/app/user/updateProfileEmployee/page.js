@@ -10,6 +10,7 @@ import { EyeInvisibleFilled, EyeFilled } from "@ant-design/icons";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
+import { useRouter } from "next/navigation";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,6 +18,7 @@ const inter = Inter({
 });
 
 export default function EnterpriseRegister() {
+  const router = useRouter()
   const { user, token, legal } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -99,6 +101,7 @@ export default function EnterpriseRegister() {
           variant: "success",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });
+        router.push('/notification/second')
       }
     } else {
       setValidate({
