@@ -302,7 +302,10 @@ export default function PersonalRegister() {
           </div>
 
           <div className="left-0 w-full">
-            <div className="w-full mb-4 flex justify-end">
+            <div className="w-full mb-4 flex justify-between">
+              <div onClick={() => router.push('auth/login')} className="text-base text-primary hover:cursor-pointer">
+                ログイン
+              </div>
               <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
                 パスワードをお忘れの場合
               </div>
