@@ -18,7 +18,7 @@ export default function SurveyPage() {
   const [listQuestion, setListQuestion] = useState();
   const [answersList, setAnswersList] = useState({
     user: user.id,
-    answer: [],
+    answer: [{ question_id: '63f609f6bd5ab34b9a8e9f13', answer: '' }],
   });
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +46,7 @@ export default function SurveyPage() {
     }));
   };
   const handleSubmit = async () => {
+    console.log(answersList);
     if (answersList.answer.length !== listQuestion.length) {
       enqueueSnackbar('全ての質問を答えていただけないでしょうか。', {
         variant: 'error',
@@ -136,9 +137,19 @@ export default function SurveyPage() {
                 <label className="ml-3">{item.content}</label>
                 {(item.type === 'text' || item.answers.length === 0) && (
                   <div className="relative mt-[12px]">
-                    <Input className="pr-[72px]" type="text" onChange={(e) => handleChangeInput(e, item.id)} />
+                    <Input
+                      className={`${item.type === 'number' ? 'pr-[40%]' : ''}`}
+                      type={item.type}
+                      onChange={(e) => handleChangeInput(e, item.id)}
+                    />
                     {item.title === 'Q.05' && (
                       <div className="absolute right-[32px] top-1/2 -translate-y-1/2">時間</div>
+                    )}
+                    {item.title === '身⻑' && (
+                      <div className="absolute right-[32px] top-1/2 -translate-y-1/2">センチ</div>
+                    )}
+                    {item.title === '体重' && (
+                      <div className="absolute right-[32px] top-1/2 -translate-y-1/2">キログラム</div>
                     )}
                   </div>
                 )}
