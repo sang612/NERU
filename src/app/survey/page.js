@@ -169,8 +169,8 @@ export default function SurveyPage() {
               </div>
             ))}
           </div>
-          <div className="flex gap-[20px] mt-[40px]">
-            <Button classname="bg-secondary">戻る</Button>
+          <div className="flex mt-[40px]">
+            <Button classname="bg-secondary mr-[20px]">戻る</Button>
             <Button onClick={handleSubmit} classname="bg-primary" isLoading={isLoading}>
               次へ
             </Button>
