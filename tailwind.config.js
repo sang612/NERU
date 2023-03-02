@@ -16,7 +16,8 @@ module.exports = {
       error: '#f43f5e',
       disabled: '#E6E6E6',
       white: '#ffffff',
-      black: '000000',
+      black: '#000000',
+      fourth: '#EC008C',
     },
     screens: {
       sssm: '360px',

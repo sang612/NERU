@@ -123,7 +123,7 @@ export default function Employee({ params }) {
         return;
       } else if (data.status === 'success') {
         setActiveItem();
-        const item = listEmployee.find((d) => d.id === id);
+        const item = listEmployee.find((d) => d?.user_id?.id === id);
         const index = listEmployee.indexOf(item);
         listEmployee.splice(index, 1);
         enqueueSnackbar('ユーザーの削除が成功しました。', {

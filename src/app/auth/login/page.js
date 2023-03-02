@@ -1,19 +1,22 @@
 'use client';
 import { Input } from '@/components/Input';
-import Link from 'next/link';
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
 import { RememberPasswordIcon } from '@/assets/icons';
 import { Button } from '@/components/Button/button';
 import { EyeInvisibleFilled, EyeFilled } from '@ant-design/icons';
-import { validateLogin, validatePassword, validateTelPhone } from '@/utils/validate';
+import { validateEmail, validateLogin, validatePassword, validateTelPhone } from '@/utils/validate';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { addNew, addToken } from '@/slices/userSlice';
 import { Role } from '@/utils/constants';
+import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [activeItem, setActiveItem] = useState();
+  const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
   const [password, setPassword] = useState('');
   const [rememberLogin, setRememberLogin] = useState(true);
@@ -32,7 +35,6 @@ export default function LoginPage() {
     setValidate({ ...validate, password: checkValidatePassword });
   };
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const checkValidate = validateLogin(tel, password);
@@ -50,8 +52,8 @@ export default function LoginPage() {
           }),
         });
         const data = await response.json();
-        setIsLoading(false)
-        if (data.status === "failure") {
+        setIsLoading(false);
+        if (data.status === 'failure') {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -79,6 +81,47 @@ export default function LoginPage() {
     }
   };
   const dispatch = useDispatch();
+  const handleSendMail = async () => {
+    const checkValidateEmail = validateEmail(emailForgetPassword);
+    if (!checkValidateEmail) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailForgetPassword,
+          }),
+        });
+        const data = await response.json();
+        if (data.status === 'failure') {
+          enqueueSnackbar(data.message, {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          return;
+        } else if (data.status === 'success') {
+          enqueueSnackbar('電子メールを正常に送信', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          setActiveItem();
+        }
+      } catch (error) {
+        enqueueSnackbar('メール送信失敗', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        throw error;
+      }
+    } else {
+      enqueueSnackbar(checkValidateEmail, {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
+    }
+  };
 
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
@@ -143,20 +186,30 @@ export default function LoginPage() {
             </div>
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>
-          <div className="w-full mb-4 flex justify-end">
-            <Link href="" className="text-base text-third">
+          <div className="w-full mb-4 flex justify-between">
+            <div
+              onClick={() => router.push('/auth/register/personal')}
+              className="text-base text-third hover:cursor-pointer"
+            >
+              応募
+            </div>
+            <div onClick={() => setActiveItem(true)} className="text-base text-third hover:cursor-pointer">
               パスワードをお忘れの場合
-            </Link>
+            </div>
           </div>
-          <Button
-            isLoading={isLoading}
-            onClick={handleSubmit}
-            classname="bg-primary mt-[27.93px]"
-          >
+          <Button isLoading={isLoading} onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
             サインイン
           </Button>
         </div>
       </div>
+      {activeItem && (
+        <ModalForgetPassword
+          action={handleSendMail}
+          activeItem={activeItem}
+          setActiveItem={setActiveItem}
+          setEmailForgetPassword={setEmailForgetPassword}
+        />
+      )}
     </div>
   );
 }

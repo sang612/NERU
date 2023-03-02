@@ -17,6 +17,10 @@ export default function UploadPage() {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
+  const { token } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
+  const { enqueueSnackbar } = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = (inputRef) => {
     inputRef.current.click();
@@ -91,8 +95,7 @@ export default function UploadPage() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        accessToken:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2ZiODBiYWM3ODEyMTA4N2UzZjAzMDUiLCJpYXQiOjE2Nzc0Mjc3MzMsImV4cCI6MTY3NzYwMDUzM30.gbK6L9qlCvvoMuxc5JguAEYFiEipFVvU39hPHe1KzZ4',
+        accessToken: token,
       },
       body: JSON.stringify({
         payment_intent: searchParams.get('payment_intent'),
@@ -102,10 +105,6 @@ export default function UploadPage() {
     });
   }, []);
 
-  const { user } = useSelector((state) => state.user);
-  const { token } = useSelector((state) => state.user);
-  const { enqueueSnackbar } = useSnackbar();
-  const [isLoading, setIsLoading] = useState(false);
   if (!user.id) return <NotFound />;
 
   return (
@@ -113,13 +112,10 @@ export default function UploadPage() {
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">横顔画像の登録</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
-          <p className="text-2xl text-third md:text-3xl xl:text-4xl">
-            ＊登録前に右側と左側からの横顔画像を撮影しておいてください。
-          </p>
           <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">
             画像をクリックしてアップロードしてください
           </p>
-          <div className="grid grid-cols-2 gap-[48px] my-[36px]">
+          <div className="grid grid-cols-2 gap-y-[48px] gap-x-[8px] my-[36px]">
             <UploadItem
               inputRef={hiddenFileInput}
               handleChange={handleChange}
@@ -128,6 +124,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-1.svg"
               alt="image1"
               index={1}
+              title='顔写真正面'
+              desc='頭の先から鎖骨の上まで入るように'
             />
             <UploadItem
               inputRef={hiddenFileInput2}
@@ -137,6 +135,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-2.svg"
               alt="image2"
               index={2}
+              title='横顔(右)'
+              desc='鼻先から後頭部まで全て入るように'
             />
             <UploadItem
               inputRef={hiddenFileInput3}
@@ -146,6 +146,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-3.svg"
               alt="image3"
               index={3}
+              title='横顔(左)'
+              desc='鼻先から後頭部まで全て入るように'
             />
             <UploadItem
               inputRef={hiddenFileInput4}
@@ -155,6 +157,7 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-4.svg"
               alt="image4"
               index={4}
+              title='口内'
             />
           </div>
           <Button classname="bg-secondary">戻 る</Button>

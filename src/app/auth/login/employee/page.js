@@ -1,7 +1,6 @@
 "use client";
 
 import { Input } from "@/components/Input";
-import Link from "next/link";
 import { css, cx } from "@emotion/css";
 import { useState } from "react";
 import { RememberPasswordIcon } from "@/assets/icons";
@@ -17,8 +16,11 @@ import { useSnackbar } from "notistack";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addLegal, addNew, addToken } from "@/slices/userSlice";
+import { ModalForgetPassword } from "@/components/Modal/ForgetPassword";
 
 export default function PersonalRegister() {
+  const [activeItem, setActiveItem] = useState();
+  const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [name, setName] = useState("");
@@ -117,6 +119,47 @@ export default function PersonalRegister() {
         email: validateEmployeeEmail,
         tel: validateEmployeeTel,
         password: validateEmployeePassword,
+      });
+    }
+  };
+  const handleSendMail = async () => {
+    const checkValidateEmail = validateEmail(emailForgetPassword);
+    if (!checkValidateEmail) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailForgetPassword,
+          }),
+        });
+        const data = await response.json();
+        if (data.status === 'failure') {
+          enqueueSnackbar(data.message, {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          return;
+        } else if (data.status === 'success') {
+          enqueueSnackbar('電子メールを正常に送信', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          setActiveItem();
+        }
+      } catch (error) {
+        enqueueSnackbar('メール送信失敗', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        throw error;
+      }
+    } else {
+      enqueueSnackbar(checkValidateEmail, {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
     }
   };
@@ -222,12 +265,12 @@ export default function PersonalRegister() {
 
           <div className="left-0 w-full">
             <div className="w-full mb-4 flex justify-end">
-              <Link
-                href="/auth/forgot-password-step1"
-                className="text-base text-primary"
+              <div
+                onClick={() => setActiveItem(true)} 
+                className="text-base text-primary hover:cursor-pointer"
               >
                 パスワードをお忘れの場合
-              </Link>
+              </div>
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-center">
               <div className="w-full text-base text-third flex justify-end">
@@ -257,6 +300,14 @@ export default function PersonalRegister() {
           )}
         </div>
       </div>
+      {activeItem && (
+        <ModalForgetPassword
+          action={handleSendMail}
+          activeItem={activeItem}
+          setActiveItem={setActiveItem}
+          setEmailForgetPassword={setEmailForgetPassword}
+        />
+      )}
     </div>
   );
 }
