@@ -1,15 +1,12 @@
 'use client';
 
 import CardLayout from '@/components/CardLayout';
-import { SelectCompany } from '@/components/Select';
-import { Role } from '@/utils/constants';
 import { useEffect, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Input } from '@/components/Input';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { ArrowLeftOutlined, DeleteFilled, EditFilled } from '@ant-design/icons';
+import { ArrowLeftOutlined, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -69,35 +66,6 @@ export default function Employee({ params }) {
                 )}
               />
             </Link>
-            {user.role === Role.admin && (
-              <DeleteFilled
-                className={cx(
-                  'w-6 h-6 mx-2 text-error',
-                  css`
-                    svg {
-                      width: 100%;
-                      height: 100%;
-                    }
-                  `
-                )}
-                onClick={() =>
-                  setActiveItem({
-                    id: record?.user_id?.id,
-                    name: record?.user_id?.first_name,
-                    data: [
-                      {
-                        label: '名',
-                        value: record?.user_id?.first_name,
-                      },
-                      {
-                        label: 'メールアドレス',
-                        value: record?.user_id?.email,
-                      },
-                    ],
-                  })
-                }
-              />
-            )}
           </div>
         ),
         className: 'w-[8%]',
@@ -165,7 +133,6 @@ export default function Employee({ params }) {
     };
     getListEmployee();
   }, [currentPage]);
-  const { user } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const { token } = useSelector((state) => state.user);
 

@@ -4,7 +4,6 @@ import CardLayout from '@/components/CardLayout';
 import { Role } from '@/utils/constants';
 import { useEffect, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Input } from '@/components/Input';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
@@ -38,7 +37,6 @@ export default function CompanyPage() {
     phone: '',
     numberOfEmployees: '',
   });
-  const [numberPhone, setNumberPhone] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage] = useState(0);
   const [total] = useState(0);
