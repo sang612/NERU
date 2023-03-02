@@ -288,7 +288,7 @@ export default function EnterpriseRegister() {
                 cursor-pointer"
                 onClick={() => setAcceptPolicy((prev) => !prev)}
               >
-                {acceptPolicy && <RememberPasswordIcon />}
+                {acceptPolicy && <RememberPasswordIcon width={25} height={19}/>}
               </div>
             </div>
             <Button

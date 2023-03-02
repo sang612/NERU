@@ -43,6 +43,7 @@ export default function PersonalRegister() {
     tel: '',
     password: '',
     gender: '',
+    acceptPolicy: '',
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
@@ -85,7 +86,8 @@ export default function PersonalRegister() {
       !checkValidate.email &&
       !checkValidate.gender &&
       !checkValidate.tel &&
-      !checkValidate.password
+      !checkValidate.password &&
+      acceptPolicy
     ) {
       try {
         setIsLoading(true);
@@ -129,6 +131,10 @@ export default function PersonalRegister() {
       }
     } else {
       setValidate(checkValidate);
+      setValidate({
+        ...validate,
+        acceptPolicy: '続行するには利用規約とプライバシーポリシーに同意してください。',
+      });
     }
   };
   const handleSendMail = async () => {
@@ -317,8 +323,11 @@ export default function PersonalRegister() {
                 cursor-pointer"
                 onClick={() => setAcceptPolicy((prev) => !prev)}
               >
-                {acceptPolicy && <RememberPasswordIcon />}
+                {acceptPolicy && <RememberPasswordIcon width={25} height={19}/>}
               </div>
+              {!acceptPolicy && (
+                <h3 className="text-error">{validate.acceptPolicy}</h3>
+              )}
             </div>
             <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit} isLoading={isLoading}>
               サインアップ

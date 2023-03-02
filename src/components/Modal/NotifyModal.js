@@ -15,8 +15,8 @@ export const NotifyModal = ({ content, firstAction, secondAction, children, cont
       )}
       <div></div>
     </div>
-    <div className="w-full flex flex-row gap-[20px] absolute bottom-[50px] left-0 px-[26px]">
-      <Button classname="bg-secondary" onClick={firstAction}>
+    <div className="w-full flex flex-row absolute bottom-[50px] left-0 px-[26px]">
+      <Button classname="bg-secondary mr-[20px]" onClick={firstAction}>
         戻る
       </Button>
       <Button type="submit" classname="bg-primary" onClick={secondAction}>

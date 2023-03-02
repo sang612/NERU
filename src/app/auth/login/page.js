@@ -182,7 +182,7 @@ export default function LoginPage() {
                 cursor-pointer"
               onClick={() => setRememberLogin((prev) => !prev)}
             >
-              {rememberLogin && <RememberPasswordIcon />}
+              {rememberLogin && <RememberPasswordIcon width={25} height={19}/>}
             </div>
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>
