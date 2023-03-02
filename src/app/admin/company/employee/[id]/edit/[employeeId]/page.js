@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
-export default function EditCompanyPage({ params }) {
-  const id = params?.id;
+export default function EditEmployeePage({ params }) {
+  const { id, employeeId } = params;
   const router = useRouter();
   const [firstName, setFirstName] = useState('');
   const [firstNameKatakana, setFirstNameKatakana] = useState('');
@@ -44,8 +44,8 @@ export default function EditCompanyPage({ params }) {
     setValidate({ ...validate, phone: checkValidateTel });
   };
   useEffect(() => {
-    const getDataDetailCompany = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${id}`, {
+    const getDetailEmployee = async () => {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${employeeId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -64,11 +64,10 @@ export default function EditCompanyPage({ params }) {
         setPhone(data?.payload?.user?.phone);
       }
     };
-    getDataDetailCompany();
+    getDetailEmployee();
   }, []);
   const { enqueueSnackbar } = useSnackbar();
   const { token } = useSelector((state) => state.user);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateUserFirstName = validateName(firstName, 'firstName');
@@ -87,7 +86,7 @@ export default function EditCompanyPage({ params }) {
     ) {
       setIsLoading(true);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${employeeId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -100,7 +99,8 @@ export default function EditCompanyPage({ params }) {
             last_name_kana: lastNameKatakana,
             email: email,
             phone: phone,
-            isEnterprise: false
+            isEnterprise: true,
+            enterprise_id: id,
           }),
         });
         const data = await response.json();
@@ -266,7 +266,7 @@ export default function EditCompanyPage({ params }) {
               </Button>
             </div>
             <div className="w-5/12">
-              <Button onClick={() => router.push('/admin/user')} classname="bg-secondary">
+              <Button onClick={() => router.back()} classname="bg-secondary">
                 戻る
               </Button>
             </div>

@@ -1,11 +1,9 @@
 'use client';
 
 import CardLayout from "@/components/CardLayout";
-import { SelectCompany } from "@/components/Select";
 import { Role } from "@/utils/constants";
 import { useEffect, useMemo, useState } from "react";
 import { css, cx } from "@emotion/css";
-import { Input } from "@/components/Input";
 import Link from "next/link";
 import Table from "@/components/Table";
 import Pagination from "@/components/Table/pagination";
@@ -34,8 +32,6 @@ import {
 
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
-  const [company, setCompany] = useState();
-  const [numberPhone, setNumberPhone] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage] = useState(0);
   const [total] = useState(0);
@@ -448,42 +444,8 @@ export default function CompanyPage() {
         />
       )}
       {!modalCreate && !modalCreateByFile && !modalResultFileExport && (
-        <CardLayout>
-          <div className="flex justify-start mt-8">
-            {user.role === Role.admin && (
-              <div className="w-1/3 px-6 flex pb-4">
-                <div className="mr-6 mb-4 h-12 leading-[48px] w-16">会社名</div>
-                <div
-                  className={css`
-                    width: calc(100% - 90px);
-                  `}
-                >
-                  <SelectCompany value={company} setValue={setCompany} height="h-12" />
-                </div>
-              </div>
-            )}
-            <div className="w-1/3 flex justify-start items-start px-6">
-              <div className="mr-6 mb-4 h-12 flex items-center w-16">電話番号</div>
-              <div className="flex-1 h-20">
-                <div className="w-full h-full flex items-start">
-                  <Input
-                    name="number_phone"
-                    type="text"
-                    value={numberPhone}
-                    onChange={(e) => {
-                      setNumberPhone(e.target.value);
-                    }}
-                    height="h-12"
-                    border="border-[1px]"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        <CardLayout> 
           <div className="flex justify-start px-6 pb-6">
-            <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
-              検索
-            </div>
             {user.role === Role.admin && (
               <Link href="/admin/company/create">
                 <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
