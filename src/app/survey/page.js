@@ -103,7 +103,13 @@ export default function SurveyPage() {
         if (data.status === 'failure') {
           return;
         } else if (data.status === 'success') {
-          setListQuestion(data?.payload?.questionAll);
+          const questionListFromServer = data?.payload?.questionAll;
+          questionListFromServer.sort((a, b) => {
+            const aNumber = Number(a.content.replace(/[^\d.]/g, ''));
+            const bNumber = Number(b.content.replace(/[^\d.]/g, ''));
+            return aNumber - bNumber;
+          });
+          setListQuestion(questionListFromServer);
         }
       } catch (error) {
         setIsLoadingPage(false);
