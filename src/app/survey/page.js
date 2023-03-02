@@ -46,7 +46,6 @@ export default function SurveyPage() {
     }));
   };
   const handleSubmit = async () => {
-    console.log(answersList);
     if (answersList.answer.length !== listQuestion.length) {
       enqueueSnackbar('全ての質問を答えていただけないでしょうか。', {
         variant: 'error',
