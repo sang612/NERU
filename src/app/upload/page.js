@@ -160,7 +160,7 @@ export default function UploadPage() {
               title='口内'
             />
           </div>
-          <Button classname="bg-secondary">戻 る</Button>
+          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">戻 る</Button>
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]" isLoading={isLoading}>
             登録する
           </Button>

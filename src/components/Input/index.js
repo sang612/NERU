@@ -1,7 +1,7 @@
 import { css, cx } from '@emotion/css';
 
 export const Input = ({
-  placeholder,
+  placeholder, className,
   name,
   type,
   value,
@@ -28,7 +28,7 @@ export const Input = ({
       <input
         className={`${
           disabled && "bg-disabled border-none text-secondary"
-        } w-full outline-none ${border} ${height ? height : "h-14 xsm:h-16"} ${
+        } w-full outline-none ${className} ${border} ${height ? height : "h-14 xsm:h-16"} ${
           messageError ? "border-error" : "border-primary"
         } border-solid rounded-md shadow-sm pl-2 font-normal`}
         name={name}

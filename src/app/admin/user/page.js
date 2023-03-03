@@ -4,11 +4,10 @@ import CardLayout from '@/components/CardLayout';
 import { Role } from '@/utils/constants';
 import { useEffect, useMemo, useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { Input } from '@/components/Input';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { DeleteFilled, EditFilled} from '@ant-design/icons';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -38,10 +37,9 @@ export default function CompanyPage() {
     phone: '',
     numberOfEmployees: '',
   });
-  const [numberPhone, setNumberPhone] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastPage] = useState(0);
-  const [total] = useState(0);
+  const [lastPage, setLastPage] = useState(0);
+  const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
   const columns = useMemo(
     () => [
@@ -171,6 +169,8 @@ export default function CompanyPage() {
         return;
       } else if (data.status === 'success') {
         setListUser(data?.payload?.userAll);
+        setLastPage(data?.payload?._totalPage);
+        setTotal(data?.payload?._max);
       }
     };
     getlistUser();
@@ -288,33 +288,11 @@ export default function CompanyPage() {
       )}
       {!modalCreate && (
         <CardLayout>
-          <div className="flex justify-start mt-8">
-            <div className="w-1/3 flex justify-start items-start px-6">
-              <div className="mr-6 mb-4 h-12 flex items-center w-16">電話番号</div>
-              <div className="flex-1 h-20">
-                <div className="w-full h-full flex items-start">
-                  <Input
-                    name="number_phone"
-                    type="text"
-                    value={numberPhone}
-                    onChange={(e) => {
-                      setNumberPhone(e.target.value);
-                    }}
-                    height="h-12"
-                    border="border-[1px]"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="flex justify-start px-6 pb-6">
-            <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
-              検索
-            </div>
             {user.role === Role.admin && (
               <div onClick={() => setModalCreate(true)}>
                 <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
-                  会社登録
+                  ユーザー登録
                 </div>
               </div>
             )}

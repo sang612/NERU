@@ -18,18 +18,18 @@ export default function PersonalRegister() {
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [name, setName] = useState('');
+  const [firstName, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [tel, setTel] = useState('');
-  const [surname, setSurname] = useState('');
+  const [lastName, setSurname] = useState('');
   const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [errorRegister] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    surname: '',
-    name: '',
+    lastName: '',
+    firstName: '',
     email: '',
     tel: '',
     password: '',
@@ -54,8 +54,8 @@ export default function PersonalRegister() {
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validateEmployeeSurname = validateName(surname, 'lastName');
-    const validateEmployeeName = validateName(name, 'firstName');
+    const validateEmployeeSurname = validateName(lastName, 'lastName');
+    const validateEmployeeName = validateName(firstName, 'firstName');
     const validateEmployeeEmail = validateEmail(email);
     const validateEmployeeTel = validateTelPhone(tel);
     const validateEmployeePassword = validatePassword(password, 'password');
@@ -108,8 +108,8 @@ export default function PersonalRegister() {
       }
     } else {
       setValidate({
-        surname: validateEmployeeSurname,
-        name: validateEmployeeName,
+        lastName: validateEmployeeSurname,
+        firstName: validateEmployeeName,
         email: validateEmployeeEmail,
         tel: validateEmployeeTel,
         password: validateEmployeePassword,
@@ -165,26 +165,26 @@ export default function PersonalRegister() {
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
-            name="surname"
+            name="lastName"
             type="text"
-            value={surname}
+            value={lastName}
             placeholder="姓"
             onChange={(e) => {
               setSurname(e.target.value);
             }}
-            validate={surname ? () => checkValidateName(surname, 'lastName') : () => {}}
-            messageError={validate.surname}
+            validate={lastName ? () => checkValidateName(lastName, 'lastName') : () => {}}
+            messageError={validate.lastName}
           />
           <Input
-            name="name"
+            name="firstName"
             type="text"
-            value={name}
+            value={firstName}
             placeholder="名"
             onChange={(e) => {
               setName(e.target.value);
             }}
-            validate={name ? () => checkValidateName(name, 'firstName') : () => {}}
-            messageError={validate.name}
+            validate={firstName ? () => checkValidateName(firstName, 'firstName') : () => {}}
+            messageError={validate.firstName}
           />
           <Input
             name="email"

@@ -24,7 +24,7 @@ export const Sidebar = () => {
             `
           )}
         />
-        <div className="text-xl xl:text-2xl">{user?.name}</div>
+        <div className="text-xl xl:text-2xl">{user?.first_name}</div>
       </div>
       <div className="h-[2px] w-full bg-white" />
 

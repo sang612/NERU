@@ -31,6 +31,7 @@ export default function EnterpriseRegister() {
     email: "",
     password: "",
     passwordConfirm: "",
+    acceptPolicy: ""
   });
   const checkValidatePassword = () => {
     const checkValidatePassword = validatePassword(password, "password");
@@ -54,7 +55,8 @@ export default function EnterpriseRegister() {
     if (
       !validateEmployeePassword &&
       !validateEmployeePasswordConfirm &&
-      !validateEmployeeEmail
+      !validateEmployeeEmail &&
+      acceptPolicy
     ) {
       setIsLoading(true);
       let response;
@@ -108,6 +110,7 @@ export default function EnterpriseRegister() {
         email: validateEmployeeEmail,
         password: validateEmployeePassword,
         passwordConfirm: validateEmployeePasswordConfirm,
+        acceptPolicy: '続行するには利用規約とプライバシーポリシーに同意してください。',
       });
     }
   };
@@ -290,6 +293,7 @@ export default function EnterpriseRegister() {
               >
                 {acceptPolicy && <RememberPasswordIcon width={25} height={19}/>}
               </div>
+              {!acceptPolicy && <h3 className="text-error">{validate.acceptPolicy}</h3>}
             </div>
             <Button
               onClick={handleSubmit}

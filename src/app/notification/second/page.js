@@ -22,10 +22,10 @@ export default function SecondNotification() {
         firstAction={firstAction} secondAction={secondAction}
     >
       <div className="relative w-full h-[66px] mt-[38px]">
-        <Image src="/title1_1.svg" fill />
+        <Image src="/title1_1.svg" fill alt='title1_1'/>
       </div>
       <div className="relative w-full h-[66px] mt-[12px] mb-[-38px]">
-        <Image src="/title1_2.svg" fill />
+        <Image src="/title1_2.svg" fill alt='title1_2'/>
       </div>
     </NotifyModal>
   );

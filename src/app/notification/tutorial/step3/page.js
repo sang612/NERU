@@ -15,7 +15,7 @@ export default function TutorialStep1Page() {
   return (
     <NotifyModal firstAction={firstAction} secondAction={secondAction}>
       <div className="relative w-full h-[100vh] mt-[-43.98px] sm:mb-[60px]">
-        <Image src="/tutorial3.svg" fill />
+        <Image src="/tutorial3.svg" fill alt='step3'/>
       </div>
     </NotifyModal>
   );

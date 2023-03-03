@@ -26,7 +26,7 @@ export const ModalCreateUser = ({
 }) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
-      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">会社登録</h1>
+      <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">ユーザー登録</h1>
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
         <div className="flex justify-start items-start w-full my-2">
           <div className="mb-4 h-14 flex items-center w-36">氏</div>

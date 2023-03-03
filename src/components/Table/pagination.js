@@ -28,8 +28,8 @@ const Pagination = ({ currentPage, lastPage, setCurrentPage, total }) => {
         {!lastPage
           ? 'データがありません'
           : currentPage === lastPage
-          ? `${(currentPage - 1) * 20 + 1} - ${total} / ${total}`
-          : `${currentPage * 20 - 19} - ${currentPage * 20} / ${total}`}
+          ? `${(currentPage - 1) * 10 + 1} - ${total} / ${total}`
+          : `${currentPage * 10 - 9} - ${currentPage * 10} / ${total}`}
       </div>
       <div className="w-2/3 flex justify-end text-sm pr-6 items-center">
         <div

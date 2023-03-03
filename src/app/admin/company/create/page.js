@@ -65,6 +65,7 @@ export default function CreateCompanyPage() {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
+          router.push('/admin/company')
         }
       } catch (error) {
         setIsLoading(false);
