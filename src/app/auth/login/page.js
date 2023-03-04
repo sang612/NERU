@@ -53,13 +53,13 @@ export default function LoginPage() {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           dispatch(addNew(data.payload.user));
           dispatch(addToken(data.payload.token));
           enqueueSnackbar('ロギングすることは成功します。', {
@@ -95,13 +95,13 @@ export default function LoginPage() {
           }),
         });
         const data = await response.json();
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('電子メールを正常に送信', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

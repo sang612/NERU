@@ -109,13 +109,13 @@ export default function PersonalRegister() {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('登録することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -147,13 +147,13 @@ export default function PersonalRegister() {
           }),
         });
         const data = await response.json();
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('電子メールを正常に送信', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

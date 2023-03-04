@@ -69,13 +69,19 @@ export default function UploadPage() {
         body: formData,
       });
       const data = await response.json();
-      if (data?._user) {
+      if (data.status === 200) {
         setIsLoading(false);
         enqueueSnackbar('画像をアップロードすることは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         router.push('/survey');
+      } else {
+        enqueueSnackbar(data.message, {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        return;
       }
     } catch (error) {
       setIsLoading(false);
@@ -124,8 +130,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-1.svg"
               alt="image1"
               index={1}
-              title='顔写真正面'
-              desc='頭の先から鎖骨の上まで入るように'
+              title="顔写真正面"
+              desc="頭の先から鎖骨の上まで入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput2}
@@ -135,8 +141,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-2.svg"
               alt="image2"
               index={2}
-              title='横顔(右)'
-              desc='鼻先から後頭部まで全て入るように'
+              title="横顔(右)"
+              desc="鼻先から後頭部まで全て入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput3}
@@ -146,8 +152,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-3.svg"
               alt="image3"
               index={3}
-              title='横顔(左)'
-              desc='鼻先から後頭部まで全て入るように'
+              title="横顔(左)"
+              desc="鼻先から後頭部まで全て入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput4}
@@ -157,10 +163,12 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-4.svg"
               alt="image4"
               index={4}
-              title='口内'
+              title="口内"
             />
           </div>
-          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">戻 る</Button>
+          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">
+            戻 る
+          </Button>
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]" isLoading={isLoading}>
             登録する
           </Button>

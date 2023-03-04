@@ -69,7 +69,7 @@ export default function PersonalRegister() {
     ) {
       try {
         setIsLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/legal`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,17 +77,21 @@ export default function PersonalRegister() {
           body: JSON.stringify({
             phone: tel,
             password: password,
+            email: email,
+            first_name: firstName,
+            last_name: lastName
           }),
         });
         const data = await response.json();
-        if (data.status === 'failure') {
+        console.log(data);
+        if (data.status === 500) {
           setIsLoading(false);
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -131,13 +135,13 @@ export default function PersonalRegister() {
           }),
         });
         const data = await response.json();
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('電子メールを正常に送信', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

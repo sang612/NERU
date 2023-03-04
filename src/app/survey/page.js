@@ -65,13 +65,13 @@ export default function SurveyPage() {
       });
       const data = await response.json();
       setIsLoading(false);
-      if (data.status === 'failure') {
+      if (data.status === 500) {
         enqueueSnackbar(data.message, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 'success') {
+      } else if (data.status === 200) {
         enqueueSnackbar('答えを伝えるのは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -100,9 +100,9 @@ export default function SurveyPage() {
         });
         const data = await response.json();
         setIsLoadingPage(false);
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           const questionListFromServer = data?.payload?.questionAll;
           questionListFromServer.sort((a, b) => {
             const aNumber = Number(a.content.replace(/[^\d.]/g, ''));
