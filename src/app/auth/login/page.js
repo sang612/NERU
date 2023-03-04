@@ -70,8 +70,8 @@ export default function LoginPage() {
                 record_number_of_user: data.payload.user.record_number_of_user,
               })
             );
-            localStorage.setItem('token', data.payload.token);
           }
+          localStorage.setItem('token', data.payload.token);
           enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
