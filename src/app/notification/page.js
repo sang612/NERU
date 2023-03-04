@@ -15,23 +15,27 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (user) {
-      try {
-        const response = fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`, {
-          method: 'GET',
-          headers: {
-            accessToken: token,
-          },
-        });
-        if (response.data.payload.record_number_of_user === 0) {
-          return;
-        } else {
-          router.replace('/app-download');
+      const getUserDetailtoCheckRecordNumberofUser = async () => {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`, {
+            method: 'GET',
+            headers: {
+              accessToken: token,
+            },
+          });
+          const data = await response.json();
+          if (data.payload.user.record_number_of_user === 0) {
+            return;
+          } else {
+            router.replace('/app-download');
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
-      }
+      };
+      getUserDetailtoCheckRecordNumberofUser();
     }
-  }, [router, user]);
+  }, [router, token, user]);
 
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>

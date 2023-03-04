@@ -2,7 +2,6 @@
 import { useRef, useState } from 'react';
 import { Button } from '@/components/Button/button';
 import { UploadItem } from '@/components/Upload/upload-item';
-import { useSelector } from 'react-redux';
 import { NotFound } from '@/assets/icons';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
@@ -18,9 +17,9 @@ export default function UploadPage() {
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
   const token = localStorage.getItem('token');
-  const { user } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleClick = (inputRef) => {
     inputRef.current.click();
@@ -69,13 +68,19 @@ export default function UploadPage() {
         body: formData,
       });
       const data = await response.json();
-      if (data?._user) {
+      if (data.status === 200) {
         setIsLoading(false);
         enqueueSnackbar('画像をアップロードすることは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         router.push('/survey');
+      } else {
+        enqueueSnackbar(data.message, {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        return;
       }
     } catch (error) {
       setIsLoading(false);
@@ -87,7 +92,7 @@ export default function UploadPage() {
     }
   };
 
-  if (!user.id) return <NotFound />;
+  if (!user) return <NotFound />;
 
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>

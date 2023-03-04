@@ -1,14 +1,21 @@
+import { logOut } from '@/slices/userSlice';
 import { Role } from '@/utils/constants';
 import { ContainerFilled, UserOutlined, TeamOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { css, cx } from '@emotion/css';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Sidebar = () => {
   const { user } = useSelector((state) => state.user);
   const pathname = usePathname();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const handleLogOut = () => {
+    router.push('/auth/login');
+    dispatch(logOut());
+  };
 
   return (
     <div className="fixed bg-[#d0eaeb] text-primary overflow-hidden top-0 left-0 h-screen w-56 xl:w-64 pt-12 z-50 text-lg xl:text-xl">
@@ -73,7 +80,7 @@ export const Sidebar = () => {
         ユーザー一覧
       </Link>
       <div className="h-[2px] w-full bg-white" />
-      <button className="w-full h-[60px] flex items-center justify-start pl-4 xl:pl-6">
+      <button onClick={handleLogOut} className="w-full h-[60px] flex items-center justify-start pl-4 xl:pl-6">
         <ArrowRightOutlined
           className={cx(
             'w-7 h-7 mr-2',

@@ -92,13 +92,13 @@ export default function EnterpriseRegister() {
       }
       const data = await response.json();
       setIsLoading(false);
-      if (data.status === "failure") {
+      if (data.status === 500) {
         enqueueSnackbar(data.message, {
           variant: "error",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });
         return;
-      } else if (data.status === "success") {
+      } else if (data.status === 200) {
         enqueueSnackbar("プロファイルをアップロードすることは成功します。", {
           variant: "success",
           anchorOrigin: { vertical: "top", horizontal: "right" },

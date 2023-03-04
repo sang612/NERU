@@ -8,7 +8,6 @@ import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
 import { ArrowLeftOutlined, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
-import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
 export default function Employee({ params }) {
@@ -83,13 +82,13 @@ export default function Employee({ params }) {
         },
       });
       const data = await response.json();
-      if (data.status === 'failure') {
+      if (data.status === 500) {
         enqueueSnackbar(data.message, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 'success') {
+      } else if (data.status === 200) {
         setActiveItem();
         const item = listEmployee.find((d) => d?.user_id?.id === id);
         const index = listEmployee.indexOf(item);
@@ -122,9 +121,9 @@ export default function Employee({ params }) {
           }
         );
         const data = await response.json();
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           setListEmployee(data?.payload?.allLegal);
           setLastPage(data?.payload?._totalPage);
           setTotal(data?.payload?._max);

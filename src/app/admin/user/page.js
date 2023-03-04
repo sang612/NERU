@@ -49,7 +49,7 @@ export default function CompanyPage() {
         index: 'id',
         render: (id) => <div className="w-full text-left">{id}</div>,
         className: 'min-w-[40px]',
-        sorter: (a, b) => a - b,
+        sorter: (a, b) => a.localeCompare(b),
       },
       {
         title: '名',
@@ -129,13 +129,13 @@ export default function CompanyPage() {
         },
       });
       const data = await response.json();
-      if (data.status === 'failure') {
+      if (data.status === 500) {
         enqueueSnackbar(data.message, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 'success') {
+      } else if (data.status === 200) {
         setActiveItem();
         const item = listUser.find((d) => d.id === id);
         const index = listUser.indexOf(item);
@@ -166,9 +166,9 @@ export default function CompanyPage() {
         }
       );
       const data = await response.json();
-      if (data.status === 'failure') {
+      if (data.status === 500) {
         return;
-      } else if (data.status === 'success') {
+      } else if (data.status === 200) {
         setListUser(data?.payload?.userAll);
         setLastPage(data?.payload?._totalPage);
         setTotal(data?.payload?._max);
@@ -222,19 +222,19 @@ export default function CompanyPage() {
             last_name: lastName,
             last_name_kana: lastNameKatakana,
             email: email,
-            isEnterprise: false,
+            isEnterprise: 'false',
             phone: phone,
           }),
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 'failure') {
+        if (data.status === 500) {
           enqueueSnackbar(data.message, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
+        } else if (data.status === 200) {
           enqueueSnackbar('ユーザーを作成することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
