@@ -7,7 +7,6 @@ import { Button } from '@/components/Button/button';
 import { validateEmail, validateName, validateNameKatakana, validateTelPhone } from '@/utils/validate';
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import { useSelector } from 'react-redux';
 
 export default function EditCompanyPage({ params }) {
   const id = params?.id;
@@ -67,7 +66,7 @@ export default function EditCompanyPage({ params }) {
     getDataDetailCompany();
   }, []);
   const { enqueueSnackbar } = useSnackbar();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -100,7 +99,7 @@ export default function EditCompanyPage({ params }) {
             last_name_kana: lastNameKatakana,
             email: email,
             phone: phone,
-            isEnterprise: false
+            isEnterprise: false,
           }),
         });
         const data = await response.json();

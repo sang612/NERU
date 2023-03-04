@@ -2,14 +2,36 @@
 
 import { Button } from '@/components/Button/button';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PaymentModal from '../../components/Payment';
 
 const amount = '1100円';
 
 export default function UploadPage() {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      try {
+        const response = fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`, {
+          method: 'GET',
+          headers: {
+            accessToken: token,
+          },
+        });
+        if (response.data.payload.record_number_of_user === 0) {
+          return;
+        } else {
+          router.replace('/app-download');
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }, [router, user]);
 
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>

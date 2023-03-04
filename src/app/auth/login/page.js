@@ -8,18 +8,18 @@ import { EyeInvisibleFilled, EyeFilled } from '@ant-design/icons';
 import { validateEmail, validateLogin, validatePassword, validateTelPhone } from '@/utils/validate';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
-import { addNew, addToken } from '@/slices/userSlice';
 import { Role } from '@/utils/constants';
 import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
+  const rememberMe = localStorage.getItem('rememberMe');
   const [activeItem, setActiveItem] = useState();
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberLogin, setRememberLogin] = useState(true);
+  const [rememberLogin, setRememberLogin] = useState(rememberMe);
   const [isShowPass, setIsShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
@@ -59,9 +59,19 @@ export default function LoginPage() {
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 'success') {
-          dispatch(addNew(data.payload.user));
-          dispatch(addToken(data.payload.token));
+        } else if (data.status === 200) {
+          if (rememberMe) {
+            localStorage.setItem(
+              'user',
+              JSON.stringify({
+                id: data.payload.user.id,
+                role: data.payload.user.role,
+                isEnterprise: data.payload.user.isEnterprise,
+                record_number_of_user: data.payload.user.record_number_of_user,
+              })
+            );
+            localStorage.setItem('token', data.payload.token);
+          }
           enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -80,7 +90,7 @@ export default function LoginPage() {
       setValidate(checkValidate);
     }
   };
-  const dispatch = useDispatch();
+
   const handleSendMail = async () => {
     const checkValidateEmail = validateEmail(emailForgetPassword);
     if (!checkValidateEmail) {
@@ -122,6 +132,16 @@ export default function LoginPage() {
       });
     }
   };
+
+  useEffect(() => {
+    if (rememberLogin) {
+      localStorage.setItem('rememberMe', true);
+    } else {
+      localStorage.removeItem('rememberMe');
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    }
+  }, [rememberLogin]);
 
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
@@ -180,9 +200,11 @@ export default function LoginPage() {
             <div
               className="w-7 h-7 outline-none border-2 border-primary border-solid rounded-md flex justify-center items-center text-[#000000]
                 cursor-pointer"
-              onClick={() => setRememberLogin((prev) => !prev)}
+              onClick={() => {
+                setRememberLogin((prev) => !prev);
+              }}
             >
-              {rememberLogin && <RememberPasswordIcon width={25} height={19}/>}
+              {rememberLogin && <RememberPasswordIcon width={25} height={19} />}
             </div>
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>

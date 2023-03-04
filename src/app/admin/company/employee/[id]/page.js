@@ -136,7 +136,7 @@ export default function Employee({ params }) {
     getListEmployee();
   }, [currentPage]);
   const { enqueueSnackbar } = useSnackbar();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
 
   return (
     <div className="w-full">

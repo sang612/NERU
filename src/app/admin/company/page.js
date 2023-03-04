@@ -14,21 +14,10 @@ import {
   UserAddOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
-import ModalDeleted from "@/components/Modal";
-import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
-import {
-  ModalCreateCompany,
-  ModalCreateCompanyByFile,
-  ModalResultFileExport,
-} from "@/components/Modal/CreateCompany";
-import {
-  validateEmail,
-  validateName,
-  validateTelPhone,
-  validateNameKatakana,
-  validateCode,
-} from "@/utils/validate";
+import ModalDeleted from '@/components/Modal';
+import { useSnackbar } from 'notistack';
+import { ModalCreateCompany, ModalCreateCompanyByFile, ModalResultFileExport } from '@/components/Modal/CreateCompany';
+import { validateEmail, validateName, validateTelPhone, validateNameKatakana, validateCode } from '@/utils/validate';
 
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
@@ -53,8 +42,8 @@ export default function CompanyPage() {
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: "メールアドレス",
-        index: "email",
+        title: 'メールアドレス',
+        index: 'email',
         render: (value) => <div className="w-full text-left">{value}</div>,
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
         sorter: (a, b) => a.localeCompare(b),
@@ -149,7 +138,7 @@ export default function CompanyPage() {
                         value: record.company_name,
                       },
                       {
-                        label: "メールアドレス",
+                        label: 'メールアドレス',
                         value: record.email,
                       },
                     ],
@@ -202,13 +191,11 @@ export default function CompanyPage() {
   useEffect(() => {
     const getListCompany = async () => {
       const response = await fetch(
-        `${
-          process.env.NEXT_PUBLIC_API_ENDPOINT
-        }/admin/enterprise/?page=${currentPage}&limit=${10}`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/?page=${currentPage}&limit=${10}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             accessToken: token,
           },
         }
@@ -218,36 +205,36 @@ export default function CompanyPage() {
         return;
       } else if (data.status === 'success') {
         setListCompany(data?.payload?.enterpriseAll);
-        setLastPage(data?.payload?._totalPage)
-        setTotal(data?.payload?._max)
+        setLastPage(data?.payload?._totalPage);
+        setTotal(data?.payload?._max);
       }
     };
     getListCompany();
   }, [currentPage]);
-  const { user } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
-  const { token } = useSelector((state) => state.user);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
   const [modalCreate, setModalCreate] = useState(false);
   const [enterpriseId, setEnterpriseId] = useState();
   const [companyName, setCompanyName] = useState();
-  const [affiliationName, setAffiliationName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [numberOfEmployees, setNumberOfEmployees] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [firstNameKatakana, setFirstNameKatakana] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameKatakana, setLastNameKatakana] = useState("");
-  const [email, setEmail] = useState("");
+  const [affiliationName, setAffiliationName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [numberOfEmployees, setNumberOfEmployees] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [firstNameKatakana, setFirstNameKatakana] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameKatakana, setLastNameKatakana] = useState('');
+  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    affiliationName: "",
-    firstName: "",
-    firstNameKatakana: "",
-    lastName: "",
-    lastNameKatakana: "",
-    email: "",
-    phone: "",
-    numberOfEmployees: "",
+    affiliationName: '',
+    firstName: '',
+    firstNameKatakana: '',
+    lastName: '',
+    lastNameKatakana: '',
+    email: '',
+    phone: '',
+    numberOfEmployees: '',
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
@@ -317,16 +304,10 @@ export default function CompanyPage() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const validateEmployeeFirstName = validateName(firstName, "firstName");
-    const validateEmployeeLastName = validateName(lastName, "lastName");
-    const validateEmployeeFirstNameKatakana = validateNameKatakana(
-      firstNameKatakana,
-      "firstName"
-    );
-    const validateEmployeeLastNameKatakana = validateNameKatakana(
-      lastNameKatakana,
-      "lastName"
-    );
+    const validateEmployeeFirstName = validateName(firstName, 'firstName');
+    const validateEmployeeLastName = validateName(lastName, 'lastName');
+    const validateEmployeeFirstNameKatakana = validateNameKatakana(firstNameKatakana, 'firstName');
+    const validateEmployeeLastNameKatakana = validateNameKatakana(lastNameKatakana, 'lastName');
     const validateEmployeeTel = validateTelPhone(phone);
     const validateEmplyeeEmail = validateEmail(email);
     const validateEmployeeCode = validateCode(numberOfEmployees);
@@ -341,28 +322,25 @@ export default function CompanyPage() {
     ) {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: token,
-            },
-            body: JSON.stringify({
-              first_name: firstName,
-              first_name_kana: firstNameKatakana,
-              last_name: lastName,
-              last_name_kana: lastNameKatakana,
-              email: email,
-              department_name: affiliationName,
-              isEnterprise: true,
-              phone: phone,
-              number_of_employee: numberOfEmployees,
-              enterprise_id: enterpriseId,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            first_name_kana: firstNameKatakana,
+            last_name: lastName,
+            last_name_kana: lastNameKatakana,
+            email: email,
+            department_name: affiliationName,
+            isEnterprise: true,
+            phone: phone,
+            number_of_employee: numberOfEmployees,
+            enterprise_id: enterpriseId,
+          }),
+        });
         const data = await response.json();
         setIsLoading(false);
         if (data.status === 'failure') {
@@ -446,7 +424,7 @@ export default function CompanyPage() {
         />
       )}
       {!modalCreate && !modalCreateByFile && !modalResultFileExport && (
-        <CardLayout> 
+        <CardLayout>
           <div className="flex justify-start px-6 pb-6">
             {user.role === Role.admin && (
               <Link href="/admin/company/create">

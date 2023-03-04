@@ -9,8 +9,7 @@ import {
 } from "@/utils/validate";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSnackbar } from "notistack/dist";
-import { useSelector } from "react-redux";
+import { useSnackbar } from 'notistack/dist';
 
 export default function CreateCompanyPage() {
   const [email, setEmail] = useState("");
@@ -83,7 +82,8 @@ export default function CreateCompanyPage() {
     }
   };
   const router = useRouter();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
+
 
   return (
     <CardLayout>

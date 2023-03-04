@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/Button/button';
 import { UploadItem } from '@/components/Upload/upload-item';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ export default function UploadPage() {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
   const { user } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -87,24 +87,6 @@ export default function UploadPage() {
     }
   };
 
-  useEffect(() => {
-    console.log(window.location.search);
-
-    const searchParams = new URLSearchParams(window.location.search);
-    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/payment/payment-intent-completed`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        accessToken: token,
-      },
-      body: JSON.stringify({
-        payment_intent: searchParams.get('payment_intent'),
-        payment_intent_client_secret: searchParams.get('payment_intent_client_secret'),
-        redirect_status: searchParams.get('redirect_status'),
-      }),
-    });
-  }, []);
-
   if (!user.id) return <NotFound />;
 
   return (
@@ -124,8 +106,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-1.svg"
               alt="image1"
               index={1}
-              title='顔写真正面'
-              desc='頭の先から鎖骨の上まで入るように'
+              title="顔写真正面"
+              desc="頭の先から鎖骨の上まで入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput2}
@@ -135,8 +117,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-2.svg"
               alt="image2"
               index={2}
-              title='横顔(右)'
-              desc='鼻先から後頭部まで全て入るように'
+              title="横顔(右)"
+              desc="鼻先から後頭部まで全て入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput3}
@@ -146,8 +128,8 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-3.svg"
               alt="image3"
               index={3}
-              title='横顔(左)'
-              desc='鼻先から後頭部まで全て入るように'
+              title="横顔(左)"
+              desc="鼻先から後頭部まで全て入るように"
             />
             <UploadItem
               inputRef={hiddenFileInput4}
@@ -157,10 +139,12 @@ export default function UploadPage() {
               defaultSrc="/upload-tutorial-4.svg"
               alt="image4"
               index={4}
-              title='口内'
+              title="口内"
             />
           </div>
-          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">戻 る</Button>
+          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">
+            戻 る
+          </Button>
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]" isLoading={isLoading}>
             登録する
           </Button>

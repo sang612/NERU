@@ -7,7 +7,6 @@ import { Button } from '@/components/Button/button';
 import { validateEmail, validateName, validateNameKatakana, validateTelPhone } from '@/utils/validate';
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
-import { useSelector } from 'react-redux';
 
 export default function EditEmployeePage({ params }) {
   const { id, employeeId } = params;
@@ -67,7 +66,8 @@ export default function EditEmployeePage({ params }) {
     getDetailEmployee();
   }, []);
   const { enqueueSnackbar } = useSnackbar();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateUserFirstName = validateName(firstName, 'firstName');

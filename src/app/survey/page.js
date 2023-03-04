@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] });
 export default function SurveyPage() {
   const router = useRouter();
   const { user } = useSelector((state) => state.user);
-  const { token } = useSelector((state) => state.user);
+    const token = localStorage.getItem('token');
   const [listQuestion, setListQuestion] = useState();
   const [answersList, setAnswersList] = useState({
     user: user.id,

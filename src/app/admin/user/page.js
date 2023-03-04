@@ -18,7 +18,8 @@ export default function CompanyPage() {
   const [listUser, setListUser] = useState([]);
   const { user } = useSelector((state) => state.user);
   const { enqueueSnackbar } = useSnackbar();
-  const { token } = useSelector((state) => state.user);
+  const token = localStorage.getItem('token');
+
   const [modalCreate, setModalCreate] = useState(false);
   const [phone, setPhone] = useState('');
   const [firstName, setFirstName] = useState('');
