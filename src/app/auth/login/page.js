@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 export default function LoginPage() {
   const router = useRouter();
   const rememberMe = localStorage.getItem('rememberMe');
+  const user = JSON.parse(localStorage.getItem('user'));
   const [activeItem, setActiveItem] = useState();
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
@@ -69,6 +70,7 @@ export default function LoginPage() {
               record_number_of_user: data.payload.user.record_number_of_user,
             })
           );
+
           localStorage.setItem('token', data.payload.token);
           enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
@@ -140,9 +142,10 @@ export default function LoginPage() {
   }, [rememberLogin]);
   useEffect(() => {
     if (rememberMe) {
-      router.replace('/notification');
+      if (user.role === 'Admin') router.replace('/admin/company');
+      else router.replace('/notification');
     }
-  }, [rememberMe, router]);
+  }, [rememberMe, router, user.role]);
 
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
