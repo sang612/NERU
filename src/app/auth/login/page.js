@@ -60,17 +60,15 @@ export default function LoginPage() {
           });
           return;
         } else if (data.status === 200) {
-          if (rememberMe) {
-            localStorage.setItem(
-              'user',
-              JSON.stringify({
-                id: data.payload.user.id,
-                role: data.payload.user.role,
-                isEnterprise: data.payload.user.isEnterprise,
-                record_number_of_user: data.payload.user.record_number_of_user,
-              })
-            );
-          }
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              id: data.payload.user.id,
+              role: data.payload.user.role,
+              isEnterprise: data.payload.user.isEnterprise,
+              record_number_of_user: data.payload.user.record_number_of_user,
+            })
+          );
           localStorage.setItem('token', data.payload.token);
           enqueueSnackbar('ロギングすることは成功します。', {
             variant: 'success',
