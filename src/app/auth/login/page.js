@@ -143,7 +143,6 @@ export default function LoginPage() {
   useEffect(() => {
     if (rememberMe) {
       if (user.role === 'Admin') router.replace('/admin/company');
-      else router.replace('/notification');
     }
   }, [rememberMe, router, user.role]);
 

@@ -9,6 +9,16 @@ export default function Home() {
   const rememberMe = localStorage.getItem('rememberMe');
 
   return (
-    <div id="root">{rememberMe && user.record_number_of_user === 0 ? router.replace('/notification') : <Banner />}</div>
+    <div id="root">
+      {rememberMe ? (
+        user.role === 'Admin' ? (
+          router.replace('/admin/company')
+        ) : (
+          router.replace('/notification')
+        )
+      ) : (
+        <Banner />
+      )}
+    </div>
   );
 }

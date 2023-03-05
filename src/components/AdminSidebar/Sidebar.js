@@ -13,6 +13,9 @@ export const Sidebar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const handleLogOut = () => {
+    localStorage.removeItem('rememberMe');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     router.push('/auth/login');
     dispatch(logOut());
   };
