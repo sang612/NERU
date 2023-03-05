@@ -142,9 +142,9 @@ export default function LoginPage() {
   }, [rememberLogin]);
   useEffect(() => {
     if (rememberMe) {
-      if (user.role === 'Admin') router.replace('/admin/company');
+      if (user?.role === 'Admin') router.replace('/admin/company');
     }
-  }, [rememberMe, router, user.role]);
+  }, [rememberMe, router, user?.role]);
 
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
