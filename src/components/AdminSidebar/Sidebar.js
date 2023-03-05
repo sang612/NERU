@@ -5,10 +5,10 @@ import { css, cx } from '@emotion/css';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export const Sidebar = () => {
-  const { user } = useSelector((state) => state.user);
+  const user = JSON.parse(localStorage.getItem('user'));
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();

@@ -4,8 +4,6 @@ import { InputRadio } from '@/components/InputRadio';
 import { Button } from '@/components/Button/button';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { NotFound } from '@/assets/icons';
-import { useSelector } from 'react-redux';
 import { Inter } from '@next/font/google';
 import { useRouter } from 'next/navigation';
 
@@ -13,8 +11,9 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function SurveyPage() {
   const router = useRouter();
-  const { user } = useSelector((state) => state.user);
-    const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const token = localStorage.getItem('token');
   const [listQuestion, setListQuestion] = useState();
   const [answersList, setAnswersList] = useState({
     user: user.id,
@@ -118,7 +117,6 @@ export default function SurveyPage() {
     };
     getListQuestion();
   }, []);
-  if (!user.id) return <NotFound />;
   if (isLoadingPage) return 'Loading...';
 
   return (

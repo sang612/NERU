@@ -138,10 +138,13 @@ export default function LoginPage() {
       localStorage.setItem('rememberMe', true);
     } else {
       localStorage.removeItem('rememberMe');
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
     }
   }, [rememberLogin]);
+  useEffect(() => {
+    if (rememberMe) {
+      router.replace('/notification');
+    }
+  }, [rememberMe, router]);
 
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>

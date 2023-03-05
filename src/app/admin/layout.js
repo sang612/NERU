@@ -4,10 +4,11 @@ import { NotFound } from '@/assets/icons';
 import { Sidebar } from '@/components/AdminSidebar/Sidebar';
 import { Role } from '@/utils/constants';
 import { SnackbarProvider } from 'notistack/dist';
-import { useSelector } from 'react-redux';
+
 
 export default function AdminLayout({ children }) {
-  const { user } = useSelector((state) => state.user);
+  const user = JSON.parse(localStorage.getItem('user'));
+
   return (
     <SnackbarProvider>
       <div className="min-h-screen w-full">

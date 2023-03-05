@@ -9,14 +9,14 @@ import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
-import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { validateEmail, validateName, validateTelPhone, validateNameKatakana } from '@/utils/validate';
 import { ModalCreateUser } from '@/components/Modal/CreateUser';
 
 export default function CompanyPage() {
   const [listUser, setListUser] = useState([]);
-  const { user } = useSelector((state) => state.user);
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const { enqueueSnackbar } = useSnackbar();
   const token = localStorage.getItem('token');
 
