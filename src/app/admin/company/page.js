@@ -163,13 +163,13 @@ export default function CompanyPage() {
         },
       });
       const data = await response.json();
-      if (data.status === 500) {
-        enqueueSnackbar(data.message, {
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
         const item = listCompany.find((d) => d.id === id);
         const index = listCompany.indexOf(item);
@@ -201,9 +201,9 @@ export default function CompanyPage() {
         }
       );
       const data = await response.json();
-      if (data.status === 500) {
+      if (data.status !== 200 && data.status !== 201) {
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setListCompany(data?.payload?.enterpriseAll);
         setLastPage(data?.payload?._totalPage);
         setTotal(data?.payload?._max);
@@ -280,13 +280,13 @@ export default function CompanyPage() {
       });
       const data = await response.json();
       setIsLoading(false);
-      if (data.status === 500) {
-        enqueueSnackbar(data.message, {
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setSuccessList(data?.payload?.User_Success);
         setFailList(data?.payload?.User_Failure);
         setErrorMessage(data?.payload?.User_Failure[0]?.message);
@@ -343,13 +343,13 @@ export default function CompanyPage() {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           enqueueSnackbar('ユーザーを作成することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

@@ -5,8 +5,11 @@ import { UploadItem } from '@/components/Upload/upload-item';
 import { NotFound } from '@/assets/icons';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { addImage } from '@/slices/userSlice';
 
 export default function UploadPage() {
+  const { imageList } = useSelector((state) => state.user);
   const router = useRouter();
   const hiddenFileInput = useRef(null);
   const hiddenFileInput2 = useRef(null);
@@ -43,8 +46,13 @@ export default function UploadPage() {
         break;
     }
   };
+  const dispatch = useDispatch();
 
   const handleSubmit = async () => {
+    if (imageList.length === 4 && imageList[0].name) {
+      router.push('/survey');
+      return;
+    }
     if (!image1 || !image2 || !image3 || !image4) {
       enqueueSnackbar('全ての画像をアップロードしていただけないでしょうか。', {
         variant: 'error',
@@ -68,7 +76,9 @@ export default function UploadPage() {
         body: formData,
       });
       const data = await response.json();
-      if (data.status === 200) {
+      if (data.status === 200 || data.status === 201) {
+        const imageArr = [image1, image2, image3, image4];
+        dispatch(addImage(imageArr));
         setIsLoading(false);
         enqueueSnackbar('画像をアップロードすることは成功します。', {
           variant: 'success',
@@ -76,7 +86,8 @@ export default function UploadPage() {
         });
         router.push('/survey');
       } else {
-        enqueueSnackbar(data.message, {
+        setIsLoading(false);
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
@@ -102,12 +113,12 @@ export default function UploadPage() {
           <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">
             画像をクリックしてアップロードしてください
           </p>
-          <div className="grid grid-cols-2 gap-y-[48px] gap-x-[8px] my-[36px]">
+          <div className="grid grid-cols-2 gap-y-[48px] gap-x-[8px] mt-[36px] mb-[78px]">
             <UploadItem
               inputRef={hiddenFileInput}
               handleChange={handleChange}
               handleClick={handleClick}
-              item={image1}
+              item={imageList[0]?.name ? imageList[0] : image1}
               defaultSrc="/upload-tutorial-1.svg"
               alt="image1"
               index={1}
@@ -118,7 +129,7 @@ export default function UploadPage() {
               inputRef={hiddenFileInput2}
               handleChange={handleChange}
               handleClick={handleClick}
-              item={image2}
+              item={imageList[1]?.name ? imageList[1] : image2}
               defaultSrc="/upload-tutorial-2.svg"
               alt="image2"
               index={2}
@@ -129,7 +140,7 @@ export default function UploadPage() {
               inputRef={hiddenFileInput3}
               handleChange={handleChange}
               handleClick={handleClick}
-              item={image3}
+              item={imageList[2]?.name ? imageList[2] : image3}
               defaultSrc="/upload-tutorial-3.svg"
               alt="image3"
               index={3}
@@ -140,7 +151,7 @@ export default function UploadPage() {
               inputRef={hiddenFileInput4}
               handleChange={handleChange}
               handleClick={handleClick}
-              item={image4}
+              item={imageList[3]?.name ? imageList[3] : image4}
               defaultSrc="/upload-tutorial-4.svg"
               alt="image4"
               index={4}

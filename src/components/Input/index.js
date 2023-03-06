@@ -11,6 +11,7 @@ export const Input = ({
   disabled,
   height,
   border = 'border-2',
+  max
 }) => {
   return (
     <div
@@ -38,6 +39,7 @@ export const Input = ({
         onChange={onChange}
         onBlur={validate}
         disabled={disabled}
+        max={max}
       />
       <div className={`${!messageError && 'hidden'} text-error text-xs my-2`}>{messageError}</div>
     </div>

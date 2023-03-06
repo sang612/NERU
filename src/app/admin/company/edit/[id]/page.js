@@ -40,9 +40,9 @@ export default function EditCompanyPage({ params }) {
         },
       });
       const data = await response.json();
-      if (data.status === 500) {
+      if (data.status !== 200 && data.status !== 201) {
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setEmail(data?.payload.enterprise.email);
         setCompanyName(data?.payload.enterprise.company_name);
       }
@@ -75,13 +75,13 @@ export default function EditCompanyPage({ params }) {
         );
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           enqueueSnackbar('会社を更新します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

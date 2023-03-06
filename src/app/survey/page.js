@@ -9,10 +9,18 @@ import { useRouter } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const getYesterday = () => {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const formattedDate = yesterday.toISOString().slice(0, 10);
+  return formattedDate;
+};
+const yesterday = getYesterday();
+
 export default function SurveyPage() {
   const router = useRouter();
   const user = JSON.parse(localStorage.getItem('user'));
-
   const token = localStorage.getItem('token');
   const [listQuestion, setListQuestion] = useState();
   const [answersList, setAnswersList] = useState({
@@ -31,6 +39,12 @@ export default function SurveyPage() {
   };
   const handleChangeInput = (e, id) => {
     deletePreviousAnswer(id);
+    if (id === '63f609f6bd5ab34b9a8e9f13' && e.target.value.length === 0) {
+      setAnswersList((prevState) => ({
+        ...prevState,
+        answer: [...prevState.answer, { question_id: id, answer: '' }],
+      }));
+    }
     if (e.target.value.length === 0) return;
     setAnswersList((prevState) => ({
       ...prevState,
@@ -64,13 +78,13 @@ export default function SurveyPage() {
       });
       const data = await response.json();
       setIsLoading(false);
-      if (data.status === 500) {
-        enqueueSnackbar(data.message, {
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         enqueueSnackbar('答えを伝えるのは成功します。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -99,9 +113,9 @@ export default function SurveyPage() {
         });
         const data = await response.json();
         setIsLoadingPage(false);
-        if (data.status === 500) {
+        if (data.status !== 200 && data.status !== 201) {
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           const questionListFromServer = data?.payload?.questionAll;
           questionListFromServer.sort((a, b) => {
             const aNumber = Number(a.content.replace(/[^\d.]/g, ''));
@@ -138,6 +152,7 @@ export default function SurveyPage() {
                       className={`${item.type === 'number' ? 'pr-[40%]' : ''}`}
                       type={item.type}
                       onChange={(e) => handleChangeInput(e, item.id)}
+                      max={item.type === 'date' ? yesterday : ''}
                     />
                     {item.title === 'Q.05' && (
                       <div className="absolute right-[32px] top-1/2 -translate-y-1/2">時間</div>

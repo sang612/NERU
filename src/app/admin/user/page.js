@@ -129,13 +129,13 @@ export default function CompanyPage() {
         },
       });
       const data = await response.json();
-      if (data.status === 500) {
-        enqueueSnackbar(data.message, {
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
         const item = listUser.find((d) => d.id === id);
         const index = listUser.indexOf(item);
@@ -166,9 +166,9 @@ export default function CompanyPage() {
         }
       );
       const data = await response.json();
-      if (data.status === 500) {
+      if (data.status !== 200 && data.status !== 201) {
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setListUser(data?.payload?.userAll);
         setLastPage(data?.payload?._totalPage);
         setTotal(data?.payload?._max);
@@ -228,13 +228,13 @@ export default function CompanyPage() {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           enqueueSnackbar('ユーザーを作成することは成功します。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

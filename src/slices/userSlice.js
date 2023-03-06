@@ -4,6 +4,7 @@ const initialState = {
   user: [],
   token: '',
   legal: [],
+  imageList: {},
 };
 
 const userSlice = createSlice({
@@ -22,9 +23,12 @@ const userSlice = createSlice({
     logOut: (state) => {
       return { ...state, user: [], token: '', legal: [] };
     },
+    addImage: (state, action) => {
+      return { ...state, imageList: action.payload };
+    },
   },
 });
 
-export const { addNew, addToken, addLegal, logOut } = userSlice.actions;
+export const { addNew, addToken, addLegal, logOut, addImage } = userSlice.actions;
 
 export default userSlice.reducer;

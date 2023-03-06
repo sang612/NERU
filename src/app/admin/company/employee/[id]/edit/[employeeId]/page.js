@@ -52,9 +52,9 @@ export default function EditEmployeePage({ params }) {
         },
       });
       const data = await response.json();
-      if (data.status === 500) {
+      if (data.status !== 200 && data.status !== 201) {
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setFirstName(data?.payload?.user?.first_name);
         setFirstNameKatakana(data?.payload?.user?.first_name_kana);
         setLastName(data?.payload?.user?.last_name);
@@ -105,13 +105,13 @@ export default function EditEmployeePage({ params }) {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           enqueueSnackbar('ユーザーの更新が成功しました。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

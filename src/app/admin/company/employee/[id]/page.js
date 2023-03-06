@@ -82,13 +82,13 @@ export default function Employee({ params }) {
         },
       });
       const data = await response.json();
-      if (data.status === 500) {
-        enqueueSnackbar(data.message, {
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
         return;
-      } else if (data.status === 200) {
+      } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
         const item = listEmployee.find((d) => d?.user_id?.id === id);
         const index = listEmployee.indexOf(item);
@@ -121,9 +121,9 @@ export default function Employee({ params }) {
           }
         );
         const data = await response.json();
-        if (data.status === 500) {
+        if (data.status !== 200 && data.status !== 201) {
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           setListEmployee(data?.payload?.allLegal);
           setLastPage(data?.payload?._totalPage);
           setTotal(data?.payload?._max);

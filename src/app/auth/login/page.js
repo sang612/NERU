@@ -54,13 +54,13 @@ export default function LoginPage() {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           localStorage.setItem(
             'user',
             JSON.stringify({
@@ -72,7 +72,7 @@ export default function LoginPage() {
           );
 
           localStorage.setItem('token', data.payload.token);
-          enqueueSnackbar('ロギングすることは成功します。', {
+          enqueueSnackbar('ログインできました。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
@@ -105,13 +105,13 @@ export default function LoginPage() {
           }),
         });
         const data = await response.json();
-        if (data.status === 500) {
-          enqueueSnackbar(data.message, {
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200) {
+        } else if (data.status === 200 || data.status === 201) {
           enqueueSnackbar('電子メールを正常に送信', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -211,15 +211,15 @@ export default function LoginPage() {
             </div>
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>
-          <div className="w-full mb-4 flex justify-between">
+          <div className="w-full mb-4 flex flex-col justify-center items-end">
+            <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
+              パスワードをお忘れの場合
+            </div>
             <div
               onClick={() => router.push('/auth/register/personal')}
-              className="text-base text-third hover:cursor-pointer"
+              className="text-base text-primary hover:cursor-pointer mt-2"
             >
-              応募
-            </div>
-            <div onClick={() => setActiveItem(true)} className="text-base text-third hover:cursor-pointer">
-              パスワードをお忘れの場合
+              新規登録
             </div>
           </div>
           <Button isLoading={isLoading} onClick={handleSubmit} classname="bg-primary mt-[27.93px]">
