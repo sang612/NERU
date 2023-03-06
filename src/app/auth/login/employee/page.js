@@ -99,6 +99,17 @@ export default function PersonalRegister() {
             dispatch(addNew(data.payload.user));
             dispatch(addToken(data.payload.token));
             dispatch(addLegal(data.payload.legal));
+            localStorage.setItem(
+              'user',
+              JSON.stringify({
+                id: data.payload.user.id,
+                role: data.payload.user.role,
+                isEnterprise: data.payload.user.isEnterprise,
+                record_number_of_user: data.payload.user.record_number_of_user,
+              })
+            );
+  
+            localStorage.setItem('token', data.payload.token);
             router.push('/user/updateProfileEmployee');
           } else router.push('/auth/login');
         }

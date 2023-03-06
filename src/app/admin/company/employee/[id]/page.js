@@ -6,7 +6,7 @@ import { css, cx } from '@emotion/css';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { ArrowLeftOutlined, EditFilled } from '@ant-design/icons';
+import { ArrowLeftOutlined, DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
 
@@ -65,6 +65,33 @@ export default function Employee({ params }) {
                 )}
               />
             </Link>
+            <DeleteFilled
+              onClick={() =>
+                setActiveItem({
+                  id: record.user_id?.id,
+                  name: record.user_id?.first_name,
+                  data: [
+                    {
+                      label: '氏名',
+                      value: record.user_id?.first_name,
+                    },
+                    {
+                      label: '携帯電話番号',
+                      value: record.user_id?.phone,
+                    },
+                  ],
+                })
+              }
+              className={cx(
+                'w-6 h-6 mx-2 text-error hidden',
+                css`
+                  svg {
+                    width: 100%;
+                    height: 100%;
+                  }
+                `
+              )}
+            />
           </div>
         ),
         className: 'w-[8%]',
