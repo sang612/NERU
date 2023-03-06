@@ -85,7 +85,7 @@ export default function PersonalRegister() {
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           setIsLoading(false);
-          enqueueSnackbar(data.message ? data?.message : data?.error ? data?.message : data?.error, {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
