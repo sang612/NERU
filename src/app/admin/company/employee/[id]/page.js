@@ -83,7 +83,7 @@ export default function Employee({ params }) {
                 })
               }
               className={cx(
-                'w-6 h-6 mx-2 text-error hidden',
+                'w-6 h-6 mx-2 text-error',
                 css`
                   svg {
                     width: 100%;
