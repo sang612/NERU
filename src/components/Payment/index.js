@@ -9,9 +9,7 @@ import CheckoutForm from '../CheckoutForm';
 // This is a public sample test API key.
 // Don’t submit any personally identifiable information in requests made with this key.
 // Sign in to see your own test API key embedded in code samples.
-const stripePromise = loadStripe(
-  'pk_test_51MZnsEIJMS5JJPnFjyFeuJK1IytiC751M5FVqJ7Jz2Q4nErUzY2MsfYqMqL31RSKVxNvmdsUc4BaS12a4hbUQ3Il00sHl7MMu5'
-);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const customStyles = {
   content: {
@@ -41,10 +39,9 @@ function PaymentModal({ isOpen, setIsOpen }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          accessToken:
-            token,
+          accessToken: token,
         },
-        body: JSON.stringify({ amount: 1, productId: 'prod_NLdaPYtT9DqNjE' }),
+        body: JSON.stringify({ amount: 1, productId: `${process.env.NEXT_PUBLIC_PRODUCT_ID}` }),
       })
         .then((res) => res.json())
         .then((data) => setClientSecret(data.clientSecret));
