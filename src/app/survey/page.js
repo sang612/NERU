@@ -46,7 +46,6 @@ export default function SurveyPage() {
       }));
     }
     if (e.target.value.length === 0) return;
-    const inputVal = e.target.value;
     if (e.target.value < 0) {
       e.target.value = e.target.value * -1;
     }
