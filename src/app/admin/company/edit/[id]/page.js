@@ -1,25 +1,22 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import CardLayout from "@/components/CardLayout";
-import { Input } from "@/components/Input";
-import { Button } from "@/components/Button/button";
-import {
-  validateEmail,
-  validateName,
-} from "@/utils/validate";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import CardLayout from '@/components/CardLayout';
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button/button';
+import { validateEmail, validateName } from '@/utils/validate';
+import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 
 export default function EditCompanyPage({ params }) {
   const id = params?.id;
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    companyName: "",
-    email: "",
+    companyName: '',
+    email: '',
   });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
@@ -59,23 +56,27 @@ export default function EditCompanyPage({ params }) {
     if (!validateCompanyName && !validateCompanyEmail) {
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              accessToken: token,
-            },
-            body: JSON.stringify({
-              email: email,
-              company_name: companyName,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+          body: JSON.stringify({
+            email: email,
+            company_name: companyName,
+          }),
+        });
         const data = await response.json();
         setIsLoading(false);
         if (data.status !== 200 && data.status !== 201) {
+          if (data.message.includes('E11000 duplicate key error collection')) {
+            enqueueSnackbar('メールはすでに存在します', {
+              variant: 'error',
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            });
+            return;
+          }
           enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -119,11 +120,7 @@ export default function EditCompanyPage({ params }) {
                   onChange={(e) => {
                     setCompanyName(e.target.value);
                   }}
-                  validate={
-                    companyName
-                      ? () => checkValidateName(companyName, "companyName")
-                      : () => {}
-                  }
+                  validate={companyName ? () => checkValidateName(companyName, 'companyName') : () => {}}
                   messageError={validate.companyName}
                   height="h-14"
                   border="border-[1px]"
@@ -132,9 +129,7 @@ export default function EditCompanyPage({ params }) {
             </div>
           </div>
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">
-              メールアドレス
-            </div>
+            <div className="mb-4 h-14 flex items-center w-36">メールアドレス</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input

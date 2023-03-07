@@ -85,6 +85,13 @@ export default function PersonalRegister() {
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           setIsLoading(false);
+          if(data.message === `Cannot read properties of null (reading 'id')`) {
+            enqueueSnackbar('このメールは存在しません', {
+              variant: 'error',
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            });
+            return;
+          }
           enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

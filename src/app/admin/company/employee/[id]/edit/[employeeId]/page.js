@@ -106,6 +106,13 @@ export default function EditEmployeePage({ params }) {
         const data = await response.json();
         setIsLoading(false);
         if (data.status !== 200 && data.status !== 201) {
+          if (data.message.includes('E11000 duplicate key error collection: nerusoku-dbi.users index: email_1 dup key')) {
+            enqueueSnackbar('メールはすでに存在します', {
+              variant: 'error',
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            });
+            return;
+          }
           enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

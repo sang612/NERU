@@ -37,13 +37,13 @@ export default function CreatePasswordPage({ params }) {
         });
         const data = await response.json();
         setIsLoading(false);
-        if (data.status !== 200 && data.status !== 201) {
+        if (data.status !== 200 && data.status !== 201 && !data.id) {
           enqueueSnackbar(data.message ? data?.message : data?.error, {
             variant: 'error',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           return;
-        } else if (data.status === 200 || data.status === 201) {
+        } else if (data.status === 200 || data.status === 201 || data.id) {
           enqueueSnackbar('パスワード更新成功', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },

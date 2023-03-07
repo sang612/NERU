@@ -60,7 +60,12 @@ export const ModalCreateCompany = ({
                 onChange={(e) => {
                   setAffiliationName(e.target.value);
                 }}
-                messageError={validate.affiliationName}
+                validate={
+                  affiliationName
+                    ? () => checkValidateName(affiliationName, 'departmentName')
+                    : () => {}
+                }
+                messageError={validate.departmentName}
                 height="h-14"
                 border="border-[1px]"
               />

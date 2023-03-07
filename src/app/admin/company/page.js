@@ -227,7 +227,7 @@ export default function CompanyPage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({
-    affiliationName: '',
+    departmentName: '',
     firstName: '',
     firstNameKatakana: '',
     lastName: '',
@@ -311,6 +311,7 @@ export default function CompanyPage() {
     const validateEmployeeTel = validateTelPhone(phone);
     const validateEmplyeeEmail = validateEmail(email);
     const validateEmployeeCode = validateCode(numberOfEmployees);
+    const validateAffiliationName = validateName(affiliationName, 'departmentName');
     if (
       !validateEmployeeFirstName &&
       !validateEmployeeLastName &&
@@ -318,7 +319,8 @@ export default function CompanyPage() {
       !validateEmployeeLastNameKatakana &&
       !validateEmployeeTel &&
       !validateEmplyeeEmail &&
-      !validateEmployeeCode
+      !validateEmployeeCode &&
+      !validateAffiliationName
     ) {
       setIsLoading(true);
       try {
@@ -372,6 +374,7 @@ export default function CompanyPage() {
         email: validateEmplyeeEmail,
         phone: validateEmployeeTel,
         numberOfEmployees: validateEmployeeCode,
+        departmentName: validateAffiliationName
       });
     }
   };

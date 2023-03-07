@@ -46,6 +46,10 @@ export default function SurveyPage() {
       }));
     }
     if (e.target.value.length === 0) return;
+    const inputVal = e.target.value;
+    if (e.target.value < 0) {
+      e.target.value = e.target.value * -1;
+    }
     setAnswersList((prevState) => ({
       ...prevState,
       answer: [...prevState.answer, { question_id: id, answer: e.target.value }],
@@ -153,6 +157,7 @@ export default function SurveyPage() {
                       type={item.type}
                       onChange={(e) => handleChangeInput(e, item.id)}
                       max={item.type === 'date' ? yesterday : ''}
+                      min={item.type === 'number' ? 0 : ''}
                     />
                     {item.title === 'Q.05' && (
                       <div className="absolute right-[32px] top-1/2 -translate-y-1/2">時間</div>
