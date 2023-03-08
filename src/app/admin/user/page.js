@@ -7,7 +7,7 @@ import { css, cx } from '@emotion/css';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { DeleteFilled, EditFilled, EyeOutlined } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
 import { validateEmail, validateName, validateTelPhone, validateNameKatakana } from '@/utils/validate';
@@ -70,6 +70,19 @@ export default function CompanyPage() {
         index: 'id',
         render: (id, record) => (
           <div className="w-full flex justify-center items-center">
+            <Link href={`/admin/user/transaction/${id}`}>
+              <EyeOutlined
+                className={cx(
+                  'w-6 h-6 mx-2 text-primary',
+                  css`
+                    svg {
+                      width: 100%;
+                      height: 100%;
+                    }
+                  `
+                )}
+              />
+            </Link>
             <Link href={`/admin/user/edit/${id}`}>
               <EditFilled
                 className={cx(
