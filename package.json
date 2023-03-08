@@ -20,6 +20,7 @@
     "@stripe/stripe-js": "^1.46.0",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
+    "moment": "^2.29.4",
     "next": "13.1.6",
     "notistack": "^2.0.8",
     "prop-types": "^15.8.1",
