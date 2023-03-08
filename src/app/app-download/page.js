@@ -1,6 +1,7 @@
+'use client';
+
 import { Button } from '@/components/Button/button';
 import { DownloadIcon, MeasureYourSleepIcon } from '@/assets/icons';
-import Link from 'next/link';
 
 export default function AppDownloadPage() {
   return (
@@ -17,11 +18,14 @@ export default function AppDownloadPage() {
           <div className="flex justify-center w-full my-[30px]">
             <DownloadIcon width={48} height={48} />
           </div>
-          <Link href="applinks://nerusoku.okuchy.com" as="applinks://nerusoku.okuchy.com">
-            <Button classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl">
-              録音のAPPへ
-            </Button>
-          </Link>
+          <Button
+            onClick={() => {
+              document.location = process.env.NEXT_PUBLIC_IOS_APP_URL;
+            }}
+            classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl"
+          >
+            録音のAPPへ
+          </Button>
         </div>
       </div>
     </div>
