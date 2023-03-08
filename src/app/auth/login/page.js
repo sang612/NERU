@@ -80,7 +80,7 @@ export default function LoginPage() {
           else router.push('/notification');
         }
       } catch (error) {
-        enqueueSnackbar('ロギングすることは失敗します。', {
+        enqueueSnackbar('アカウントまたはパスワードが無効です', {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
@@ -155,7 +155,7 @@ export default function LoginPage() {
             name="tel"
             type="text"
             value={tel}
-            placeholder="携帯電話番号"
+            placeholder="電話番号"
             onChange={(e) => {
               setTel(e.target.value);
             }}

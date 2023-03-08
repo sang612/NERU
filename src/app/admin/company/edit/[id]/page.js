@@ -83,7 +83,7 @@ export default function EditCompanyPage({ params }) {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
-          enqueueSnackbar('会社を更新します。', {
+          enqueueSnackbar('会社の更新が成功しました', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });

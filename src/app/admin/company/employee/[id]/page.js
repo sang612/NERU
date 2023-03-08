@@ -27,13 +27,13 @@ export default function Employee({ params }) {
         sorter: (a, b) => a.localeCompare(b),
       },
       {
-        title: '携帯電話番号',
+        title: '電話番号',
         index: 'user_id',
         render: (value) => <div className="w-full text-left">{value?.phone}</div>,
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
       },
       {
-        title: '氏名',
+        title: '姓名',
         index: 'user_id',
         render: (value) => <div className="w-full text-left">{value?.first_name}</div>,
         className: 'min-w-[40px]',
@@ -72,11 +72,11 @@ export default function Employee({ params }) {
                   name: record.user_id?.first_name,
                   data: [
                     {
-                      label: '氏名',
+                      label: '姓名',
                       value: record.user_id?.first_name,
                     },
                     {
-                      label: '携帯電話番号',
+                      label: '電話番号',
                       value: record.user_id?.phone,
                     },
                   ],

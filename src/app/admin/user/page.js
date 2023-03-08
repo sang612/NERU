@@ -289,7 +289,7 @@ export default function CompanyPage() {
       )}
       {!modalCreate && (
         <CardLayout>
-          <div className="flex justify-start px-6 pb-6">
+          <div className="hidden justify-start px-6 pb-6">
             {user.role === Role.admin && (
               <div onClick={() => setModalCreate(true)}>
                 <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">

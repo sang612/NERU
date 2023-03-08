@@ -54,7 +54,7 @@ export default function UploadPage() {
       return;
     }
     if (!image1 || !image2 || !image3 || !image4) {
-      enqueueSnackbar('全ての画像をアップロードしていただけないでしょうか。', {
+      enqueueSnackbar('全ての画像をアップロードしてください。', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });

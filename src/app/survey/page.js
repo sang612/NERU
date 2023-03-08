@@ -63,7 +63,7 @@ export default function SurveyPage() {
   };
   const handleSubmit = async () => {
     if (answersList.answer.length !== listQuestion.length) {
-      enqueueSnackbar('全ての質問を答えていただけないでしょうか。', {
+      enqueueSnackbar('全ての質問を答えてください', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
@@ -88,7 +88,7 @@ export default function SurveyPage() {
         });
         return;
       } else if (data.status === 200 || data.status === 201) {
-        enqueueSnackbar('答えを伝えるのは成功します。', {
+        enqueueSnackbar('質問の回答が完了しました。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });

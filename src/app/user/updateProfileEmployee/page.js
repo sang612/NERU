@@ -136,7 +136,7 @@ export default function EnterpriseRegister() {
             name="department"
             type="text"
             value={legal?.department_name}
-            placeholder="所属名"
+            placeholder="部署名"
           />
           <Input
             disabled
@@ -150,7 +150,7 @@ export default function EnterpriseRegister() {
             name="mr"
             type="text"
             value={user.last_name}
-            placeholder="氏"
+            placeholder="姓"
           />
           <Input
             disabled

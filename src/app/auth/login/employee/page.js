@@ -222,7 +222,7 @@ export default function PersonalRegister() {
             name="phonenumber"
             type="text"
             value={tel}
-            placeholder="携帯電話番号"
+            placeholder="電話番号"
             onChange={(e) => {
               setTel(e.target.value);
             }}

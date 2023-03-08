@@ -1,7 +1,7 @@
 const messageValidatePassword = {
   password: {
     notInput: 'パスワードは必ず入力してください。',
-    failRegex: 'パスワードは、8文字〜24文字以内で入力してください。',
+    failRegex: 'パスワード8~32桁で入力してください。',
   },
   newPassword: {
     notInput: '新しいパスワードは必ず入力してください。',
@@ -9,14 +9,14 @@ const messageValidatePassword = {
   },
 };
 const messageValidateName = {
-  firstName: '氏',
+  firstName: '姓',
   lastName: '名',
   companyName: '会社名',
-  departmentName: '所属名',
+  departmentName: '部署名',
 };
 const regexName = /^[a-zA-Zａ-ｚA-Z0-9 ぁ-んァ-ヶー一-龠々]+$/;
 const regexNameKatakana = /^([ァ-ン]|ー)+$/;
-const regexPassword = /[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,24}/;
+const regexPassword = /[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,32}/;
 const regexTelPhone = /(^(\d{7,11})+$)/;
 //eslint-disable-next-line
 const regexEmail =
@@ -28,17 +28,17 @@ export const validateCode = (code) => {
 
 export const validateTelPhone = (tel) => {
   return !tel.trim()
-    ? '携帯電話番号は、必ず入力してください。'
+    ? '電話番号は、必ず入力してください。'
     : regexTelPhone.test(tel.trim())
     ? ''
-    : `携帯電話番号は10~11桁で入力してください。`;
+    : `電話番号は10~11桁で入力してください。`;
 };
 export const validateEmail = (email) =>
   !email.trim()
     ? 'メールアドレスは、必ず入力してください。'
     : regexEmail.test(email.trim())
     ? ''
-    : '正しいメールアドレスを入力してください。';
+    : 'は有効なメールアドレスでなければなりません';
 
 export const validateName = (name, type) =>
   !name.trim()

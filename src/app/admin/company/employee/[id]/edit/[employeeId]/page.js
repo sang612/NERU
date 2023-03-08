@@ -150,7 +150,7 @@ export default function EditEmployeePage({ params }) {
         <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4">ユーザー編集</h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">氏</div>
+            <div className="mb-4 h-14 flex items-center w-36">姓</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
@@ -188,7 +188,7 @@ export default function EditEmployeePage({ params }) {
             </div>
           </div>
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">氏（カタカナ）</div>
+            <div className="mb-4 h-14 flex items-center w-36">姓ふりがな</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
@@ -207,7 +207,7 @@ export default function EditEmployeePage({ params }) {
             </div>
           </div>
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">名（カタカナ）</div>
+            <div className="mb-4 h-14 flex items-center w-36">名ふりがな</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
@@ -247,7 +247,7 @@ export default function EditEmployeePage({ params }) {
             </div>
           </div>
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">携帯電話番号</div>
+            <div className="mb-4 h-14 flex items-center w-36">電話番号</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input

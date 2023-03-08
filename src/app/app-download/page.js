@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button/button';
 import { DownloadIcon, MeasureYourSleepIcon } from '@/assets/icons';
+import Link from 'next/link';
 
 export default function AppDownloadPage() {
   return (
@@ -10,14 +11,17 @@ export default function AppDownloadPage() {
         </div>
         <div className="w-full max-w-[260px] mx-auto">
           <p className="text-center font-[700] text-2xl text-third md:text-3xl xl:text-4xl mt-[50px] sssm:mt-[120px]">
-            登録完了 <br />いたしました。
+            登録完了 <br />
+            いたしました。
           </p>
           <div className="flex justify-center w-full my-[30px]">
             <DownloadIcon width={48} height={48} />
           </div>
-          <Button classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl">
-            録音のAPPへ
-          </Button>
+          <Link href="applinks://nerusoku.okuchy.com" as="applinks://nerusoku.okuchy.com">
+            <Button classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl">
+              録音のAPPへ
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

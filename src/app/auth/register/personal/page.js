@@ -181,32 +181,10 @@ export default function PersonalRegister() {
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
-            name="firstName"
-            type="text"
-            value={firstName}
-            placeholder="名"
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-            validate={firstName ? () => checkValidateName(firstName, 'firstName') : () => {}}
-            messageError={validate.firstName}
-          />
-          <Input
-            name="firstNameKatakana"
-            type="text"
-            placeholder="名（カタカナ）"
-            value={firstNameKatakana}
-            onChange={(e) => {
-              setFirstNameKatakana(e.target.value);
-            }}
-            validate={firstNameKatakana ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName') : () => {}}
-            messageError={validate.firstNameKatakana}
-          />
-          <Input
             name="lastName"
             type="text"
-            placeholder="氏"
             value={lastName}
+            placeholder="名"
             onChange={(e) => {
               setLastName(e.target.value);
             }}
@@ -216,13 +194,35 @@ export default function PersonalRegister() {
           <Input
             name="lastNameKatakana"
             type="text"
-            placeholder="氏（カタカナ）"
+            placeholder="名ふりがな"
             value={lastNameKatakana}
             onChange={(e) => {
               setLastNameKatakana(e.target.value);
             }}
             validate={lastNameKatakana ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName') : () => {}}
             messageError={validate.lastNameKatakana}
+          />
+          <Input
+            name="firstName"
+            type="text"
+            placeholder="姓"
+            value={firstName}
+            onChange={(e) => {
+              setFirstName(e.target.value);
+            }}
+            validate={firstName ? () => checkValidateName(firstName, 'firstName') : () => {}}
+            messageError={validate.firstName}
+          />
+          <Input
+            name="firstNameKatakana"
+            type="text"
+            placeholder="姓ふりがな"
+            value={firstNameKatakana}
+            onChange={(e) => {
+              setFirstNameKatakana(e.target.value);
+            }}
+            validate={firstNameKatakana ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName') : () => {}}
+            messageError={validate.firstNameKatakana}
           />
           <Input
             name="email"
@@ -258,7 +258,7 @@ export default function PersonalRegister() {
             name="phonenumber"
             type="text"
             value={tel}
-            placeholder="携帯電話番号"
+            placeholder="電話番号"
             onChange={(e) => {
               setTel(e.target.value);
             }}

@@ -28,7 +28,7 @@ export default function CompanyPage() {
   const columns = useMemo(
     () => [
       {
-        title: '会社番号',
+        title: '企業ID',
         index: 'id',
         render: (id) => <div className="w-full text-left">{id}</div>,
         className: 'min-w-[40px]',
@@ -352,7 +352,7 @@ export default function CompanyPage() {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
-          enqueueSnackbar('ユーザーを作成することは成功します。', {
+          enqueueSnackbar('ユーザーの追加が成功しました', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
