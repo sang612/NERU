@@ -299,7 +299,7 @@ export const ModalCreateCompanyByFile = ({
             </div>
             <div className="w-full flex justify-around">
               <div className="w-6/12 mr-2">
-                <Link href="/task.xlsx" classname="bg-primary w-full h-full block" isLoading={isLoading}>
+                <Link href="/ユーザー一括登録用エクセル_Nerusoku.xlsx" classname="bg-primary w-full h-full block" isLoading={isLoading}>
                   <Button classname="bg-primary text-xs whitespace-nowrap">雛形ファイルダウンロード</Button>
                 </Link>
               </div>
