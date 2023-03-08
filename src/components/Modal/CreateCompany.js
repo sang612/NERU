@@ -31,12 +31,25 @@ export const ModalCreateCompany = ({
   checkValidateEmail,
   checkValidateName,
   checkValidateNameKatakana,
+  setValidate
 }) => {
   const modalRef = useRef(null);
+  const resetForm = () => {
+    setAffiliationName('');
+    setNumberOfEmployees('');
+    setFirstName('');
+    setFirstNameKatakana('');
+    setLastName('');
+    setLastNameKatakana('');
+    setEmail('');
+    setPhone('');
+    setValidate('')
+  };
   useEffect(() => {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setModalCreate(false);
+        resetForm();
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -230,7 +243,13 @@ export const ModalCreateCompany = ({
                 </Button>
               </div>
               <div className="w-5/12">
-                <Button onClick={() => setModalCreate(false)} classname="bg-secondary">
+                <Button
+                  onClick={() => {
+                    setModalCreate(false);
+                    resetForm();
+                  }}
+                  classname="bg-secondary"
+                >
                   戻る
                 </Button>
               </div>
@@ -299,7 +318,11 @@ export const ModalCreateCompanyByFile = ({
             </div>
             <div className="w-full flex justify-around">
               <div className="w-6/12 mr-2">
-                <Link href="/ユーザー一括登録用エクセル_Nerusoku.xlsx" classname="bg-primary w-full h-full block" isLoading={isLoading}>
+                <Link
+                  href="/ユーザー一括登録用エクセル_Nerusoku.xlsx"
+                  classname="bg-primary w-full h-full block"
+                  isLoading={isLoading}
+                >
                   <Button classname="bg-primary text-xs whitespace-nowrap">雛形ファイルダウンロード</Button>
                 </Link>
               </div>

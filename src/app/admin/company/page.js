@@ -415,6 +415,7 @@ export default function CompanyPage() {
           checkValidateEmail={checkValidateEmail}
           checkValidateNameKatakana={checkValidateNameKatakana}
           companyName={companyName}
+          setValidate={setValidate}
         />
       )}
       {modalCreateByFile && (

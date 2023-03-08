@@ -43,7 +43,7 @@ export const Input = ({
         max={max}
         min={min}
       />
-      <div className={`${!messageError && 'hidden'} text-error text-xs my-2`}>{messageError}</div>
+      <div className={`${!messageError && 'hidden'} text-error text-xs my-2 whitespace-nowrap`}>{messageError}</div>
     </div>
   );
 };

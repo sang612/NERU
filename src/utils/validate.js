@@ -16,7 +16,7 @@ const messageValidateName = {
 };
 const regexName = /^[a-zA-Zａ-ｚA-Z0-9 ぁ-んァ-ヶー一-龠々]+$/;
 const regexNameKatakana = /^([ァ-ン]|ー)+$/;
-const regexPassword = /[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,32}/;
+const regexPassword = /^[0-9a-zA-Zぁ-んァ-ヶー一-龠々]{8,32}$/;
 const regexTelPhone = /(^(\d{7,11})+$)/;
 //eslint-disable-next-line
 const regexEmail =
@@ -38,7 +38,7 @@ export const validateEmail = (email) =>
     ? 'メールアドレスは、必ず入力してください。'
     : regexEmail.test(email.trim())
     ? ''
-    : 'は有効なメールアドレスでなければなりません';
+    : 'メールアドレスは有効なメールアドレスでなければなりません';
 
 export const validateName = (name, type) =>
   !name.trim()
@@ -51,12 +51,12 @@ export const validateName = (name, type) =>
 
 export const validateNameKatakana = (name, type) =>
   !name.trim()
-    ? `${messageValidateName[type]}（カタカナ）は、必ず入力してください。`
+    ? `${messageValidateName[type]}ふりがな'は、必ず入力してください。`
     : !regexNameKatakana.test(name.trim())
-    ? `${messageValidateName[type]}（カタカナ）は、使用できる文字を入力してください。`
+    ? `${messageValidateName[type]}ふりがな'は、使用できる文字を入力してください。`
     : name.trim().length < 31
     ? ''
-    : `${messageValidateName[type]}（カタカナ）は、30文字以下で入力してください。`;
+    : `${messageValidateName[type]}ふりがな'は、30文字以下で入力してください。`;
 
 export const validatePassword = (password, page) =>
   !password.trim()
