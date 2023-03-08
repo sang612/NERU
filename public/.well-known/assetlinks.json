@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.zens.nerusoku.app",
+            "sha256_cert_fingerprints": [
+                "4A:41:7B:A9:28:FB:78:4E:08:9E:FD:9F:FB:B2:F5:6E:35:59:3C:FF:C7:CD:CB:3C:F7:F5:EB:BF:AA:EA:65:BE"
+            ]
+        }
+    }
+]
