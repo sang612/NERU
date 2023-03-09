@@ -1,6 +1,6 @@
 import { Button } from '../Button/button';
 
-export const NotifyModal = ({ content, firstAction, secondAction, children, contentClassname }) => (
+export const NotifyModal = ({ content, secondAction, children, contentClassname }) => (
   <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}>
     <div className="text-center flex flex-col items-center justify-center px-[26px] pt-[43.98px] pb-[20.07px] w-full h-full min-h-[80vh]">
       {children}
@@ -16,9 +16,6 @@ export const NotifyModal = ({ content, firstAction, secondAction, children, cont
       <div></div>
     </div>
     <div className="w-full flex flex-row px-[26px]">
-      <Button classname="bg-secondary mr-[20px]" onClick={firstAction}>
-        戻る
-      </Button>
       <Button type="submit" classname="bg-primary" onClick={secondAction}>
         次へ
       </Button>

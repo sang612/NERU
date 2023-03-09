@@ -9,15 +9,13 @@ export default function SecondNotification() {
   const router = useRouter();
   const token = localStorage.getItem('token');
 
-  const firstAction = () => {
-    router.push('/notification');
-  };
+  // const firstAction = () => {
+  //   router.push('/notification');
+  // };
   const secondAction = () => {
     router.push('/notification/third');
   };
   useEffect(() => {
-    console.log(window.location.search);
-
     const searchParams = new URLSearchParams(window.location.search);
     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/payment/payment-intent-completed`, {
       method: 'POST',
@@ -39,7 +37,6 @@ export default function SecondNotification() {
         持っているかを判定す
         るために写真の登録が
         必要です。"
-      firstAction={firstAction}
       secondAction={secondAction}
     >
       <div className="relative w-full h-[66px] mt-[38px]">
