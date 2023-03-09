@@ -203,7 +203,6 @@ export default function SurveyPage() {
         enableInput('640959e7495019455d6740af');
       }
     }
-
     let index2 = answersList.answer.findIndex((o) => o.question_id === '64095b8347d8a7c5aaee8efd');
     if (index2 > 0) {
       if (answersList.answer[index2].answer_id === '64097a1d47d8a7c5aaee9019') {
@@ -212,7 +211,6 @@ export default function SurveyPage() {
         enableInput('64095bab47d8a7c5aaee8f04');
       }
     }
-
     let index3 = answersList.answer.findIndex((o) => o.question_id === '64095c1547d8a7c5aaee8f1d');
     if (index3 > 0) {
       if (answersList.answer[index3].answer_id === '64097adf47d8a7c5aaee903c') {
@@ -221,7 +219,6 @@ export default function SurveyPage() {
         enableRadioInput('64095c3047d8a7c5aaee8f24');
       }
     }
-
     let index4 = answersList.answer.findIndex((o) => o.question_id === '64095c3047d8a7c5aaee8f24');
     if (index4 > 0) {
       if (answersList.answer[index4].answer_id === '64097aff47d8a7c5aaee9043') {
@@ -230,7 +227,6 @@ export default function SurveyPage() {
         enableInput('64095d3a47d8a7c5aaee8f33');
       }
     }
-
     let index5 = answersList.answer.findIndex((o) => o.question_id === '64095d5547d8a7c5aaee8f36');
     if (index5 > 0) {
       if (answersList.answer[index5].answer_id === '64097b8947d8a7c5aaee906a') {
@@ -239,7 +235,6 @@ export default function SurveyPage() {
         enableRadioInput('64095d7547d8a7c5aaee8f3d');
       }
     }
-
     let index6 = answersList.answer.findIndex((o) => o.question_id === '64095de047d8a7c5aaee8f59');
     if (index6 > 0) {
       if (answersList.answer[index6].answer_id === '64097c2020af33a0256d35cf') {
