@@ -117,7 +117,8 @@ export default function PersonalRegister() {
             );
   
             localStorage.setItem('token', data.payload.token);
-            router.push('/user/updateProfileEmployee');
+            if (!data?.payload?.user?.isFirstUpdatePass) router.push('/user/updateProfileEmployee');
+            else router.push('/app-download');
           } else router.push('/auth/login');
         }
       } catch (error) {

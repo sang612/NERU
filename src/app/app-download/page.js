@@ -22,9 +22,17 @@ export default function AppDownloadPage() {
             onClick={() => {
               document.location = process.env.NEXT_PUBLIC_IOS_APP_URL;
             }}
+            classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl mb-8"
+          >
+            録音のAPPへ(IOS)
+          </Button>
+          <Button
+            onClick={() => {
+              document.location = process.env.NEXT_PUBLIC_ANDROID_APP_URL;
+            }}
             classname="bg-[#A6D4E3] border-[#50C3C5] border-[3px] h-[88px] w-[260px] rounded-[24px] font-bold text-xl"
           >
-            録音のAPPへ
+            録音のAPPへ(Android)
           </Button>
         </div>
       </div>
