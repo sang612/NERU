@@ -1,12 +1,11 @@
 'use client';
-import { Input, SurveyInput } from '@/components/Input';
+import { SurveyInput } from '@/components/Input';
 import { InputRadio } from '@/components/InputRadio';
 import { Button } from '@/components/Button/button';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { Inter } from '@next/font/google';
 import { useRouter } from 'next/navigation';
-import { validateOkuchyQ } from '@/utils/nerusokuQ';
 
 const inter = Inter({ subsets: ['latin'] });
 const getYesterday = () => {
