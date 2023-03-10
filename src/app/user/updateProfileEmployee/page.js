@@ -99,7 +99,7 @@ export default function EnterpriseRegister() {
         });
         return;
       } else if (data.status === 200 || data.status === 201) {
-        enqueueSnackbar("プロファイルをアップロードすることは成功します。", {
+        enqueueSnackbar("プロフィールの更新が成功しました", {
           variant: "success",
           anchorOrigin: { vertical: "top", horizontal: "right" },
         });

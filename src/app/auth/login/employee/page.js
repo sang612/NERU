@@ -98,7 +98,7 @@ export default function PersonalRegister() {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
-          enqueueSnackbar('ロギングすることは成功します。', {
+          enqueueSnackbar('ログインできました。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });

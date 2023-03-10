@@ -80,7 +80,7 @@ export default function UploadPage() {
         const imageArr = [image1, image2, image3, image4];
         dispatch(addImage(imageArr));
         setIsLoading(false);
-        enqueueSnackbar('画像をアップロードすることは成功します。', {
+        enqueueSnackbar('画像のアップロードが成功しました', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
