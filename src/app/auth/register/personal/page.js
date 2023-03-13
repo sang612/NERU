@@ -18,6 +18,7 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { InputRadio } from '@/components/InputRadio';
 import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
+import Link from 'next/link';
 
 export default function PersonalRegister() {
   const [activeItem, setActiveItem] = useState();
@@ -313,7 +314,10 @@ export default function PersonalRegister() {
               </div>
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-center">
-              <div className="w-full text-base text-third flex justify-end">利用規約とプライバシーポリシーに同意</div>
+              <div className="w-full text-base text-third flex justify-end">
+                <Link href="/terms-of-service" className='text-primary underline'>利用規約</Link>と<Link href="/privacy-policy" className='text-primary underline'>プライバシーポリシー</Link>
+                に同意
+              </div>
               <div
                 className="mt-[5px] w-7 h-7 outline-none border-2 border-primary border-solid rounded-md flex justify-center items-center text-third
                 cursor-pointer"

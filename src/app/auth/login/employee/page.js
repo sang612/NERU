@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { addLegal, addNew, addToken } from '@/slices/userSlice';
 import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
+import Link from 'next/link';
 
 export default function PersonalRegister() {
   const [activeItem, setActiveItem] = useState();
@@ -79,13 +80,13 @@ export default function PersonalRegister() {
             password: password,
             email: email,
             first_name: firstName,
-            last_name: lastName
+            last_name: lastName,
           }),
         });
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           setIsLoading(false);
-          if(data.message === `Cannot read properties of null (reading 'id')`) {
+          if (data.message === `Cannot read properties of null (reading 'id')`) {
             enqueueSnackbar('このメールは存在しません', {
               variant: 'error',
               anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -115,7 +116,7 @@ export default function PersonalRegister() {
                 record_number_of_user: data.payload.user.record_number_of_user,
               })
             );
-  
+
             localStorage.setItem('token', data.payload.token);
             if (!data?.payload?.user?.isFirstUpdatePass) router.push('/user/updateProfileEmployee');
             else router.push('/app-download');
@@ -275,13 +276,22 @@ export default function PersonalRegister() {
               </div>
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-center">
-              <div className="w-full text-base text-third flex justify-end">利用規約とプライバシーポリシーに同意</div>
+              <div className="w-full text-base text-third flex justify-end">
+                <Link href="/terms-of-service" className="text-primary underline">
+                  利用規約
+                </Link>
+                と
+                <Link href="/privacy-policy" className="text-primary underline">
+                  プライバシーポリシー
+                </Link>
+                に同意
+              </div>
               <div
                 className="mt-[5px] w-7 h-7 outline-none border-2 border-primary border-solid rounded-md flex justify-center items-center text-third
                 cursor-pointer"
                 onClick={() => setAcceptPolicy((prev) => !prev)}
               >
-                {acceptPolicy && <RememberPasswordIcon width={25} height={19}/>}
+                {acceptPolicy && <RememberPasswordIcon width={25} height={19} />}
               </div>
               {!acceptPolicy && <h3 className="text-error">{validate.acceptPolicy}</h3>}
             </div>
