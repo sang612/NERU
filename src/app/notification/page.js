@@ -24,10 +24,8 @@ export default function UploadPage() {
             },
           });
           const data = await response.json();
-          if (data.payload.user.record_number_of_user === 0) {
-            return;
-          } else {
-            router.replace('/app-download');
+          if (data.payload.user.record_number_of_user > 0) {
+            router.replace('/notification/second');
           }
         } catch (e) {
           console.log(e);
