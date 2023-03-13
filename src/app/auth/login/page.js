@@ -70,7 +70,6 @@ export default function LoginPage() {
               record_number_of_user: data.payload.user.record_number_of_user,
             })
           );
-
           localStorage.setItem('token', data.payload.token);
           enqueueSnackbar('ログインできました。', {
             variant: 'success',

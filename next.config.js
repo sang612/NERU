@@ -2,6 +2,14 @@
 const nextConfig = {
   experimental: {
     appDir: true,
+    headers() {
+      return [
+        {
+          source: '/.well-known/apple-app-site-association',
+          headers: [{ key: 'Content-Type', value: 'application/json' }],
+        },
+      ];
+    },
   },
   env: {
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT,
