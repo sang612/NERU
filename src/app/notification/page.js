@@ -24,8 +24,14 @@ export default function UploadPage() {
             },
           });
           const data = await response.json();
-          if (data.payload.user.record_number_of_user > 0) {
+          if (data.payload.user.record_number_of_user > 0 && !data.payload.user.isUpload) {
             router.replace('/notification/second');
+          }
+          if (data.payload.user.record_number_of_user > 0 && data.payload.user.isUpload) {
+            router.replace('/survey');
+          }
+          if (data.payload.user.record_number_of_user > 0 && data.payload.user.isUpload && data.payload.user.isAnswer) {
+            router.replace('/app-download');
           }
         } catch (e) {
           console.log(e);
