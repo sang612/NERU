@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
               )}
             />
           </div>
-          <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">寝るソク利用規約</h1>
+          <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">寝るソクプライバシーポリシー</h1>
           <div className="w-6 h-6 mx-2"></div>
         </div>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10 text-left">
