@@ -292,23 +292,19 @@ export default function SurveyPage() {
 
     if (user.isAnswer) {
       const getListAnswer = async () => {
-        try {
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question/${user.id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              accessToken: token,
-            },
-          });
-          const data = await response.json();
-          if (data.status !== 200 && data.status !== 201) {
-            return;
-          } else if (data.status === 200 || data.status === 201) {
-            const answerListFromServer = data?.payload?.request;
-            setListAnswerFromServer(answerListFromServer);
-          }
-        } catch (error) {
-          throw error;
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question/${user.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        });
+        const data = await response.json();
+        if (data.status !== 200 && data.status !== 201) {
+          return;
+        } else if (data.status === 200 || data.status === 201) {
+          const answerListFromServer = data?.payload?.request;
+          setListAnswerFromServer(answerListFromServer);
         }
       };
       getListAnswer();
