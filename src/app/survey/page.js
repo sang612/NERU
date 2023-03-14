@@ -52,7 +52,6 @@ export default function SurveyPage() {
   };
   const handleChangeInput = (e, id) => {
     deletePreviousAnswer(id);
-    // if (e.target.value.length === 0) return;
     if (e.target.value < 0) {
       e.target.value = e.target.value * -1;
     }
