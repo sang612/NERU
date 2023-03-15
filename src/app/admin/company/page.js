@@ -1,23 +1,19 @@
 'use client';
 
-import CardLayout from "@/components/CardLayout";
-import { Role } from "@/utils/constants";
-import { useEffect, useMemo, useState } from "react";
-import { css, cx } from "@emotion/css";
-import Link from "next/link";
-import Table from "@/components/Table";
-import Pagination from "@/components/Table/pagination";
-import {
-  DeleteFilled,
-  EditFilled,
-  EyeOutlined,
-  UserAddOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
+import CardLayout from '@/components/CardLayout';
+import { Role } from '@/utils/constants';
+import { useEffect, useMemo, useState } from 'react';
+import { css, cx } from '@emotion/css';
+import Link from 'next/link';
+import Table from '@/components/Table';
+import Pagination from '@/components/Table/pagination';
+import { DeleteFilled, EditFilled, EyeOutlined, UserAddOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
 import { ModalCreateCompany, ModalCreateCompanyByFile, ModalResultFileExport } from '@/components/Modal/CreateCompany';
 import { validateEmail, validateName, validateTelPhone, validateNameKatakana, validateCode } from '@/utils/validate';
+import { Input } from '@/components/Input';
+import { useDebounce } from '@/utils/useDebounce';
 
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
@@ -25,10 +21,13 @@ export default function CompanyPage() {
   const [lastPage, setLastPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [inputSearch, setInputSearch] = useState('');
+
   const columns = useMemo(
     () => [
       {
-        title: '企業ID',
+        title: '所属番号',
         index: 'id',
         render: (id) => <div className="w-full text-left">{id}</div>,
         className: 'min-w-[40px]',
@@ -151,7 +150,7 @@ export default function CompanyPage() {
         className: 'w-[8%]',
       },
     ],
-    []
+    [user.role]
   );
   const handleDelete = async (id) => {
     try {
@@ -188,31 +187,8 @@ export default function CompanyPage() {
     }
   };
 
-  useEffect(() => {
-    const getListCompany = async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/?page=${currentPage}&limit=${10}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            accessToken: token,
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.status !== 200 && data.status !== 201) {
-        return;
-      } else if (data.status === 200 || data.status === 201) {
-        setListCompany(data?.payload?.enterpriseAll);
-        setLastPage(data?.payload?._totalPage);
-        setTotal(data?.payload?._max);
-      }
-    };
-    getListCompany();
-  }, [currentPage]);
   const { enqueueSnackbar } = useSnackbar();
-  const user = JSON.parse(localStorage.getItem('user'));
+
   const token = localStorage.getItem('token');
   const [modalCreate, setModalCreate] = useState(false);
   const [enterpriseId, setEnterpriseId] = useState();
@@ -302,6 +278,45 @@ export default function CompanyPage() {
       throw error;
     }
   };
+
+  const debouncedSearch = useDebounce(inputSearch, 500);
+
+  useEffect(() => {
+    searchCharacters('');
+    if (debouncedSearch) {
+      searchCharacters(debouncedSearch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, currentPage]);
+
+  async function searchCharacters(search) {
+    return await fetch(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/search?role=enterprise&email=&phone=&name=${search}&page=${currentPage}&limit=10`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => res.payload)
+      .then((res) => {
+        setListCompany(res.enterprise);
+        setLastPage(res._totalPage);
+        setTotal(res._max);
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+  }
+
+  const handleChangeSeach = (e) => {
+    setInputSearch(e.target.value);
+    setCurrentPage(1);
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateEmployeeFirstName = validateName(firstName, 'firstName');
@@ -374,7 +389,7 @@ export default function CompanyPage() {
         email: validateEmplyeeEmail,
         phone: validateEmployeeTel,
         numberOfEmployees: validateEmployeeCode,
-        departmentName: validateAffiliationName
+        departmentName: validateAffiliationName,
       });
     }
   };
@@ -429,15 +444,21 @@ export default function CompanyPage() {
       )}
       {!modalCreate && !modalCreateByFile && !modalResultFileExport && (
         <CardLayout>
-          <div className="flex justify-start px-6 pb-6">
+          <div className="flex justify-between px-6 pb-6">
             {user.role === Role.admin && (
-              <Link href="/admin/company/create">
-                <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
-                  会社登録
+              <>
+                <Link href="/admin/company/create">
+                  <div className="h-12 w-36 bg-primary flex justify-center items-center rounded-md text-white cursor-pointer mr-4">
+                    会社登録
+                  </div>
+                </Link>
+                <div className="flex items-center justify-between gap-3">
+                  <Input placeholder={'会社検索...'} onChange={handleChangeSeach} />
                 </div>
-              </Link>
+              </>
             )}
           </div>
+
           <Table columns={columns} data={listCompany} />
           <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
         </CardLayout>
