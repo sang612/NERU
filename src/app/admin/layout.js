@@ -1,18 +1,18 @@
 'use client';
 
-import { NotFound } from '@/assets/icons';
 import { Sidebar } from '@/components/AdminSidebar/Sidebar';
 import { Role } from '@/utils/constants';
 import { SnackbarProvider } from 'notistack/dist';
-
+import { useRouter } from 'next/navigation';
 
 export default function AdminLayout({ children }) {
+  const router = useRouter();
   const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <SnackbarProvider>
       <div className="min-h-screen w-full">
-        {user.role === Role.admin ? (
+        {user?.role === Role.admin ? (
           <>
             <Sidebar />
             <div className="ml-56 2xl:ml-64 min-h-screen min-w-[1024px] overflow-auto">
@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
             </div>
           </>
         ) : (
-          <NotFound />
+          router.replace('auth/login')
         )}
       </div>
     </SnackbarProvider>
