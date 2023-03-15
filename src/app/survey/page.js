@@ -35,9 +35,10 @@ export default function SurveyPage() {
   const user = JSON.parse(localStorage.getItem('user'));
   const token = localStorage.getItem('token');
   const [listQuestion, setListQuestion] = useState();
+  const [listAnswerFromServer, setListAnswerFromServer] = useState();
   const [answersList, setAnswersList] = useState({
     user: user.id,
-    answer: [{ question_id: '63f609f6bd5ab34b9a8e9f13', answer: '' }],
+    answer: [],
   });
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -51,13 +52,6 @@ export default function SurveyPage() {
   };
   const handleChangeInput = (e, id) => {
     deletePreviousAnswer(id);
-    if (id === '63f609f6bd5ab34b9a8e9f13' && e.target.value.length === 0) {
-      setAnswersList((prevState) => ({
-        ...prevState,
-        answer: [...prevState.answer, { question_id: id, answer: '' }],
-      }));
-    }
-    if (e.target.value.length === 0) return;
     if (e.target.value < 0) {
       e.target.value = e.target.value * -1;
     }
@@ -73,15 +67,160 @@ export default function SurveyPage() {
       answer: [...prevState.answer, { question_id: id, answer_id: optionId }],
     }));
   };
-  const handleSubmit = async () => {
-    if (isErrorMessage.length > 0) {
-      return;
+  const setErrorInput = (name) => {
+    const input = document.querySelector(`input[name="${name}"]`);
+    if (input) {
+      input.classList.remove('border-primary');
+      input.classList.add('border-error');
     }
-    if (answersList.answer.length === 1) {
+  };
+  const removeErrorInput = (name) => {
+    const input = document.querySelector(`input[name="${name}"]`);
+    if (input) {
+      input.classList.remove('border-error');
+      input.classList.add('border-primary');
+    }
+  };
+  const setAnswerInput = (name, value) => {
+    const input = document.querySelector(`input[name="${name}"]`);
+    if (input) {
+      input.value = value;
+    }
+  };
+  const setAnswerRadioInput = (name, value) => {
+    const input = document.querySelectorAll(`input[name="${name}"]`);
+    input.forEach((e) => {
+      if (e.value === value) e.checked = true;
+    });
+  };
+  const validateEmptyInput = (id) => {
+    let index = answersList.answer.findIndex((o) => o.question_id === id);
+    let index2 = user.isAnswer ? listAnswerFromServer?.findIndex((o) => o.question_id.id === id) : -1;
+    if (index === -1 && index2 === -1) {
+      if (!document.querySelector(`input[name="${id}"]`).disabled) {
+        setErrorInput(id);
+        return false;
+      } else {
+        removeErrorInput(id);
+        return true;
+      }
+    } else {
+      removeErrorInput(id);
+      return true;
+    }
+  };
+  const setErrorRadioInput = (name) => {
+    const input = document.querySelectorAll(`input[name="${name}"]`);
+    for (let i = 0; i < input.length; i++) {
+      const parentDiv = input[i].parentNode.parentNode;
+      if (parentDiv) {
+        parentDiv.classList.remove('border-primary');
+        parentDiv.classList.add('border-error');
+      }
+    }
+  };
+  const removeErrorRadioInput = (name) => {
+    const input = document.querySelectorAll(`input[name="${name}"]`);
+    for (let i = 0; i < input.length; i++) {
+      const parentDiv = input[i].parentNode.parentNode;
+      if (parentDiv) {
+        parentDiv.classList.remove('border-error');
+        parentDiv.classList.add('border-primary');
+      }
+    }
+  };
+  const validateEmptyRadioInput = (id) => {
+    let index = answersList.answer.findIndex((o) => o.question_id === id);
+    let index2 = user.isAnswer ? listAnswerFromServer?.findIndex((o) => o.question_id.id === id) : -1;
+    if (index === -1 && index2 === -1) {
+      if (!document.querySelector(`input[name="${id}"]`).disabled) {
+        setErrorRadioInput(id);
+        return false;
+      } else {
+        removeErrorRadioInput(id);
+        return true;
+      }
+    } else {
+      removeErrorRadioInput(id);
+      return true;
+    }
+  };
+  const handleSubmit = async () => {
+    validateEmptyInput('63f4e0d07aa371bb1c81f1ce');
+    validateEmptyInput('63f4e1487aa371bb1c81f1fa');
+    validateEmptyInput('63f6094fbd5ab34b9a8e9f03');
+    validateEmptyInput('64095913495019455d67407f');
+    validateEmptyInput('6409596e495019455d674095');
+    validateEmptyInput('64095a14495019455d6740b2');
+    validateEmptyInput('64095bab47d8a7c5aaee8f04');
+    validateEmptyInput('64095d3a47d8a7c5aaee8f33');
+    validateEmptyInput('640959e7495019455d6740af');
+    validateEmptyRadioInput('63f60970bd5ab34b9a8e9f09');
+    validateEmptyRadioInput('64095c3047d8a7c5aaee8f24');
+    validateEmptyRadioInput('64095d7547d8a7c5aaee8f3d');
+    validateEmptyRadioInput('64095e0d47d8a7c5aaee8f68');
+    validateEmptyRadioInput('63f60a91bd5ab34b9a8e9f1a');
+    validateEmptyRadioInput('640959b1495019455d6740a0');
+    validateEmptyRadioInput('64095a35495019455d6740b5');
+    validateEmptyRadioInput('64095a57495019455d6740be');
+    validateEmptyRadioInput('64095a81495019455d6740c5');
+    validateEmptyRadioInput('64095aa4495019455d6740ce');
+    validateEmptyRadioInput('64095af047d8a7c5aaee8ec2');
+    validateEmptyRadioInput('64095b0a47d8a7c5aaee8ecb');
+    validateEmptyRadioInput('64095b4d47d8a7c5aaee8ee3');
+    validateEmptyRadioInput('64095b6947d8a7c5aaee8eef');
+    validateEmptyRadioInput('64095b8347d8a7c5aaee8efd');
+    validateEmptyRadioInput('64095be147d8a7c5aaee8f0f');
+    validateEmptyRadioInput('64095bf947d8a7c5aaee8f16');
+    validateEmptyRadioInput('64095c1547d8a7c5aaee8f1d');
+    validateEmptyRadioInput('64095d5547d8a7c5aaee8f36');
+    validateEmptyRadioInput('64095d8d47d8a7c5aaee8f44');
+    validateEmptyRadioInput('64095da647d8a7c5aaee8f4b');
+    validateEmptyRadioInput('64095dc347d8a7c5aaee8f52');
+    validateEmptyRadioInput('64095de047d8a7c5aaee8f59');
+    if (
+      !validateEmptyInput('63f4e0d07aa371bb1c81f1ce') ||
+      !validateEmptyInput('63f4e1487aa371bb1c81f1fa') ||
+      !validateEmptyInput('63f6094fbd5ab34b9a8e9f03') ||
+      !validateEmptyInput('64095913495019455d67407f') ||
+      !validateEmptyInput('6409596e495019455d674095') ||
+      !validateEmptyInput('64095a14495019455d6740b2') ||
+      !validateEmptyInput('64095bab47d8a7c5aaee8f04') ||
+      !validateEmptyInput('64095d3a47d8a7c5aaee8f33') ||
+      !validateEmptyInput('64095c3047d8a7c5aaee8f24') ||
+      !validateEmptyInput('64095d7547d8a7c5aaee8f3d') ||
+      !validateEmptyInput('640959e7495019455d6740af') ||
+      !validateEmptyRadioInput('63f60970bd5ab34b9a8e9f09') ||
+      !validateEmptyRadioInput('64095c3047d8a7c5aaee8f24') ||
+      !validateEmptyRadioInput('64095d7547d8a7c5aaee8f3d') ||
+      !validateEmptyRadioInput('64095e0d47d8a7c5aaee8f68') ||
+      !validateEmptyRadioInput('63f60a91bd5ab34b9a8e9f1a') ||
+      !validateEmptyRadioInput('640959b1495019455d6740a0') ||
+      !validateEmptyRadioInput('64095a35495019455d6740b5') ||
+      !validateEmptyRadioInput('64095a57495019455d6740be') ||
+      !validateEmptyRadioInput('64095a81495019455d6740c5') ||
+      !validateEmptyRadioInput('64095aa4495019455d6740ce') ||
+      !validateEmptyRadioInput('64095af047d8a7c5aaee8ec2') ||
+      !validateEmptyRadioInput('64095b0a47d8a7c5aaee8ecb') ||
+      !validateEmptyRadioInput('64095b4d47d8a7c5aaee8ee3') ||
+      !validateEmptyRadioInput('64095b6947d8a7c5aaee8eef') ||
+      !validateEmptyRadioInput('64095b8347d8a7c5aaee8efd') ||
+      !validateEmptyRadioInput('64095be147d8a7c5aaee8f0f') ||
+      !validateEmptyRadioInput('64095bf947d8a7c5aaee8f16') ||
+      !validateEmptyRadioInput('64095c1547d8a7c5aaee8f1d') ||
+      !validateEmptyRadioInput('64095d5547d8a7c5aaee8f36') ||
+      !validateEmptyRadioInput('64095d8d47d8a7c5aaee8f44') ||
+      !validateEmptyRadioInput('64095da647d8a7c5aaee8f4b') ||
+      !validateEmptyRadioInput('64095dc347d8a7c5aaee8f52') ||
+      !validateEmptyRadioInput('64095de047d8a7c5aaee8f59')
+    ) {
       enqueueSnackbar('全ての質問を答えてください', {
         variant: 'error',
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
+      return;
+    }
+    if (isErrorMessage.length > 0) {
       return;
     }
     setIsLoading(true);
@@ -103,6 +242,8 @@ export default function SurveyPage() {
         });
         return;
       } else if (data.status === 200 || data.status === 201) {
+        user.isAnswer = true;
+        localStorage.setItem('user', JSON.stringify(user));
         enqueueSnackbar('質問の回答が完了しました。', {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -148,7 +289,91 @@ export default function SurveyPage() {
       }
     };
     getListQuestion();
+
+    if (user.isAnswer) {
+      const getListAnswer = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question/${user.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        });
+        const data = await response.json();
+        if (data.status !== 200 && data.status !== 201) {
+          return;
+        } else if (data.status === 200 || data.status === 201) {
+          const answerListFromServer = data?.payload?.request;
+          setListAnswerFromServer(answerListFromServer);
+        }
+      };
+      getListAnswer();
+    }
   }, []);
+  useEffect(() => {
+    listAnswerFromServer?.forEach((e) => {
+      if (e.answer) {
+        setAnswerInput(e.question_id.id, e.answer);
+      } else if (e.answer_id) {
+        setAnswerRadioInput(e.question_id.id, e.answer_id.content);
+      }
+    });
+
+    let index = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '640959b1495019455d6740a0');
+    if (index > -1) {
+      if (listAnswerFromServer[index].answer_id.id === '640959b1495019455d6740a1') {
+        console.log('dmm');
+        disableInput('640959e7495019455d6740af');
+        enableInput('64095a14495019455d6740b2');
+      } else if (listAnswerFromServer[index].answer_id.id === '640959b1495019455d6740a2') {
+        disableInput('64095a14495019455d6740b2');
+        enableInput('640959e7495019455d6740af');
+      }
+    }
+    let index2 = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '64095b8347d8a7c5aaee8efd');
+    if (index2 > -1) {
+      if (listAnswerFromServer[index2].answer_id.id === '64097a1d47d8a7c5aaee9019') {
+        disableInput('64095bab47d8a7c5aaee8f04');
+      } else {
+        enableInput('64095bab47d8a7c5aaee8f04');
+      }
+    }
+    let index3 = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '64095c1547d8a7c5aaee8f1d');
+    if (index3 > -1) {
+      if (listAnswerFromServer[index3].answer_id.id === '64097adf47d8a7c5aaee903c') {
+        disableRadioInput('64095c3047d8a7c5aaee8f24');
+      } else {
+        enableRadioInput('64095c3047d8a7c5aaee8f24');
+        validateEmptyRadioInput('64095c3047d8a7c5aaee8f24');
+      }
+    }
+    let index4 = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '64095c3047d8a7c5aaee8f24');
+    if (index4 > -1) {
+      if (listAnswerFromServer[index4].answer_id.id === '64097aff47d8a7c5aaee9043') {
+        disableInput('64095d3a47d8a7c5aaee8f33');
+      } else {
+        enableInput('64095d3a47d8a7c5aaee8f33');
+      }
+    }
+    let index5 = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '64095d5547d8a7c5aaee8f36');
+    if (index5 > -1) {
+      if (listAnswerFromServer[index5].answer_id.id === '64097b8947d8a7c5aaee906a') {
+        disableRadioInput('64095d7547d8a7c5aaee8f3d');
+      } else {
+        enableRadioInput('64095d7547d8a7c5aaee8f3d');
+        validateEmptyRadioInput('64095d7547d8a7c5aaee8f3d');
+      }
+    }
+    let index6 = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '64095de047d8a7c5aaee8f59');
+    if (index6 > -1) {
+      if (listAnswerFromServer[index6].answer_id.id === '64097c2020af33a0256d35cf') {
+        disableRadioInput('64095e0d47d8a7c5aaee8f68');
+      } else {
+        enableRadioInput('64095e0d47d8a7c5aaee8f68');
+        validateEmptyRadioInput('64095e0d47d8a7c5aaee8f68');
+      }
+    }
+  }, [listAnswerFromServer]);
   const disableInput = (name) => {
     const input = document.querySelector(`input[name="${name}"]`);
     if (input) {
@@ -156,6 +381,7 @@ export default function SurveyPage() {
       input.classList.add('border-none');
       input.classList.add('text-secondary');
       input.disabled = true;
+      input.value = null;
     }
   };
   const enableInput = (name) => {
@@ -194,7 +420,7 @@ export default function SurveyPage() {
   };
   useEffect(() => {
     let index = answersList.answer.findIndex((o) => o.question_id === '640959b1495019455d6740a0');
-    if (index > 0) {
+    if (index > -1) {
       if (answersList.answer[index].answer_id === '640959b1495019455d6740a1') {
         disableInput('640959e7495019455d6740af');
         enableInput('64095a14495019455d6740b2');
@@ -204,7 +430,7 @@ export default function SurveyPage() {
       }
     }
     let index2 = answersList.answer.findIndex((o) => o.question_id === '64095b8347d8a7c5aaee8efd');
-    if (index2 > 0) {
+    if (index2 > -1) {
       if (answersList.answer[index2].answer_id === '64097a1d47d8a7c5aaee9019') {
         disableInput('64095bab47d8a7c5aaee8f04');
       } else {
@@ -212,15 +438,16 @@ export default function SurveyPage() {
       }
     }
     let index3 = answersList.answer.findIndex((o) => o.question_id === '64095c1547d8a7c5aaee8f1d');
-    if (index3 > 0) {
+    if (index3 > -1) {
       if (answersList.answer[index3].answer_id === '64097adf47d8a7c5aaee903c') {
         disableRadioInput('64095c3047d8a7c5aaee8f24');
       } else {
         enableRadioInput('64095c3047d8a7c5aaee8f24');
+        validateEmptyRadioInput('64095c3047d8a7c5aaee8f24');
       }
     }
     let index4 = answersList.answer.findIndex((o) => o.question_id === '64095c3047d8a7c5aaee8f24');
-    if (index4 > 0) {
+    if (index4 > -1) {
       if (answersList.answer[index4].answer_id === '64097aff47d8a7c5aaee9043') {
         disableInput('64095d3a47d8a7c5aaee8f33');
       } else {
@@ -228,19 +455,21 @@ export default function SurveyPage() {
       }
     }
     let index5 = answersList.answer.findIndex((o) => o.question_id === '64095d5547d8a7c5aaee8f36');
-    if (index5 > 0) {
+    if (index5 > -1) {
       if (answersList.answer[index5].answer_id === '64097b8947d8a7c5aaee906a') {
         disableRadioInput('64095d7547d8a7c5aaee8f3d');
       } else {
         enableRadioInput('64095d7547d8a7c5aaee8f3d');
+        validateEmptyRadioInput('64095d7547d8a7c5aaee8f3d');
       }
     }
     let index6 = answersList.answer.findIndex((o) => o.question_id === '64095de047d8a7c5aaee8f59');
-    if (index6 > 0) {
+    if (index6 > -1) {
       if (answersList.answer[index6].answer_id === '64097c2020af33a0256d35cf') {
         disableRadioInput('64095e0d47d8a7c5aaee8f68');
       } else {
         enableRadioInput('64095e0d47d8a7c5aaee8f68');
+        validateEmptyRadioInput('64095e0d47d8a7c5aaee8f68');
       }
     }
   }, [answersList]);

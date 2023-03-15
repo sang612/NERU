@@ -68,6 +68,7 @@ export default function LoginPage() {
               role: data.payload.user.role,
               isEnterprise: data.payload.user.isEnterprise,
               record_number_of_user: data.payload.user.record_number_of_user,
+              isAnswer: data.payload.user.isAnswer
             })
           );
           localStorage.setItem('token', data.payload.token);
