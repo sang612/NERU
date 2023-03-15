@@ -4,11 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import CardLayout from '@/components/CardLayout';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import {
-  ArrowLeftOutlined,
-  CheckOutlined,
-  ClockCircleOutlined,
-} from '@ant-design/icons';
+import { ArrowLeftOutlined, CheckOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import Link from 'next/link';
 import { css, cx } from '@emotion/css';
@@ -22,13 +18,6 @@ export default function TransactionDetailPage({ params }) {
   const [total, setTotal] = useState(0);
   const columns = useMemo(
     () => [
-      {
-        title: '会社番号',
-        index: 'forCustomer',
-        render: (id) => <div className="w-full text-left">{id}</div>,
-        className: 'min-w-[40px]',
-        sorter: (a, b) => a.localeCompare(b),
-      },
       {
         title: '金額',
         index: 'amount',
@@ -71,7 +60,9 @@ export default function TransactionDetailPage({ params }) {
         title: '日付',
         index: 'updatedAt',
         render: (value) => {
-          return <div className="w-full text-left">{moment(value).format('MM/DD/YYYY hh:mm:ss A')}</div>;
+          return (
+            <div className="w-full text-left">{moment(value).format('MM/DD/YYYY hh:mm:ss A')}</div>
+          );
         },
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
         sorter: (a, b) => a.localeCompare(b),
@@ -81,13 +72,16 @@ export default function TransactionDetailPage({ params }) {
   );
   useEffect(() => {
     const getDetailTransaction = async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/transaction/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/transaction/${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        }
+      );
       const data = await response.json();
       if (data.status !== 200 && data.status !== 201) {
         return;
@@ -118,7 +112,12 @@ export default function TransactionDetailPage({ params }) {
         </Link>
       </div>
       <Table columns={columns} data={listTransaction} />
-      <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
+      <Pagination
+        currentPage={currentPage}
+        lastPage={lastPage}
+        setCurrentPage={setCurrentPage}
+        total={total}
+      />
     </CardLayout>
   );
 }

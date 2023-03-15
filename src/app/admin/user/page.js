@@ -7,7 +7,7 @@ import { css, cx } from '@emotion/css';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { DeleteFilled, EditFilled, EyeOutlined } from '@ant-design/icons';
+import { DeleteFilled, DollarOutlined, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
 import { validateEmail, validateName, validateTelPhone, validateNameKatakana } from '@/utils/validate';
@@ -44,13 +44,7 @@ export default function CompanyPage() {
   const [activeItem, setActiveItem] = useState();
   const columns = useMemo(
     () => [
-      {
-        title: '会社番号',
-        index: 'id',
-        render: (id) => <div className="w-full text-left">{id}</div>,
-        className: 'min-w-[40px]',
-        sorter: (a, b) => a.localeCompare(b),
-      },
+     
       {
         title: '名',
         index: 'first_name',
@@ -66,12 +60,19 @@ export default function CompanyPage() {
         sorter: (a, b) => a.localeCompare(b),
       },
       {
+        title: '電話番号',
+        index: 'phone',
+        render: (value) => <div className="w-full text-left">{value}</div>,
+        className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
+        sorter: (a, b) => a.localeCompare(b),
+      },
+      {
         title: 'アクション',
         index: 'id',
         render: (id, record) => (
           <div className="w-full flex justify-center items-center">
             <Link href={`/admin/user/transaction/${id}`}>
-              <EyeOutlined
+              <DollarOutlined
                 className={cx(
                   'w-6 h-6 mx-2 text-primary',
                   css`
@@ -275,7 +276,7 @@ export default function CompanyPage() {
 
   return (
     <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">会社一覧</div>
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
       {modalCreate && (
         <ModalCreateUser
           validate={validate}

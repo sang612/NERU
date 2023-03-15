@@ -22,7 +22,7 @@ export const Sidebar = () => {
 
   return (
     <div className="fixed bg-[#d0eaeb] text-primary overflow-hidden top-0 left-0 h-screen w-56 xl:w-64 pt-12 z-50 text-lg xl:text-xl">
-      <div className="w-full h-14 flex justify-start items-center pl-4 xl:pl-6">
+      <div className="w-full h-14 flex justify-start items-center pl-4 xl:pl-6 py-10">
         <UserOutlined
           className={cx(
             'w-9 h-9 mr-2',
@@ -34,7 +34,7 @@ export const Sidebar = () => {
             `
           )}
         />
-        <div className="text-xl xl:text-2xl">{user?.first_name}</div>
+        <div className="text-xl xl:text-2xl font-bold">Nerusoku Admin</div>
       </div>
       <div className="h-[2px] w-full bg-white" />
 
@@ -42,7 +42,7 @@ export const Sidebar = () => {
         <>
           <Link
             href="/admin/company"
-            className={`w-full h-[60px] flex items-center justify-start ${
+            className={`w-full h-[60px] flex items-center justify-start font-bold ${
               pathname == '/admin/company' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
             }`}
           >
@@ -65,7 +65,7 @@ export const Sidebar = () => {
 
       <Link
         href="/admin/user"
-        className={`w-full h-[60px] flex items-center justify-start ${
+        className={`w-full h-[60px] flex items-center justify-start font-bold ${
           pathname == '/admin/user' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
         }`}
       >
@@ -83,7 +83,7 @@ export const Sidebar = () => {
         ユーザー一覧
       </Link>
       <div className="h-[2px] w-full bg-white" />
-      <button onClick={handleLogOut} className="w-full h-[60px] flex items-center justify-start pl-4 xl:pl-6">
+      <button onClick={handleLogOut} className="w-full h-[60px] flex items-center justify-start font-bold pl-4 xl:pl-6">
         <ArrowRightOutlined
           className={cx(
             'w-7 h-7 mr-2',

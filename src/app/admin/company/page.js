@@ -172,8 +172,9 @@ export default function CompanyPage() {
         setActiveItem();
         const item = listCompany.find((d) => d.id === id);
         const index = listCompany.indexOf(item);
+        const deleteCompanyName = listCompany[index].company_name;
         listCompany.splice(index, 1);
-        enqueueSnackbar('会社を削除します。', {
+        enqueueSnackbar(`${deleteCompanyName}の会社を削除しました。`, {
           variant: 'success',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
         });
@@ -401,7 +402,7 @@ export default function CompanyPage() {
 
   return (
     <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4">会社一覧</div>
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
       {modalCreate && (
         <ModalCreateCompany
           validate={validate}
