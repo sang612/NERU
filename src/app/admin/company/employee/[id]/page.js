@@ -17,7 +17,6 @@ export default function Employee({ params }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
   const token = localStorage.getItem('token');
-
   const [type, setType] = useState('name');
   const [inputSearch, setInputSearch] = useState('');
   const [search, setSearch] = useState('');
@@ -42,18 +41,19 @@ export default function Employee({ params }) {
       {
         title: '姓名',
         index: 'user_id',
-        render: (value) => <div className="w-full text-left">{value?.first_name}</div>,
+        render: (value) => (
+          <div className="w-full text-left">{value?.first_name + ' ' + value?.last_name}</div>
+        ),
         className: 'min-w-[40px]',
         sorter: (a, b) => a.first_name.localeCompare(b.first_name),
       },
       {
         title: '区分',
         index: 'user_id',
-        render: (value) => <div className="w-full text-left">{value?.role}</div>,
+        render: (value) => <div className="w-full text-left">{value?.email}</div>,
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
-        sorter: (a, b) => a.role.localeCompare(b.role),
+        sorter: (a, b) => a.user_id.localeCompare(b.user_id),
       },
-
       {
         title: 'アクション',
         index: 'id',

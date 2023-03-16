@@ -366,9 +366,9 @@ export default function CompanyPage() {
                 value={userType}
                 onChange={handleUserType}
               >
-                <MenuItem value={false}>Indi</MenuItem>
-                <MenuItem value={true}>Legal</MenuItem>
-                <MenuItem value="all">All</MenuItem>
+                <MenuItem value={false}>個人</MenuItem>
+                <MenuItem value={true}>法的</MenuItem>
+                <MenuItem value="all">全て</MenuItem>
               </Select>
             </FormControl>
             <SearchInput

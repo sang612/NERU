@@ -322,7 +322,6 @@ export default function SurveyPage() {
     let index = listAnswerFromServer?.findLastIndex((o) => o.question_id.id === '640959b1495019455d6740a0');
     if (index > -1) {
       if (listAnswerFromServer[index].answer_id.id === '640959b1495019455d6740a1') {
-        console.log('dmm');
         disableInput('640959e7495019455d6740af');
         enableInput('64095a14495019455d6740b2');
       } else if (listAnswerFromServer[index].answer_id.id === '640959b1495019455d6740a2') {
