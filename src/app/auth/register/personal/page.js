@@ -238,7 +238,7 @@ export default function PersonalRegister() {
           />
           <div className="flex flex-row mb-4 -mt-4">
             <InputRadio
-              text="男"
+              text="男性"
               name="gender"
               checked
               value="Male"

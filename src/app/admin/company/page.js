@@ -36,6 +36,7 @@ export default function CompanyPage() {
   const [lastPage, setLastPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
   const user = JSON.parse(localStorage.getItem('user'));
 
   const columns = useMemo(
@@ -173,6 +174,7 @@ export default function CompanyPage() {
       );
       const data = await response.json();
       if (data.status !== 200 && data.status !== 201) {
+        setIsDeleteSuccess(false);
         enqueueSnackbar(data.message ? data?.message : data?.error, {
           variant: 'error',
           anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -180,6 +182,7 @@ export default function CompanyPage() {
         return;
       } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
+        setIsDeleteSuccess(true);
         const item = listCompany.find((d) => d.id === id);
         const index = listCompany.indexOf(item);
         const deleteCompanyName = listCompany[index].company_name;
@@ -325,7 +328,7 @@ export default function CompanyPage() {
       }
     };
     getDataDetailCompany();
-  }, [currentPage, search, token, type]);
+  }, [currentPage, search, token, type, isDeleteSuccess]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -483,7 +486,7 @@ export default function CompanyPage() {
           <Table columns={columns} data={listCompany} />
           <Pagination
             currentPage={currentPage}
-            lastPage={lastPage}
+            lastPage={type === 'email' && listCompany.length === 0 ? 0 : lastPage}
             setCurrentPage={setCurrentPage}
             total={total}
           />

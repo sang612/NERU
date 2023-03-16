@@ -48,7 +48,7 @@ export default function Employee({ params }) {
         sorter: (a, b) => a.first_name.localeCompare(b.first_name),
       },
       {
-        title: '区分',
+        title: 'メールアドレス',
         index: 'user_id',
         render: (value) => <div className="w-full text-left">{value?.email}</div>,
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
@@ -184,7 +184,7 @@ export default function Employee({ params }) {
   const { enqueueSnackbar } = useSnackbar();
 
   const menuItem = [
-    { value: 'name', name: '会社名' },
+    { value: 'name', name: '姓名' },
     { value: 'email', name: 'メール' },
     { value: 'phone', name: '電話番号' },
   ];
@@ -223,7 +223,7 @@ export default function Employee({ params }) {
         <Table columns={columns} data={listEmployee} />
         <Pagination
           currentPage={currentPage}
-          lastPage={lastPage}
+          lastPage={listEmployee.length === 0 ? 0 : lastPage}
           setCurrentPage={setCurrentPage}
           total={total}
         />
