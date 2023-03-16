@@ -28,8 +28,7 @@ import {
   validateNameKatakana,
   validateCode,
 } from '@/utils/validate';
-import { Input } from '@/components/Input';
-import { useDebounce } from '@/utils/useDebounce';
+import SearchInput from '@/components/Search';
 
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
@@ -38,7 +37,6 @@ export default function CompanyPage() {
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
   const user = JSON.parse(localStorage.getItem('user'));
-  const [inputSearch, setInputSearch] = useState('');
 
   const columns = useMemo(
     () => [
@@ -210,6 +208,11 @@ export default function CompanyPage() {
   const [phone, setPhone] = useState('');
   const [numberOfEmployees, setNumberOfEmployees] = useState('');
   const [firstName, setFirstName] = useState('');
+
+  const [type, setType] = useState('name');
+  const [inputSearch, setInputSearch] = useState('');
+  const [search, setSearch] = useState('');
+
   const [firstNameKatakana, setFirstNameKatakana] = useState('');
   const [lastName, setLastName] = useState('');
   const [lastNameKatakana, setLastNameKatakana] = useState('');
@@ -294,45 +297,36 @@ export default function CompanyPage() {
       throw error;
     }
   };
-
-  const debouncedSearch = useDebounce(inputSearch, 500);
-
+  const menuItem = [
+    { value: 'name', name: '会社名' },
+    { value: 'email', name: 'メール' },
+  ];
   useEffect(() => {
-    searchCharacters('');
-    if (debouncedSearch) {
-      searchCharacters(debouncedSearch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, currentPage]);
-
-  async function searchCharacters(search) {
-    return await fetch(
-      `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/search?role=enterprise&email=&phone=&name=${search}&page=${currentPage}&limit=10`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
+    const getDataDetailCompany = async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/search?role=enterprise&email=${
+          type === 'email' ? search : ''
+        }&phone=&name=${type === 'name' ? search : ''}&page=${currentPage}&limit=10`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.status !== 200 && data.status !== 201) {
+        return;
+      } else if (data.status === 200 || data.status === 201) {
+        setListCompany(data.payload.enterprise);
+        setLastPage(data.payload._totalPage);
+        setTotal(data.payload._max);
       }
-    )
-      .then((res) => res.json())
-      .then((res) => res.payload)
-      .then((res) => {
-        setListCompany(res.enterprise);
-        setLastPage(res._totalPage);
-        setTotal(res._max);
-      })
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
-  }
+    };
+    getDataDetailCompany();
+  }, [currentPage, search, token, type]);
 
-  const handleChangeSeach = (e) => {
-    setInputSearch(e.target.value);
-    setCurrentPage(1);
-  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     const validateEmployeeFirstName = validateName(firstName, 'firstName');
@@ -470,9 +464,18 @@ export default function CompanyPage() {
                     会社登録
                   </div>
                 </Link>
-                <div className="flex items-center justify-between gap-3">
-                  <Input placeholder={'会社検索...'} onChange={handleChangeSeach} />
-                </div>
+
+                <SearchInput
+                  label="会社名"
+                  type={type}
+                  setType={setType}
+                  inputSearch={inputSearch}
+                  setInputSearch={setInputSearch}
+                  setCurrentPage={setCurrentPage}
+                  setSearch={setSearch}
+                  placeholder="会社検索..."
+                  menuItem={menuItem}
+                />
               </>
             )}
           </div>

@@ -9,12 +9,19 @@ import Pagination from '@/components/Table/pagination';
 import { ArrowLeftOutlined, DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
+import SearchInput from '@/components/Search';
 
 export default function Employee({ params }) {
   const id = params?.id;
   const [listEmployee, setListEmployee] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const token = localStorage.getItem('token');
+
+  const [type, setType] = useState('name');
+  const [inputSearch, setInputSearch] = useState('');
+  const [search, setSearch] = useState('');
+
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
   const columns = useMemo(
@@ -52,7 +59,9 @@ export default function Employee({ params }) {
         index: 'id',
         render: (id, record) => (
           <div className="w-full flex justify-center items-center">
-            <Link href={`/admin/company/employee/${record?.enterprise_id}/edit/${record?.user_id?.id}`}>
+            <Link
+              href={`/admin/company/employee/${record?.enterprise_id}/edit/${record?.user_id?.id}`}
+            >
               <EditFilled
                 className={cx(
                   'w-6 h-6 mx-2 text-primary',
@@ -138,7 +147,11 @@ export default function Employee({ params }) {
     const getListEmployee = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/getall/${id}?page=${currentPage}&limit=${10}`,
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/search/employee/${id}?name=${
+            type === 'name' ? search : ''
+          }&email=${type === 'email' ? search : ''}&phone=${
+            type === 'phone' ? search : ''
+          }&page=${currentPage}&limit=${10}`,
           {
             method: 'GET',
             headers: {
@@ -149,26 +162,39 @@ export default function Employee({ params }) {
         );
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
+          setListEmployee([]);
+          setLastPage(null);
+          setTotal(null);
           return;
         } else if (data.status === 200 || data.status === 201) {
-          setListEmployee(data?.payload?.allLegal);
           setLastPage(data?.payload?._totalPage);
           setTotal(data?.payload?._max);
+          if (data?.payload?.filteredLegal?.length === undefined) {
+            setListEmployee([data?.payload?.filteredLegal]);
+          } else {
+            setListEmployee(data?.payload?.filteredLegal);
+          }
         }
       } catch (error) {
         console.log(error);
       }
     };
     getListEmployee();
-  }, [currentPage]);
+  }, [currentPage, id, search, token, type]);
   const { enqueueSnackbar } = useSnackbar();
-  const token = localStorage.getItem('token');
 
+  const menuItem = [
+    { value: 'name', name: '会社名' },
+    { value: 'email', name: 'メール' },
+    { value: 'phone', name: '電話番号' },
+  ];
   return (
     <div className="w-full font-bold">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">
+        会社一覧
+      </div>
       <CardLayout>
-        <div className="flex justify-start px-6 pb-6">
+        <div className="w-full flex justify-between items-center">
           <Link href="/admin/company">
             <ArrowLeftOutlined
               className={cx(
@@ -182,11 +208,29 @@ export default function Employee({ params }) {
               )}
             />
           </Link>
+          <SearchInput
+            label="会社名"
+            inputSearch={inputSearch}
+            menuItem={menuItem}
+            placeholder="社員を探してください。..."
+            setCurrentPage={setCurrentPage}
+            setInputSearch={setInputSearch}
+            setSearch={setSearch}
+            setType={setType}
+            type={type}
+          />
         </div>
         <Table columns={columns} data={listEmployee} />
-        <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          setCurrentPage={setCurrentPage}
+          total={total}
+        />
       </CardLayout>
-      {activeItem?.id && <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />}
+      {activeItem?.id && (
+        <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />
+      )}
     </div>
   );
 }

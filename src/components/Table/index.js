@@ -78,7 +78,7 @@ const Table = ({ columns, data }) => {
         </tr>
       </thead>
       <tbody className="w-full">
-        {tableDate.map((d, index) => (
+        {tableDate?.map((d, index) => (
           <tr className="w-full" key={index}>
             {columns.map((_d, _index) => (
               <td className={_d.className} key={_index}>

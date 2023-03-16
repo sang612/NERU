@@ -16,6 +16,8 @@ export const Input = ({
   border = 'border-2',
   max,
   min,
+  onKeyDown,
+  onPaste,
 }) => {
   return (
     <div
@@ -45,8 +47,12 @@ export const Input = ({
         disabled={disabled}
         max={max}
         min={min}
+        onKeyDown={onKeyDown}
+        onPaste={onPaste}
       />
-      <div className={`${!messageError && 'hidden'} text-error text-xs my-2 whitespace-nowrap`}>{messageError}</div>
+      <div className={`${!messageError && 'hidden'} text-error text-xs my-2 whitespace-nowrap`}>
+        {messageError}
+      </div>
     </div>
   );
 };
@@ -116,7 +122,11 @@ export const SurveyInput = ({
         max={max}
         min={min}
       />
-      <div className={`${!validationMessage && 'hidden'} text-error text-xs my-2 whitespace-nowrap absolute`}>
+      <div
+        className={`${
+          !validationMessage && 'hidden'
+        } text-error text-xs my-2 whitespace-nowrap absolute`}
+      >
         {validationMessage}
       </div>
     </div>

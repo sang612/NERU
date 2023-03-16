@@ -17,10 +17,17 @@ import {
   validateNameKatakana,
 } from '@/utils/validate';
 import { ModalCreateUser } from '@/components/Modal/CreateUser';
+import SearchInput from '@/components/Search';
+import { FormControl, MenuItem, Select } from '@mui/material';
 
 export default function CompanyPage() {
   const [listUser, setListUser] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
+
+  const [type, setType] = useState('name');
+  const [userType, setUserType] = useState(false);
+  const [inputSearch, setInputSearch] = useState('');
+  const [search, setSearch] = useState('');
 
   const { enqueueSnackbar } = useSnackbar();
   const token = localStorage.getItem('token');
@@ -183,7 +190,11 @@ export default function CompanyPage() {
   useEffect(() => {
     const getlistUser = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/individual/?page=${currentPage}&limit=${10}`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/search?name=${
+          type === 'name' ? search : ''
+        }&role=user&page=${currentPage}&limit=${10}&phone=${type === 'phone' ? search : ''}&email=${
+          type === 'email' ? search : ''
+        }&isEnterprise=${userType === 'all' ? '' : userType}`,
         {
           method: 'GET',
           headers: {
@@ -196,13 +207,13 @@ export default function CompanyPage() {
       if (data.status !== 200 && data.status !== 201) {
         return;
       } else if (data.status === 200 || data.status === 201) {
-        setListUser(data?.payload?.userAll);
+        setListUser(data?.payload?.results);
         setLastPage(data?.payload?._totalPage);
         setTotal(data?.payload?._max);
       }
     };
     getlistUser();
-  }, [currentPage, modalCreate]);
+  }, [currentPage, modalCreate, search, token, type, userType]);
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
     setValidate({ ...validate, [type]: checkValidateFullName });
@@ -286,6 +297,15 @@ export default function CompanyPage() {
       });
     }
   };
+  const handleUserType = (e) => {
+    setUserType(e.target.value);
+    setCurrentPage(1);
+  };
+  const menuItem = [
+    { value: 'name', name: '会社名' },
+    { value: 'email', name: 'メール' },
+    { value: 'phone', name: '電話番号' },
+  ];
 
   return (
     <div className="w-full font-bold">
@@ -318,6 +338,51 @@ export default function CompanyPage() {
       )}
       {!modalCreate && (
         <CardLayout>
+          <div className="w-full flex justify-end gap-1">
+            <FormControl
+              sx={{
+                minWidth: 120,
+                marginLeft: 4,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#50c3c5',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#50c3c5',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#50c3c5',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  color: '#50c3c5',
+                },
+              }}
+              size="medium"
+            >
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                value={userType}
+                onChange={handleUserType}
+              >
+                <MenuItem value={false}>Indi</MenuItem>
+                <MenuItem value={true}>Legal</MenuItem>
+                <MenuItem value="all">All</MenuItem>
+              </Select>
+            </FormControl>
+            <SearchInput
+              menuItem={menuItem}
+              inputSearch={inputSearch}
+              label="会社名"
+              placeholder="社員を探してください。..."
+              setCurrentPage={setCurrentPage}
+              setInputSearch={setInputSearch}
+              setSearch={setSearch}
+              type={type}
+              setType={setType}
+            />
+          </div>
           <div className="hidden justify-start px-6 pb-6">
             {user.role === Role.admin && (
               <div onClick={() => setModalCreate(true)}>
