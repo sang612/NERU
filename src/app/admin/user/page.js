@@ -18,14 +18,13 @@ import {
 } from '@/utils/validate';
 import { ModalCreateUser } from '@/components/Modal/CreateUser';
 import SearchInput from '@/components/Search';
-import { FormControl, MenuItem, Select } from '@mui/material';
 
 export default function CompanyPage() {
   const [listUser, setListUser] = useState([]);
   const user = JSON.parse(localStorage.getItem('user'));
 
   const [type, setType] = useState('name');
-  const [userType, setUserType] = useState(false);
+  // const [userType, setUserType] = useState(false);
   const [inputSearch, setInputSearch] = useState('');
   const [search, setSearch] = useState('');
 
@@ -194,7 +193,7 @@ export default function CompanyPage() {
           type === 'name' ? search : ''
         }&role=user&page=${currentPage}&limit=${10}&phone=${type === 'phone' ? search : ''}&email=${
           type === 'email' ? search : ''
-        }&isEnterprise=${userType === 'all' ? '' : userType}`,
+        }&isEnterprise=${false}`,
         {
           method: 'GET',
           headers: {
@@ -213,7 +212,7 @@ export default function CompanyPage() {
       }
     };
     getlistUser();
-  }, [currentPage, modalCreate, search, token, type, userType]);
+  }, [currentPage, modalCreate, search, token, type]);
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
     setValidate({ ...validate, [type]: checkValidateFullName });
@@ -297,10 +296,10 @@ export default function CompanyPage() {
       });
     }
   };
-  const handleUserType = (e) => {
-    setUserType(e.target.value);
-    setCurrentPage(1);
-  };
+  // const handleUserType = (e) => {
+  //   setUserType(e.target.value);
+  //   setCurrentPage(1);
+  // };
   const menuItem = [
     { value: 'name', name: '会社名' },
     { value: 'email', name: 'メール' },
@@ -339,7 +338,7 @@ export default function CompanyPage() {
       {!modalCreate && (
         <CardLayout>
           <div className="w-full flex justify-end gap-1">
-            <FormControl
+            {/* <FormControl
               sx={{
                 minWidth: 120,
                 marginLeft: 4,
@@ -370,7 +369,7 @@ export default function CompanyPage() {
                 <MenuItem value={true}>法的</MenuItem>
                 <MenuItem value="all">全て</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
             <SearchInput
               menuItem={menuItem}
               inputSearch={inputSearch}
