@@ -96,28 +96,30 @@ export default function TransactionDetailPage({ params }) {
 
   return (
     <CardLayout>
-      <div className="flex justify-start px-6 pb-6">
-        <Link href="/admin/user">
-          <ArrowLeftOutlined
-            className={cx(
-              'w-6 h-6 mx-2 text-primary',
-              css`
-                svg {
-                  width: 100%;
-                  height: 100%;
-                }
-              `
-            )}
-          />
-        </Link>
+      <div className="font-bold">
+        <div className="flex justify-start px-6 pb-6">
+          <Link href="/admin/user">
+            <ArrowLeftOutlined
+              className={cx(
+                'w-6 h-6 mx-2 text-primary',
+                css`
+                  svg {
+                    width: 100%;
+                    height: 100%;
+                  }
+                `
+              )}
+            />
+          </Link>
+        </div>
+        <Table columns={columns} data={listTransaction} />
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          setCurrentPage={setCurrentPage}
+          total={total}
+        />
       </div>
-      <Table columns={columns} data={listTransaction} />
-      <Pagination
-        currentPage={currentPage}
-        lastPage={lastPage}
-        setCurrentPage={setCurrentPage}
-        total={total}
-      />
     </CardLayout>
   );
 }

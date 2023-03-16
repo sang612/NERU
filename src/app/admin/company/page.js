@@ -7,11 +7,27 @@ import { css, cx } from '@emotion/css';
 import Link from 'next/link';
 import Table from '@/components/Table';
 import Pagination from '@/components/Table/pagination';
-import { DeleteFilled, EditFilled, EyeOutlined, UserAddOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import {
+  DeleteFilled,
+  EditFilled,
+  EyeOutlined,
+  UserAddOutlined,
+  UsergroupAddOutlined,
+} from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
-import { ModalCreateCompany, ModalCreateCompanyByFile, ModalResultFileExport } from '@/components/Modal/CreateCompany';
-import { validateEmail, validateName, validateTelPhone, validateNameKatakana, validateCode } from '@/utils/validate';
+import {
+  ModalCreateCompany,
+  ModalCreateCompanyByFile,
+  ModalResultFileExport,
+} from '@/components/Modal/CreateCompany';
+import {
+  validateEmail,
+  validateName,
+  validateTelPhone,
+  validateNameKatakana,
+  validateCode,
+} from '@/utils/validate';
 import { Input } from '@/components/Input';
 import { useDebounce } from '@/utils/useDebounce';
 
@@ -26,13 +42,6 @@ export default function CompanyPage() {
 
   const columns = useMemo(
     () => [
-      {
-        title: '所属番号',
-        index: 'id',
-        render: (id) => <div className="w-full text-left">{id}</div>,
-        className: 'min-w-[40px]',
-        sorter: (a, b) => a.localeCompare(b),
-      },
       {
         title: '会社名',
         index: 'company_name',
@@ -154,13 +163,16 @@ export default function CompanyPage() {
   );
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        }
+      );
       const data = await response.json();
       if (data.status !== 200 && data.status !== 201) {
         enqueueSnackbar(data.message ? data?.message : data?.error, {
@@ -248,13 +260,16 @@ export default function CompanyPage() {
     formData.append('file', file);
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/xlsx`, {
-        method: 'POST',
-        headers: {
-          accessToken: token,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/enterprise/employee/xlsx`,
+        {
+          method: 'POST',
+          headers: {
+            accessToken: token,
+          },
+          body: formData,
+        }
+      );
       const data = await response.json();
       setIsLoading(false);
       if (data.status !== 200 && data.status !== 201) {
@@ -401,8 +416,10 @@ export default function CompanyPage() {
   const [modalResultFileExport, setModalResultFileExport] = useState(false);
 
   return (
-    <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
+    <div className="w-full font-bold">
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">
+        会社一覧
+      </div>
       {modalCreate && (
         <ModalCreateCompany
           validate={validate}
@@ -461,10 +478,17 @@ export default function CompanyPage() {
           </div>
 
           <Table columns={columns} data={listCompany} />
-          <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
+          <Pagination
+            currentPage={currentPage}
+            lastPage={lastPage}
+            setCurrentPage={setCurrentPage}
+            total={total}
+          />
         </CardLayout>
       )}
-      {activeItem?.id && <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />}
+      {activeItem?.id && (
+        <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />
+      )}
       {modalResultFileExport && (
         <ModalResultFileExport
           successList={successList}

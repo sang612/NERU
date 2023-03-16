@@ -165,7 +165,7 @@ export default function Employee({ params }) {
   const token = localStorage.getItem('token');
 
   return (
-    <div className="w-full">
+    <div className="w-full font-bold">
       <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
       <CardLayout>
         <div className="flex justify-start px-6 pb-6">

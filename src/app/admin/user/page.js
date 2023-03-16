@@ -10,7 +10,12 @@ import Pagination from '@/components/Table/pagination';
 import { DeleteFilled, DollarOutlined, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
-import { validateEmail, validateName, validateTelPhone, validateNameKatakana } from '@/utils/validate';
+import {
+  validateEmail,
+  validateName,
+  validateTelPhone,
+  validateNameKatakana,
+} from '@/utils/validate';
 import { ModalCreateUser } from '@/components/Modal/CreateUser';
 
 export default function CompanyPage() {
@@ -44,7 +49,6 @@ export default function CompanyPage() {
   const [activeItem, setActiveItem] = useState();
   const columns = useMemo(
     () => [
-     
       {
         title: '名',
         index: 'first_name',
@@ -63,6 +67,15 @@ export default function CompanyPage() {
         title: '電話番号',
         index: 'phone',
         render: (value) => <div className="w-full text-left">{value}</div>,
+        className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
+        sorter: (a, b) => a.localeCompare(b),
+      },
+      {
+        title: '性別',
+        index: 'gender',
+        render: (value) => (
+          <div className="w-full text-left">{value === 'Male' ? '男性' : '女性'}</div>
+        ),
         className: 'max-w-[150px] 3xl:max-w-[190px] 4xl:max-w-[220px]',
         sorter: (a, b) => a.localeCompare(b),
       },
@@ -275,8 +288,10 @@ export default function CompanyPage() {
   };
 
   return (
-    <div className="w-full">
-      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">会社一覧</div>
+    <div className="w-full font-bold">
+      <div className="w-full h-10 flex justify-center items-center text-3xl mt-4 font-bold">
+        ユーザー一覧
+      </div>
       {modalCreate && (
         <ModalCreateUser
           validate={validate}
@@ -313,10 +328,17 @@ export default function CompanyPage() {
             )}
           </div>
           <Table columns={columns} data={listUser} />
-          <Pagination currentPage={currentPage} lastPage={lastPage} setCurrentPage={setCurrentPage} total={total} />
+          <Pagination
+            currentPage={currentPage}
+            lastPage={lastPage}
+            setCurrentPage={setCurrentPage}
+            total={total}
+          />
         </CardLayout>
       )}
-      {activeItem?.id && <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />}
+      {activeItem?.id && (
+        <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />
+      )}
     </div>
   );
 }

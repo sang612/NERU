@@ -138,7 +138,7 @@ export default function EditCompanyPage({ params }) {
 
   return (
     <CardLayout>
-      <div className="mt-2 w-[60%] mx-auto">
+      <div className="mt-2 w-[60%] mx-auto font-bold">
         <h1 className="w-full text-center text-xl xsm:text-3xl text-primary mt-2 mb-4 font-bold">ユーザー編集</h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
           <div className="flex justify-start items-start w-full my-2">
