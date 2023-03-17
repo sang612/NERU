@@ -264,9 +264,9 @@ export const ModalCreateCompany = ({
 export const ModalCreateCompanyByFile = ({
   handleSubmitFile,
   setModalCreateByFile,
-  enterpriseId,
   handleChangeFileInput,
   isLoading,
+  companyName
 }) => {
   const modalRef = useRef(null);
   useEffect(() => {
@@ -290,13 +290,13 @@ export const ModalCreateCompanyByFile = ({
           </h1>
           <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
             <div className="flex justify-start items-start w-full my-2">
-              <div className="mb-4 h-14 flex items-center w-36">会社番号</div>
+              <div className="mb-4 h-14 flex items-center w-36">会社名</div>
               <div className="flex-1 h-20">
                 <div className="w-full h-full flex items-start">
                   <Input
-                    name="enterpriseId"
+                    name="companyName"
                     type="text"
-                    value={enterpriseId}
+                    value={companyName}
                     disabled
                     height="h-14"
                     border="border-[1px]"

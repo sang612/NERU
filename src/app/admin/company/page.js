@@ -110,6 +110,7 @@ export default function CompanyPage() {
               className="hover:cursor-pointer"
               onClick={() => {
                 setModalCreateByFile(true), setEnterpriseId(id);
+                setCompanyName(record?.company_name);
               }}
             >
               <UsergroupAddOutlined
@@ -452,9 +453,9 @@ export default function CompanyPage() {
         <ModalCreateCompanyByFile
           handleSubmitFile={handleSubmitFile}
           setModalCreateByFile={setModalCreateByFile}
-          enterpriseId={enterpriseId}
           handleChangeFileInput={handleChangeFileInput}
           isLoading={isLoading}
+          companyName={companyName}
         />
       )}
       {!modalCreate && !modalCreateByFile && !modalResultFileExport && (
