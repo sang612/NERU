@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
 
   return (
     <SnackbarProvider>
