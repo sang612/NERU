@@ -55,8 +55,9 @@ export default function SearchInput({
         height="h-12 xsm:h-14"
         onKeyDown={handleKeyDown}
         onPaste={handlePaste}
+        className='pr-[55%] min-w-[50%] max-w-1/2'
       />
-      <div className="absolute flex items-center justify-center right-5 mb-4 gap-2">
+      <div className="absolute flex items-center justify-evenly right-5 mb-4 gap-2 w-[50%]">
         <FormControl
           sx={{
             m: 1,

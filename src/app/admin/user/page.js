@@ -301,7 +301,7 @@ export default function CompanyPage() {
   //   setCurrentPage(1);
   // };
   const menuItem = [
-    { value: 'name', name: '会社名' },
+    { value: 'name', name: '姓名' },
     { value: 'email', name: 'メール' },
     { value: 'phone', name: '電話番号' },
   ];
