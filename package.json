@@ -13,6 +13,7 @@
     "@emotion/css": "^11.10.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@hookform/resolvers": "^2.9.11",
     "@mui/material": "^5.11.9",
     "@next/font": "^13.1.6",
     "@reduxjs/toolkit": "^1.9.2",
@@ -26,13 +27,15 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.5",
     "react-modal": "^3.16.1",
     "react-redux": "^8.0.5",
     "react-toastify": "^9.1.1",
     "reactjs-popup": "^2.0.5",
     "redux-persist": "^6.0.0",
     "stripe": "^11.11.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

@@ -1,6 +1,4 @@
 import { css, cx } from '@emotion/css';
-import { useEffect, useState } from 'react';
-import { validateOkuchyQ } from '@/utils/nerusokuQ';
 
 export const Input = ({
   placeholder,
@@ -59,6 +57,7 @@ export const Input = ({
 
 export const SurveyInput = ({
   placeholder,
+  children,
   className,
   name,
   type,
@@ -66,34 +65,19 @@ export const SurveyInput = ({
   disabled,
   height,
   border = 'border-2',
+  onChange,
+  id,
   max,
+  defaultValue,
+  register,
+  validationMessage,
   min,
-  numberOfQuestion,
-  onChange = () => {},
-  setIsErrorMessage,
+  onPaste,
+  onKeyPress,
 }) => {
-  const [validationMessage, setValidationMessage] = useState(false);
-  const [preMessage, setPreMessage] = useState('');
-  const handleBlur = (e) => {
-    setValidationMessage(numberOfQuestion ? validateOkuchyQ[numberOfQuestion](e.target.value) : '');
-    if (numberOfQuestion) {
-      if (validateOkuchyQ[numberOfQuestion](e.target.value)) {
-        setPreMessage(validateOkuchyQ[numberOfQuestion](e.target.value));
-      }
-    }
-    if (onChange) {
-      onChange(e);
-    }
+  const handleChange = (e) => {
+    if (onChange) onChange(e.target.value);
   };
-  useEffect(() => {
-    if (validationMessage) {
-      setIsErrorMessage((prev) => [...prev, validationMessage]);
-    } else {
-      if (!preMessage) return;
-      setIsErrorMessage((prev) => prev.filter((message) => !message.includes(preMessage)));
-    }
-  }, [validationMessage]);
-
   return (
     <div
       className={cx(
@@ -117,18 +101,17 @@ export const SurveyInput = ({
         type={type}
         value={value}
         placeholder={placeholder}
-        onChange={handleBlur}
+        onChange={handleChange}
+        defaultValue={defaultValue}
         disabled={disabled}
         max={max}
         min={min}
+        id={id}
+        onPaste={onPaste}
+        onKeyPress={onKeyPress}
+        {...register(id)}
       />
-      <div
-        className={`${
-          !validationMessage && 'hidden'
-        } text-error text-xs my-2 whitespace-nowrap absolute`}
-      >
-        {validationMessage}
-      </div>
+      <div className="text-error font-normal text-sm">{children}</div>
     </div>
   );
 };
