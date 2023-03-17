@@ -185,19 +185,11 @@ export default function SurveyPage() {
     };
     getDataDetailCompany();
   }, [token, user.id]);
-  const handleChanges = (e) => {
-    const numberQuestion = e.target.name
-    const answer = e.target.value
-    
-
-  };
-
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form
         autoComplete="off"
         encType="multipart/form-data"
-        onChange={handleChanges}
         className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full"
       >
         <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
