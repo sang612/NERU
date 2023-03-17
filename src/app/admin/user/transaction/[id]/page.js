@@ -11,7 +11,9 @@ import { css, cx } from '@emotion/css';
 
 export default function TransactionDetailPage({ params }) {
   const id = params?.id;
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
   const [listTransaction, setListTransaction] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);

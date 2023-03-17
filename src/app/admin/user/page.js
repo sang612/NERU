@@ -21,7 +21,7 @@ import SearchInput from '@/components/Search';
 
 export default function CompanyPage() {
   const [listUser, setListUser] = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
 
   const [type, setType] = useState('name');
   // const [userType, setUserType] = useState(false);
@@ -29,7 +29,9 @@ export default function CompanyPage() {
   const [search, setSearch] = useState('');
 
   const { enqueueSnackbar } = useSnackbar();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
 
   const [modalCreate, setModalCreate] = useState(false);
   const [phone, setPhone] = useState('');
