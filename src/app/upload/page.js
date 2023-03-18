@@ -2,7 +2,6 @@
 import { useRef, useState } from 'react';
 import { Button } from '@/components/Button/button';
 import { UploadItem } from '@/components/Upload/upload-item';
-import { NotFound } from '@/assets/icons';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +18,12 @@ export default function UploadPage() {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
 
   const handleClick = (inputRef) => {
     inputRef.current.click();
@@ -103,7 +104,7 @@ export default function UploadPage() {
     }
   };
 
-  if (!user) return <NotFound />;
+  if (!user) router.replace('auth/login');
 
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>

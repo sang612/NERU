@@ -27,7 +27,9 @@ const customStyles = {
 
 function PaymentModal({ isOpen, setIsOpen }) {
   const [clientSecret, setClientSecret] = useState('');
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
 
   function closeModal() {
     setIsOpen(false);

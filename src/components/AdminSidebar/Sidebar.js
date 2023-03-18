@@ -8,7 +8,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 export const Sidebar = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -16,6 +16,8 @@ export const Sidebar = () => {
     localStorage.removeItem('rememberMe');
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    sessionStorage.removeItem('session_user')
+    sessionStorage.removeItem('token')
     router.push('/auth/login');
     dispatch(logOut());
   };

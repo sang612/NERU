@@ -37,7 +37,7 @@ export default function CompanyPage() {
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
 
   const columns = useMemo(
     () => [
@@ -204,7 +204,9 @@ export default function CompanyPage() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
   const [modalCreate, setModalCreate] = useState(false);
   const [enterpriseId, setEnterpriseId] = useState();
   const [companyName, setCompanyName] = useState();
