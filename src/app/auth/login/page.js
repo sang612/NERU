@@ -64,6 +64,8 @@ export default function LoginPage() {
           return;
         } else if (data.status === 200 || data.status === 201) {
           if (rememberLogin) {
+            sessionStorage.removeItem('session_user');
+            sessionStorage.removeItem('token');
             localStorage.setItem('token', data.payload.token);
             localStorage.setItem(
               'user',
@@ -76,6 +78,8 @@ export default function LoginPage() {
               })
             );
           } else {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
             sessionStorage.setItem('token', data.payload.token);
             sessionStorage.setItem(
               'session_user',

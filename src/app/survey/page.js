@@ -177,7 +177,7 @@ export default function SurveyPage() {
         if (data?.payload?.result) {
           const serverAnswers = {};
           data.payload.result.forEach((item) => {
-            serverAnswers[item.question_title] = item.answer_by_user[0].answer;
+            serverAnswers[item.question_title] = item.answer_by_user[0]?.answer;
           });
           setAnswers((prevState) => ({
             ...prevState,
