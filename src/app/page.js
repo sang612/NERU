@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div id="root">
       {user ? (
-        user.role === 'Admin' ? (
+        user?.role === 'Admin' ? (
           router.replace('/admin/company')
         ) : (
           router.replace('/notification')
