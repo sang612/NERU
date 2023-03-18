@@ -66,7 +66,9 @@ export default function EditCompanyPage({ params }) {
     getDataDetailCompany();
   }, []);
   const { enqueueSnackbar } = useSnackbar();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
