@@ -16,9 +16,7 @@ export default function Employee({ params }) {
   const [listEmployee, setListEmployee] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   const [type, setType] = useState('name');
   const [inputSearch, setInputSearch] = useState('');
   const [search, setSearch] = useState('');

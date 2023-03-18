@@ -8,12 +8,9 @@ import PaymentModal from '../../components/Payment';
 const amount = '1100円';
 
 export default function UploadPage() {
-  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
   const router = useRouter();
-  if (!user) router.replace('auth/login');
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {

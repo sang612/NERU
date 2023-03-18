@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
-  const user = sessionStorage.getItem('session_user')
-    ? JSON.parse(sessionStorage.getItem('session_user'))
-    : JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <div id="root">
