@@ -82,9 +82,7 @@ export default function CreateCompanyPage() {
     }
   };
   const router = useRouter();
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
 
   return (

@@ -66,9 +66,7 @@ export default function EditEmployeePage({ params }) {
     getDetailEmployee();
   }, []);
   const { enqueueSnackbar } = useSnackbar();
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
   const handleSubmit = async (event) => {
     event.preventDefault();

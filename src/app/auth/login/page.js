@@ -15,9 +15,7 @@ import { useEffect } from 'react';
 export default function LoginPage() {
   const router = useRouter();
   const rememberMe = localStorage.getItem('rememberMe');
-  const user = sessionStorage.getItem('session_user')
-    ? JSON.parse(sessionStorage.getItem('session_user'))
-    : JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user'));
   const [activeItem, setActiveItem] = useState();
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
@@ -63,31 +61,17 @@ export default function LoginPage() {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
-          if (rememberLogin) {
-            localStorage.setItem('token', data.payload.token);
-            localStorage.setItem(
-              'user',
-              JSON.stringify({
-                id: data.payload.user.id,
-                role: data.payload.user.role,
-                isEnterprise: data.payload.user.isEnterprise,
-                record_number_of_user: data.payload.user.record_number_of_user,
-                isAnswer: data.payload.user.isAnswer,
-              })
-            );
-          } else {
-            sessionStorage.setItem('token', data.payload.token);
-            sessionStorage.setItem(
-              'session_user',
-              JSON.stringify({
-                id: data.payload.user.id,
-                role: data.payload.user.role,
-                isEnterprise: data.payload.user.isEnterprise,
-                record_number_of_user: data.payload.user.record_number_of_user,
-                isAnswer: data.payload.user.isAnswer,
-              })
-            );
-          }
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              id: data.payload.user.id,
+              role: data.payload.user.role,
+              isEnterprise: data.payload.user.isEnterprise,
+              record_number_of_user: data.payload.user.record_number_of_user,
+              isAnswer: data.payload.user.isAnswer
+            })
+          );
+          localStorage.setItem('token', data.payload.token);
           enqueueSnackbar('ログインできました。', {
             variant: 'success',
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -111,18 +95,15 @@ export default function LoginPage() {
     const checkValidateEmail = validateEmail(emailForgetPassword);
     if (!checkValidateEmail) {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: emailForgetPassword,
-            }),
-          }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailForgetPassword,
+          }),
+        });
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           enqueueSnackbar(data.message ? data?.message : data?.error, {
@@ -168,9 +149,7 @@ export default function LoginPage() {
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
-          サインイン
-        </h1>
+        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインイン</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
             name="tel"
@@ -233,10 +212,7 @@ export default function LoginPage() {
             <div className="ml-2 text-base text-primary">次回から自動でログイン</div>
           </div>
           <div className="w-full mb-4 flex flex-col justify-center items-end">
-            <div
-              onClick={() => setActiveItem(true)}
-              className="text-base text-primary hover:cursor-pointer"
-            >
+            <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
               パスワードをお忘れの場合
             </div>
             <div

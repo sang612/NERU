@@ -12,20 +12,14 @@ import { useEffect, useState } from 'react';
 import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { useSnackbar } from 'notistack';
 export default function SurveyPage() {
-  const router = useRouter();
-  const user = sessionStorage.getItem('session_user')
-    ? JSON.parse(sessionStorage.getItem('session_user'))
-    : JSON.parse(localStorage.getItem('user'));
-  useEffect(() => {
-    if (!user) router.replace('auth/login');
-  }, []);
   const date = new Date();
   const newDate = `${date.getFullYear()}-${
     date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()
   }-${date.getDate()}`;
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const {
     register,
     handleSubmit,
@@ -65,6 +59,7 @@ export default function SurveyPage() {
     22: { text: 'kg' },
     27: { text: '年 間' },
   };
+  const router = useRouter();
 
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
@@ -161,7 +156,7 @@ export default function SurveyPage() {
   useEffect(() => {
     const getDataDetailCompany = async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question/${user?.id}`,
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question/${user.id}`,
         {
           method: 'GET',
           headers: {
@@ -189,8 +184,7 @@ export default function SurveyPage() {
       return;
     };
     getDataDetailCompany();
-  }, [token, user?.id]);
-
+  }, [token, user.id]);
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form

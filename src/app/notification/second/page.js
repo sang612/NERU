@@ -7,9 +7,7 @@ import { useEffect } from 'react';
 
 export default function SecondNotification() {
   const router = useRouter();
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
   // const firstAction = () => {
   //   router.push('/notification');
