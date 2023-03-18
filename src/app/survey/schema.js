@@ -9,9 +9,7 @@ export const schema = yup.object().shape({
   Q6: yup.string().required('* 私たちは答えが必要です。'),
   Q7: yup.string().required('* 私たちは答えが必要です。'),
   Q8: yup.string().required('* 私たちは答えが必要です。'),
-  Q9: yup
-    .string()
-    .required('* 私たちは答えが必要です。'),
+  Q9: yup.string().required('* 私たちは答えが必要です。'),
   Q10: yup
     .string()
     .nullable()
@@ -36,10 +34,12 @@ export const schema = yup.object().shape({
   Q19: yup.string().required('* 私たちは答えが必要です。'),
   Q20: yup.string().required('* 私たちは答えが必要です。'),
   Q21: yup
-    .number()
-    .typeError('* 私たちは答えが必要です。')
-    .required('* 私たちは答えが必要です。')
-    .min(5, '*  肥満または 20 代前半と比較して 5kg 以上の体重増加'),
+    .string()
+    .nullable()
+    .when('Q20', {
+      is: (val) => val === 'あり',
+      then: (schema) => schema.required('* 私たちは答えが必要です。'),
+    }),
   Q22: yup.string().required('* 私たちは答えが必要です。'),
   Q23: yup.string().required('* 私たちは答えが必要です。'),
   Q24: yup.string().required('* 私たちは答えが必要です。'),
@@ -58,7 +58,13 @@ export const schema = yup.object().shape({
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
     }),
   Q27: yup.string().required('* 私たちは答えが必要です。'),
-  Q28: yup.string().required('* 私たちは答えが必要です。'),
+  Q28: yup
+    .string()
+    .nullable()
+    .when('Q27', {
+      is: (val) => val === 'はい',
+      then: (schema) => schema.required('* 私たちは答えが必要です。'),
+    }),
   Q29: yup.string().required('* 私たちは答えが必要です。'),
   Q30: yup.string().required('* 私たちは答えが必要です。'),
   Q31: yup.string().required('* 私たちは答えが必要です。'),

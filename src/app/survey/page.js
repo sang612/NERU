@@ -35,13 +35,16 @@ export default function SurveyPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [answers, setAnswers] = useState({
     9: null,
+    20: null,
     24: null,
     25: null,
+    27: null,
     32: null,
     33: null,
   });
 
   const titleToContentMap = {
+    5: '普段の生活習慣',
     14: '就寝中',
     17: '起床',
     19: '日中',
@@ -56,8 +59,8 @@ export default function SurveyPage() {
     8: { text: '合' },
     10: { text: '年 間' },
     11: { text: '本' },
-    22: { text: 'kg' },
-    27: { text: '年 間' },
+    21: { text: 'kg' },
+    26: { text: '年 間' },
   };
   const router = useRouter();
 
@@ -68,7 +71,7 @@ export default function SurveyPage() {
     }));
   };
   const preventPasteNegative = (e) => {
-    const clipboardData = e.clipboardData || window.clipboardData;
+    const clipboardData = e.clipboardData || window.Clipboard;
     const pastedData = parseFloat(clipboardData.getData('text'));
     if (pastedData < 0) {
       e.preventDefault();
@@ -172,7 +175,7 @@ export default function SurveyPage() {
         if (data?.payload?.result) {
           const serverAnswers = {};
           data.payload.result.forEach((item) => {
-            serverAnswers[item.question_title] = item.answer_by_user[0].answer;
+            serverAnswers[item.question_title] = item.answer_by_user[0]?.answer;
           });
           setAnswers((prevState) => ({
             ...prevState,
@@ -215,7 +218,7 @@ export default function SurveyPage() {
                         errors['Q' + item.question_title]?.message ? 'text-error' : ''
                       }`}
                     >
-                      {item.question_content}
+                      {'Q.' + item.question_title + ' ' + item.question_content}
                     </label>
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
@@ -235,14 +238,15 @@ export default function SurveyPage() {
                             (item.question_title === '10' && answers['9'] === 'はい') ||
                             (item.question_title === '11' && answers['9'] === 'いいえ') ||
                             (item.question_title === '26' && answers['24'] === 'いいえ') ||
-                            (item.question_title === '26' && answers['25'] === 'いいえ')
+                            (item.question_title === '26' && answers['25'] === 'いいえ') ||
+                            (item.question_title === '21' && answers['20'] === 'な し')
                           }
                           validationMessage={errors['Q' + item.question_title]?.message}
                         >
                           {errors['Q' + item.question_title]?.message}
                         </SurveyInput>
                         {titleMap[item.question_title] && (
-                          <div className="absolute right-[32px] top-1/2 -translate-y-1/2">
+                          <div className="absolute right-[15px] top-[15px]">
                             {titleMap[item.question_title].text}
                           </div>
                         )}
@@ -262,7 +266,8 @@ export default function SurveyPage() {
                             onChange={() => handleChange(option.content, item.question_title)}
                             disabled={
                               (item.question_title === '33' && answers['32'] === 'はい') ||
-                              (item.question_title === '25' && answers['24'] === 'いいえ')
+                              (item.question_title === '25' && answers['24'] === 'いいえ') ||
+                              (item.question_title === '28' && answers['27'] === 'いいえ')
                             }
                           />
                         ))}
