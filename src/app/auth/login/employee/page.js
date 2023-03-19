@@ -116,7 +116,6 @@ export default function PersonalRegister() {
                 record_number_of_user: data.payload.user.record_number_of_user,
               })
             );
-
             localStorage.setItem('token', data.payload.token);
             if (!data?.payload?.user?.isFirstUpdatePass) router.push('/user/updateProfileEmployee');
             else router.push('/app-download');
