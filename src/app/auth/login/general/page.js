@@ -63,7 +63,7 @@ export default function LoginGeneralPage() {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
-          if (!data.payload?.user?.isFirstUpdatePass) {
+          if (!data.payload?.user?.isFirstUpdatePass && data.payload?.user?.isEnterprise) {
             enqueueSnackbar('暗証番号をまだ変更しませんので、続くために変更してください。', {
               variant: 'error',
               anchorOrigin: { vertical: 'top', horizontal: 'right' },
@@ -105,7 +105,7 @@ export default function LoginGeneralPage() {
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           if (data.payload.user.role === Role.admin) router.push('/admin/company');
-          else router.push('/notification/second');
+          else router.push('/notification');
         }
       } catch (error) {
         enqueueSnackbar('アカウントまたはパスワードが無効です', {

@@ -4,7 +4,7 @@ export const Button = ({ classname, children, isLoading, ...props }) => {
   return (
     <button className={`uppercase w-full py-[18px] px-[44px] rounded-[10px] text-[#ffffff] ${classname}`} {...props}>
       {isLoading ? (
-        <div className="flex items-center">
+        <div className="flex items-center justify-center">
           <svg
             className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
             xmlns="http://www.w3.org/2000/svg"
