@@ -160,7 +160,12 @@ export default function SurveyPage() {
       }
     });
   };
-
+  function formatDescription(description) {
+    if (description.includes('break')) {
+      return description.replaceAll('break', '<br/>');
+    }
+    return description;
+  }
   useEffect(() => {
     const getDataDetailCompany = async () => {
       const response = await fetch(
@@ -220,12 +225,17 @@ export default function SurveyPage() {
                   {render(item)}
                   <div key={item.question_id} className="mt-[40px]">
                     <label
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          'Q.' +
+                          item.question_title +
+                          ' ' +
+                          formatDescription(item?.question_content),
+                      }}
                       className={`ml-3 ${
                         errors['Q' + item.question_title]?.message ? 'text-error' : ''
                       }`}
-                    >
-                      {'Q.' + item.question_title + ' ' + item.question_content}
-                    </label>
+                    />
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
                         <SurveyInput
@@ -271,7 +281,7 @@ export default function SurveyPage() {
                             defaultChecked={option.content === item.answer_by_user[0]?.answer}
                             onChange={() => handleChange(option.content, item.question_title)}
                             disabled={
-                              (item.question_title === '33' && answers['32'] === 'はい') ||
+                              (item.question_title === '33' && answers['32'] === 'いいえ') ||
                               (item.question_title === '25' && answers['24'] === 'いいえ') ||
                               (item.question_title === '28' && answers['27'] === 'いいえ')
                             }
