@@ -2,17 +2,53 @@ import * as yup from 'yup';
 
 export const schema = yup.object().shape({
   Q1: yup.string().required('* 私たちは答えが必要です。'),
-  Q2: yup.string().required('* 私たちは答えが必要です。'),
-  Q3: yup.string().required('* 私たちは答えが必要です。'),
+  Q2: yup
+    .string()
+    .required('* 私たちは答えが必要です。')
+    .test('is-valid-number', '* 60-270までの数字で入力してください。', function (value) {
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 60 && numValue <= 270;
+    }),
+  Q3: yup
+    .string()
+    .required('* 私たちは答えが必要です。')
+    .test('is-valid-number', '* 2-600までの数字で入力してください。', function (value) {
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 2 && numValue <= 600;
+    }),
   Q4: yup.string().required('* 私たちは答えが必要です。'),
-  Q5: yup.string().optional(),
+  Q5: yup
+    .string()
+    .optional()
+    .test('is-valid-number', '* 空欄または1-24までの数字で入力してください。', function (value) {
+      if (!value) return true;
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 24;
+    }),
   Q6: yup.string().required('* 私たちは答えが必要です。'),
-  Q7: yup.string().required('* 私たちは答えが必要です。'),
-  Q8: yup.string().required('* 私たちは答えが必要です。'),
+  Q7: yup
+    .string()
+    .required('* 私たちは答えが必要です。')
+    .test('is-valid-number', '* 飲酒日数は0-7までの数字で入力してください。', function (value) {
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 0 && numValue <= 7;
+    }),
+  Q8: yup
+    .string()
+    .required('* 私たちは答えが必要です。')
+    .test('is-valid-number', '* 酒量は0-20までの数字で入力してください。', function (value) {
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 0 && numValue <= 20;
+    }),
   Q9: yup.string().required('* 私たちは答えが必要です。'),
   Q10: yup
     .string()
     .nullable()
+    .test('is-valid-number', '* 1-70までの数字で入力してください。', function (value) {
+      if (!value) return true;
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+    })
     .when('Q9', {
       is: (val) => val === 'いいえ',
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
@@ -20,6 +56,11 @@ export const schema = yup.object().shape({
   Q11: yup
     .string()
     .nullable()
+    .test('is-valid-number', '* 1-80までの数字で入力してください。', function (value) {
+      if (!value) return true;
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+    })
     .when('Q9', {
       is: (val) => val === 'はい',
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
@@ -36,6 +77,11 @@ export const schema = yup.object().shape({
   Q21: yup
     .string()
     .nullable()
+    .test('is-valid-number', '* 5-200までの数字で入力してください。', function (value) {
+      if (!value) return true;
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+    })
     .when('Q20', {
       is: (val) => val === 'あり',
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
@@ -53,6 +99,11 @@ export const schema = yup.object().shape({
   Q26: yup
     .string()
     .nullable()
+    .test('is-valid-number', '* 1-70までの数字で入力してください。', function (value) {
+      if (!value) return true;
+      const numValue = parseInt(value);
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+    })
     .when('Q25', {
       is: (val) => val === 'はい',
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
