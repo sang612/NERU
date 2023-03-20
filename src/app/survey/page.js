@@ -31,6 +31,7 @@ export default function SurveyPage() {
     getValues,
     setValue,
     handleSubmit,
+    clearErrors,
     formState: { errors },
   } = useForm({
     mode: 'all',
@@ -201,16 +202,47 @@ export default function SurveyPage() {
     };
     getDataDetailCompany();
   }, [token, user?.id]);
-  if (allValues.Q9 === 'はい') setValue('Q10', '');
-  if (allValues.Q9 === 'いいえ') setValue('Q11', '');
-  if (allValues.Q20 === 'な し') setValue('Q21', '');
-  if (allValues.Q24 === 'いいえ') {
-    setValue('Q25', null);
-    setValue('Q26', '');
-  }
-  if (allValues.Q25 === 'いいえ') setValue('Q26', '');
-  if (allValues.Q27 === 'いいえ') setValue('Q28', null);
-  if (allValues.Q32 === 'いいえ') setValue('Q33', null);
+  useEffect(() => {
+    if (allValues.Q9 === 'はい') {
+      setValue('Q10', '');
+      clearErrors('Q10');
+    }
+    if (allValues.Q9 === 'いいえ') {
+      setValue('Q11', '');
+      clearErrors('Q11');
+    }
+    if (allValues.Q20 === 'な し') {
+      setValue('Q21', '');
+      clearErrors('Q21');
+    }
+    if (allValues.Q24 === 'いいえ') {
+      setValue('Q25', null);
+      clearErrors('Q25');
+      setValue('Q26', '');
+      clearErrors('Q26');
+    }
+    if (allValues.Q25 === 'いいえ') {
+      setValue('Q26', '');
+      clearErrors('Q26');
+    }
+    if (allValues.Q27 === 'いいえ') {
+      setValue('Q28', null);
+      clearErrors('Q28');
+    }
+    if (allValues.Q32 === 'いいえ') {
+      setValue('Q33', null);
+      clearErrors('Q33');
+    }
+  }, [
+    allValues.Q20,
+    allValues.Q24,
+    allValues.Q25,
+    allValues.Q27,
+    allValues.Q32,
+    allValues.Q9,
+    clearErrors,
+    setValue,
+  ]);
 
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
