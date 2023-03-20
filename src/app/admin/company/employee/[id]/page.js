@@ -13,6 +13,7 @@ import SearchInput from '@/components/Search';
 
 export default function Employee({ params }) {
   const id = params?.id;
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
   const [listEmployee, setListEmployee] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
@@ -128,6 +129,7 @@ export default function Employee({ params }) {
         return;
       } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
+        setIsDeleteSuccess(true);
         const item = listEmployee.find((d) => d?.user_id?.id === id);
         const index = listEmployee.indexOf(item);
         listEmployee.splice(index, 1);
@@ -171,6 +173,7 @@ export default function Employee({ params }) {
         } else if (data.status === 200 || data.status === 201) {
           setLastPage(data?.payload?._totalPage);
           setTotal(data?.payload?._max);
+          setIsDeleteSuccess(false)
           if (data?.payload?.filteredLegal?.length === undefined) {
             setListEmployee([data?.payload?.filteredLegal]);
           } else {
@@ -182,7 +185,7 @@ export default function Employee({ params }) {
       }
     };
     getListEmployee();
-  }, [currentPage, id, search, token, type]);
+  }, [currentPage, id, search, token, type, isDeleteSuccess]);
   const { enqueueSnackbar } = useSnackbar();
 
   const menuItem = [

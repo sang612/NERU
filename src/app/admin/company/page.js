@@ -328,6 +328,7 @@ export default function CompanyPage() {
         setListCompany(data.payload.enterprise);
         setLastPage(data.payload._totalPage);
         setTotal(data.payload._max);
+        setIsDeleteSuccess(false)
       }
     };
     getDataDetailCompany();

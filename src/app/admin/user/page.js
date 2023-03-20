@@ -20,6 +20,7 @@ import { ModalCreateUser } from '@/components/Modal/CreateUser';
 import SearchInput from '@/components/Search';
 
 export default function CompanyPage() {
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
   const [listUser, setListUser] = useState([]);
   const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
 
@@ -172,6 +173,7 @@ export default function CompanyPage() {
         return;
       } else if (data.status === 200 || data.status === 201) {
         setActiveItem();
+        setIsDeleteSuccess(true);
         const item = listUser.find((d) => d.id === id);
         const index = listUser.indexOf(item);
         listUser.splice(index, 1);
@@ -211,10 +213,11 @@ export default function CompanyPage() {
         setListUser(data?.payload?.results);
         setLastPage(data?.payload?._totalPage);
         setTotal(data?.payload?._max);
+        setIsDeleteSuccess(false)
       }
     };
     getlistUser();
-  }, [currentPage, modalCreate, search, token, type]);
+  }, [currentPage, modalCreate, search, token, type, isDeleteSuccess]);
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
     setValidate({ ...validate, [type]: checkValidateFullName });
