@@ -63,6 +63,14 @@ export default function LoginGeneralPage() {
           });
           return;
         } else if (data.status === 200 || data.status === 201) {
+          if (!data.payload?.user?.isFirstUpdatePass) {
+            enqueueSnackbar('暗証番号をまだ変更しませんので、続くために変更してください。', {
+              variant: 'error',
+              anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            });
+            router.replace('/auth/login/employee');
+            return;
+          }
           if (rememberLogin) {
             sessionStorage.removeItem('session_user');
             sessionStorage.removeItem('token');
