@@ -59,7 +59,7 @@ export const schema = yup.object().shape({
     .test('is-valid-number', '* 1-80までの数字で入力してください。', function (value) {
       if (!value) return true;
       const numValue = parseInt(value);
-      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+      return !isNaN(numValue) && numValue >= 1 && numValue <= 80;
     })
     .when('Q9', {
       is: (val) => val === 'はい',
@@ -80,7 +80,7 @@ export const schema = yup.object().shape({
     .test('is-valid-number', '* 5-200までの数字で入力してください。', function (value) {
       if (!value) return true;
       const numValue = parseInt(value);
-      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+      return !isNaN(numValue) && numValue >= 5 && numValue <= 200;
     })
     .when('Q20', {
       is: (val) => val === 'あり',
