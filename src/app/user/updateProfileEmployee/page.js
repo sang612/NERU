@@ -1,6 +1,5 @@
 'use client';
 import { Input } from '@/components/Input';
-import Link from 'next/link';
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
 import { Inter } from '@next/font/google';
@@ -10,6 +9,7 @@ import { validateEmail, validatePassword } from '@/utils/validate';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
+import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,6 +19,8 @@ const inter = Inter({
 export default function EnterpriseRegister() {
   const router = useRouter();
   const { user, token, legal } = useSelector((state) => state.user);
+  const [activeItem, setActiveItem] = useState();
+  const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -35,7 +37,8 @@ export default function EnterpriseRegister() {
     setValidate({ ...validate, password: checkValidatePassword });
   };
   const checkValidatePasswordConfirm = () => {
-    const checkValidatePasswordConfirm = password === passwordConfirm ? '' : 'パスワードが一致しません。';
+    const checkValidatePasswordConfirm =
+      password === passwordConfirm ? '' : 'パスワードが一致しません。';
     setValidate({ ...validate, passwordConfirm: checkValidatePasswordConfirm });
   };
   const checkValidateEmail = () => {
@@ -46,33 +49,40 @@ export default function EnterpriseRegister() {
   const handleSubmit = async () => {
     const validateEmployeeEmail = !user?.email ? validateEmail(email) : '';
     const validateEmployeePassword = validatePassword(password, 'password');
-    const validateEmployeePasswordConfirm = password === passwordConfirm ? '' : 'パスワードが一致しません。';
+    const validateEmployeePasswordConfirm =
+      password === passwordConfirm ? '' : 'パスワードが一致しません。';
     if (!validateEmployeePassword && !validateEmployeePasswordConfirm && !validateEmployeeEmail) {
       setIsLoading(true);
       let response;
       if (email) {
-        response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            accessToken: token,
-          },
-          body: JSON.stringify({
-            password: password,
-            email: email,
-          }),
-        });
+        response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              accessToken: token,
+            },
+            body: JSON.stringify({
+              password: password,
+              email: email,
+            }),
+          }
+        );
       } else {
-        response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            accessToken: token,
-          },
-          body: JSON.stringify({
-            password: password,
-          }),
-        });
+        response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-infomation/${user.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              accessToken: token,
+            },
+            body: JSON.stringify({
+              password: password,
+            }),
+          }
+        );
       }
       const data = await response.json();
       setIsLoading(false);
@@ -97,19 +107,91 @@ export default function EnterpriseRegister() {
       });
     }
   };
+  const handleSendMail = async () => {
+    const checkValidateEmail = validateEmail(emailForgetPassword);
+    if (!checkValidateEmail) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: emailForgetPassword,
+            }),
+          }
+        );
+        const data = await response.json();
+        if (data.status !== 200 && data.status !== 201) {
+          enqueueSnackbar(data.message ? data?.message : data?.error, {
+            variant: 'error',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          return;
+        } else if (data.status === 200 || data.status === 201) {
+          enqueueSnackbar('電子メールを正常に送信', {
+            variant: 'success',
+            anchorOrigin: { vertical: 'top', horizontal: 'right' },
+          });
+          setActiveItem();
+        }
+      } catch (error) {
+        enqueueSnackbar('メール送信失敗', {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        throw error;
+      }
+    } else {
+      enqueueSnackbar(checkValidateEmail, {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
+    }
+  };
 
   return (
-    <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}>
+    <div
+      className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}
+    >
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">プロフィールの更新</h1>
+        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
+          プロフィールの更新
+        </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
-          <Input disabled name="company" type="text" value={legal?.enterprise_id?.company_name} placeholder="会社名" />
-          <Input disabled name="department" type="text" value={legal?.department_name} placeholder="部署名" />
-          <Input disabled name="employeeNumber" type="text" value={user.id} placeholder="社員番号" />
+          <Input
+            disabled
+            name="company"
+            type="text"
+            value={legal?.enterprise_id?.company_name}
+            placeholder="会社名"
+          />
+          <Input
+            disabled
+            name="department"
+            type="text"
+            value={legal?.department_name}
+            placeholder="部署名"
+          />
+          <Input
+            disabled
+            name="employeeNumber"
+            type="text"
+            value={user.id}
+            placeholder="社員番号"
+          />
           <Input disabled name="mr" type="text" value={user.last_name} placeholder="姓" />
           <Input disabled name="name" type="text" value={user.first_name} placeholder="名" />
           {user.email ? (
-            <Input disabled name="email" type="text" value={user.email} placeholder="メールアドレス" />
+            <Input
+              disabled
+              name="email"
+              type="text"
+              value={user.email}
+              placeholder="メールアドレス"
+            />
           ) : (
             <Input
               name="email"
@@ -200,28 +282,28 @@ export default function EnterpriseRegister() {
           </div>
           <div className="w-full">
             <div className="w-full mb-4 flex justify-end">
-              <Link href="/auth/forgot-password-step1" className="text-base text-primary">
+              <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
                 パスワードをお忘れの場合
-              </Link>
-            </div>
-            <div className="w-full mb-2 flex flex-col justify-center items-center">
-              <div className="w-full text-base text-third flex justify-end">
-                <Link href="/terms-of-service" className="text-primary underline">
-                  利用規約
-                </Link>
-                と
-                <Link href="/privacy-policy" className="text-primary underline">
-                  プライバシーポリシー
-                </Link>
-                に同意
               </div>
             </div>
-            <Button onClick={handleSubmit} classname="bg-primary mt-[12.83px]" isLoading={isLoading}>
+            <Button
+              onClick={handleSubmit}
+              classname="bg-primary mt-[12.83px]"
+              isLoading={isLoading}
+            >
               サインアップ
             </Button>
           </div>
         </div>
       </div>
+      {activeItem && (
+        <ModalForgetPassword
+          action={handleSendMail}
+          activeItem={activeItem}
+          setActiveItem={setActiveItem}
+          setEmailForgetPassword={setEmailForgetPassword}
+        />
+      )}
     </div>
   );
 }
