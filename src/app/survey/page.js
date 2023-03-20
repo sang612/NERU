@@ -202,7 +202,7 @@ export default function SurveyPage() {
     getDataDetailCompany();
   }, [token, user?.id]);
   if (allValues.Q9 === 'はい') setValue('Q10', '');
-  if (allValues.Q9 === 'いいえ') setValue('Q10', '');
+  if (allValues.Q9 === 'いいえ') setValue('Q11', '');
   if (allValues.Q20 === 'な し') setValue('Q21', '');
   if (allValues.Q24 === 'いいえ') {
     setValue('Q25', null);
