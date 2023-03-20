@@ -73,7 +73,7 @@ export const schema = yup.object().shape({
     .string()
     .nullable()
     .when('Q32', {
-      is: (val) => val === 'いいえ',
+      is: (val) => val === 'はい',
       then: (schema) => schema.required('* 私たちは答えが必要です。'),
     }),
 });

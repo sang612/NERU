@@ -271,7 +271,7 @@ export default function SurveyPage() {
                             defaultChecked={option.content === item.answer_by_user[0]?.answer}
                             onChange={() => handleChange(option.content, item.question_title)}
                             disabled={
-                              (item.question_title === '33' && answers['32'] === 'はい') ||
+                              (item.question_title === '33' && answers['32'] === 'いいえ') ||
                               (item.question_title === '25' && answers['24'] === 'いいえ') ||
                               (item.question_title === '28' && answers['27'] === 'いいえ')
                             }
