@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { css, cx } from '@emotion/css';
 import { useState } from 'react';
 import { Inter } from '@next/font/google';
-import { RememberPasswordIcon } from '@/assets/icons';
 import { Button } from '@/components/Button/button';
 import { EyeInvisibleFilled, EyeFilled } from '@ant-design/icons';
 import { validateEmail, validatePassword } from '@/utils/validate';
@@ -23,7 +22,6 @@ export default function EnterpriseRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [acceptPolicy, setAcceptPolicy] = useState(false);
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowPassConfirm, setIsShowPassConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +29,6 @@ export default function EnterpriseRegister() {
     email: '',
     password: '',
     passwordConfirm: '',
-    acceptPolicy: '',
   });
   const checkValidatePassword = () => {
     const checkValidatePassword = validatePassword(password, 'password');
@@ -50,7 +47,7 @@ export default function EnterpriseRegister() {
     const validateEmployeeEmail = !user?.email ? validateEmail(email) : '';
     const validateEmployeePassword = validatePassword(password, 'password');
     const validateEmployeePasswordConfirm = password === passwordConfirm ? '' : 'パスワードが一致しません。';
-    if (!validateEmployeePassword && !validateEmployeePasswordConfirm && !validateEmployeeEmail && acceptPolicy) {
+    if (!validateEmployeePassword && !validateEmployeePasswordConfirm && !validateEmployeeEmail) {
       setIsLoading(true);
       let response;
       if (email) {
@@ -97,7 +94,6 @@ export default function EnterpriseRegister() {
         email: validateEmployeeEmail,
         password: validateEmployeePassword,
         passwordConfirm: validateEmployeePasswordConfirm,
-        acceptPolicy: '続行するには利用規約とプライバシーポリシーに同意してください。',
       });
     }
   };
@@ -219,16 +215,8 @@ export default function EnterpriseRegister() {
                 </Link>
                 に同意
               </div>
-              <div
-                className="mt-[5px] w-7 h-7 outline-none border-2 border-primary border-solid rounded-md flex justify-center items-center text-third
-                cursor-pointer"
-                onClick={() => setAcceptPolicy((prev) => !prev)}
-              >
-                {acceptPolicy && <RememberPasswordIcon width={25} height={19} />}
-              </div>
-              {!acceptPolicy && <h3 className="text-error">{validate.acceptPolicy}</h3>}
             </div>
-            <Button onClick={handleSubmit} classname="bg-primary mt-[6.83px]" isLoading={isLoading}>
+            <Button onClick={handleSubmit} classname="bg-primary mt-[12.83px]" isLoading={isLoading}>
               サインアップ
             </Button>
           </div>
