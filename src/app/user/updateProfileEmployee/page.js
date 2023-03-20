@@ -9,7 +9,6 @@ import { validateEmail, validatePassword } from '@/utils/validate';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
-import { ModalForgetPassword } from '@/components/Modal/ForgetPassword';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,8 +18,6 @@ const inter = Inter({
 export default function EnterpriseRegister() {
   const router = useRouter();
   const { user, token, legal } = useSelector((state) => state.user);
-  const [activeItem, setActiveItem] = useState();
-  const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -104,50 +101,6 @@ export default function EnterpriseRegister() {
         email: validateEmployeeEmail,
         password: validateEmployeePassword,
         passwordConfirm: validateEmployeePasswordConfirm,
-      });
-    }
-  };
-  const handleSendMail = async () => {
-    const checkValidateEmail = validateEmail(emailForgetPassword);
-    if (!checkValidateEmail) {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: emailForgetPassword,
-            }),
-          }
-        );
-        const data = await response.json();
-        if (data.status !== 200 && data.status !== 201) {
-          enqueueSnackbar(data.message ? data?.message : data?.error, {
-            variant: 'error',
-            anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          });
-          return;
-        } else if (data.status === 200 || data.status === 201) {
-          enqueueSnackbar('電子メールを正常に送信', {
-            variant: 'success',
-            anchorOrigin: { vertical: 'top', horizontal: 'right' },
-          });
-          setActiveItem();
-        }
-      } catch (error) {
-        enqueueSnackbar('メール送信失敗', {
-          variant: 'error',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        });
-        throw error;
-      }
-    } else {
-      enqueueSnackbar(checkValidateEmail, {
-        variant: 'error',
-        anchorOrigin: { vertical: 'top', horizontal: 'right' },
       });
     }
   };
@@ -281,11 +234,6 @@ export default function EnterpriseRegister() {
             )}
           </div>
           <div className="w-full">
-            <div className="w-full mb-4 flex justify-end">
-              <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
-                パスワードをお忘れの場合
-              </div>
-            </div>
             <Button
               onClick={handleSubmit}
               classname="bg-primary mt-[12.83px]"
@@ -296,14 +244,6 @@ export default function EnterpriseRegister() {
           </div>
         </div>
       </div>
-      {activeItem && (
-        <ModalForgetPassword
-          action={handleSendMail}
-          activeItem={activeItem}
-          setActiveItem={setActiveItem}
-          setEmailForgetPassword={setEmailForgetPassword}
-        />
-      )}
     </div>
   );
 }
