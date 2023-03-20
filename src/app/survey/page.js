@@ -28,6 +28,8 @@ export default function SurveyPage() {
     : localStorage.getItem('token');
   const {
     register,
+    getValues,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -35,6 +37,7 @@ export default function SurveyPage() {
     resolver: yupResolver(schema),
   });
 
+  const allValues = getValues();
   const { enqueueSnackbar } = useSnackbar();
 
   const [listSurvey, setListSurvey] = useState([]);
@@ -198,6 +201,16 @@ export default function SurveyPage() {
     };
     getDataDetailCompany();
   }, [token, user?.id]);
+  if (allValues.Q9 === 'はい') setValue('Q10', '');
+  if (allValues.Q9 === 'いいえ') setValue('Q10', '');
+  if (allValues.Q20 === 'な し') setValue('Q21', '');
+  if (allValues.Q24 === 'いいえ') {
+    setValue('Q25', null);
+    setValue('Q26', '');
+  }
+  if (allValues.Q25 === 'いいえ') setValue('Q26', '');
+  if (allValues.Q27 === 'いいえ') setValue('Q28', null);
+  if (allValues.Q32 === 'いいえ') setValue('Q33', null);
 
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
