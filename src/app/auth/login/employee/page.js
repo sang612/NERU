@@ -143,15 +143,18 @@ export default function PersonalRegister() {
     const checkValidateEmail = validateEmail(emailForgetPassword);
     if (!checkValidateEmail) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: emailForgetPassword,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: emailForgetPassword,
+            }),
+          }
+        );
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           enqueueSnackbar(data.message ? data?.message : data?.error, {
@@ -184,7 +187,9 @@ export default function PersonalRegister() {
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
+        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
+          サインアップ
+        </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
             name="lastName"
@@ -270,7 +275,18 @@ export default function PersonalRegister() {
 
           <div className="left-0 w-full">
             <div className="w-full mb-4 flex justify-end">
-              <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
+              <Link
+                href="/auth/login/general"
+                className="text-base text-primary hover:cursor-pointer"
+              >
+                アカウントを確認済みの場合はログインしてください。
+              </Link>
+            </div>
+            <div className="w-full mb-4 flex justify-end">
+              <div
+                onClick={() => setActiveItem(true)}
+                className="text-base text-primary hover:cursor-pointer"
+              >
                 パスワードをお忘れの場合
               </div>
             </div>
@@ -294,12 +310,18 @@ export default function PersonalRegister() {
               </div>
               {!acceptPolicy && <h3 className="text-error">{validate.acceptPolicy}</h3>}
             </div>
-            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit} isLoading={isLoading}>
+            <Button
+              classname="bg-primary mt-[20px] ssm:mt-[60px]"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
               サインアップ
             </Button>
           </div>
 
-          {errorRegister && <div className="w-full text-error text-sm mb-4 text-center">{errorRegister}</div>}
+          {errorRegister && (
+            <div className="w-full text-error text-sm mb-4 text-center">{errorRegister}</div>
+          )}
         </div>
       </div>
       {activeItem && (
