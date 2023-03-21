@@ -1,11 +1,22 @@
+
 {
-  "applinks": {
-    "apps": [],
-    "details": [
-      {
-        "appID": "2Y3W4L93HY.com.zens.nerusoku",
-        "paths": ["/app-download"]
-      }
-    ]
-  }
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "2Y3W4L93HY.com.zens.nerusoku.app",
+                "paths": [
+                    "NOT /_/*",
+                    "/*"
+                ]
+            },
+            {
+                "appID": "2Y3W4L93HY.com.zens.nerusoku",
+                "paths": [
+                    "NOT /_/*",
+                    "/*"
+                ]
+            }
+        ]
+    }
 }

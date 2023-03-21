@@ -10,6 +10,8 @@ import { ArrowLeftOutlined, DeleteFilled, EditFilled } from '@ant-design/icons';
 import ModalDeleted from '@/components/Modal';
 import { useSnackbar } from 'notistack';
 import SearchInput from '@/components/Search';
+import Image from 'next/image';
+import ModalConfirm from '@/components/Modal/ModalConfirm';
 
 export default function Employee({ params }) {
   const id = params?.id;
@@ -23,6 +25,8 @@ export default function Employee({ params }) {
   const [type, setType] = useState('name');
   const [inputSearch, setInputSearch] = useState('');
   const [search, setSearch] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [idClicked, setIdClicked] = useState('');
 
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
@@ -61,7 +65,7 @@ export default function Employee({ params }) {
         title: 'アクション',
         index: 'id',
         render: (id, record) => (
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex justify-between items-center">
             <Link
               href={`/admin/company/employee/${record?.enterprise_id}/edit/${record?.user_id?.id}`}
             >
@@ -104,6 +108,15 @@ export default function Employee({ params }) {
                 `
               )}
             />
+            <div
+              className="w-6 h-6 mx-2 cursor-pointer"
+              onClick={() => {
+                setIdClicked(record?.user_id?.id);
+                setIsOpen(true);
+              }}
+            >
+              <Image alt="icon" width={50} height={50} src="/icons8-add-record-100.png" />
+            </div>
           </div>
         ),
         className: 'w-[8%]',
@@ -147,6 +160,21 @@ export default function Employee({ params }) {
     }
   };
 
+  const handleAddRecordNumber = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${idClicked}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      });
+      setIsOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getListEmployee = async () => {
       try {
@@ -173,7 +201,7 @@ export default function Employee({ params }) {
         } else if (data.status === 200 || data.status === 201) {
           setLastPage(data?.payload?._totalPage);
           setTotal(data?.payload?._max);
-          setIsDeleteSuccess(false)
+          setIsDeleteSuccess(false);
           if (data?.payload?.filteredLegal?.length === undefined) {
             setListEmployee([data?.payload?.filteredLegal]);
           } else {
@@ -235,6 +263,16 @@ export default function Employee({ params }) {
       </CardLayout>
       {activeItem?.id && (
         <ModalDeleted action={handleDelete} activeItem={activeItem} setActiveItem={setActiveItem} />
+      )}
+
+      {isOpen && (
+        <ModalConfirm
+          title="Xác nhận"
+          handleOk={handleAddRecordNumber}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          message="Bạn có chắc muốn thêm 3 lượt ghi âm cho tài khoản này không?"
+        />
       )}
     </div>
   );

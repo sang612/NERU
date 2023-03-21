@@ -36,7 +36,7 @@ export const Sidebar = () => {
             `
           )}
         />
-        <div className="text-xl xl:text-2xl font-bold">Nerusoku Admin</div>
+        <div className="font-bold px-1">Nerusoku Admin</div>
       </div>
       <div className="h-[2px] w-full bg-white" />
 
@@ -45,7 +45,9 @@ export const Sidebar = () => {
           <Link
             href="/admin/company"
             className={`w-full h-[60px] flex items-center justify-start font-bold ${
-              pathname == '/admin/company' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
+              pathname == '/admin/company'
+                ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary'
+                : 'pl-4 xl:pl-6'
             }`}
           >
             <ContainerFilled
@@ -68,7 +70,9 @@ export const Sidebar = () => {
       <Link
         href="/admin/user"
         className={`w-full h-[60px] flex items-center justify-start font-bold ${
-          pathname == '/admin/user' ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary' : 'pl-4 xl:pl-6'
+          pathname == '/admin/user'
+            ? 'border-l-4 pl-3 xl:pl-5 border-solid border-primary'
+            : 'pl-4 xl:pl-6'
         }`}
       >
         <TeamOutlined
@@ -85,7 +89,10 @@ export const Sidebar = () => {
         ユーザー一覧
       </Link>
       <div className="h-[2px] w-full bg-white" />
-      <button onClick={handleLogOut} className="w-full h-[60px] flex items-center justify-start font-bold pl-4 xl:pl-6">
+      <button
+        onClick={handleLogOut}
+        className="w-full h-[60px] flex items-center justify-start font-bold pl-4 xl:pl-6"
+      >
         <ArrowRightOutlined
           className={cx(
             'w-7 h-7 mr-2',

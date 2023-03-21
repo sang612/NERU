@@ -14,7 +14,10 @@ import {
   UserAddOutlined,
   UsergroupAddOutlined,
 } from '@ant-design/icons';
+import Image from 'next/image';
+
 import ModalDeleted from '@/components/Modal';
+import ModalConfirm from '@/components/Modal/ModalConfirm';
 import { useSnackbar } from 'notistack';
 import {
   ModalCreateCompany,
@@ -33,12 +36,49 @@ import SearchInput from '@/components/Search';
 export default function CompanyPage() {
   const [listCompany, setListCompany] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { enqueueSnackbar } = useSnackbar();
   const [lastPage, setLastPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
   const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
-  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
-
+  const user = sessionStorage.getItem('session_user')
+    ? JSON.parse(sessionStorage.getItem('session_user'))
+    : JSON.parse(localStorage.getItem('user'));
+  const [isOpen, setIsOpen] = useState(false);
+  const [idClicked, setIdClicked] = useState('');
+  const token = sessionStorage.getItem('token')
+    ? sessionStorage.getItem('token')
+    : localStorage.getItem('token');
+  const [modalCreate, setModalCreate] = useState(false);
+  const [enterpriseId, setEnterpriseId] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [affiliationName, setAffiliationName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [numberOfEmployees, setNumberOfEmployees] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [type, setType] = useState('name');
+  const [inputSearch, setInputSearch] = useState('');
+  const [search, setSearch] = useState('');
+  const [file, setFile] = useState();
+  const [successList, setSuccessList] = useState();
+  const [failList, setFailList] = useState();
+  const [errorMessage, setErrorMessage] = useState();
+  const [modalResultFileExport, setModalResultFileExport] = useState(false);
+  const [firstNameKatakana, setFirstNameKatakana] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameKatakana, setLastNameKatakana] = useState('');
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [validate, setValidate] = useState({
+    departmentName: '',
+    firstName: '',
+    firstNameKatakana: '',
+    lastName: '',
+    lastNameKatakana: '',
+    email: '',
+    phone: '',
+    numberOfEmployees: '',
+  });
   const columns = useMemo(
     () => [
       {
@@ -125,7 +165,16 @@ export default function CompanyPage() {
                 )}
               />
             </div>
-            {user.role === Role.admin && (
+            <div
+              className="w-6 h-6 mx-2 cursor-pointer"
+              onClick={() => {
+                setIdClicked(id);
+                setIsOpen(true);
+              }}
+            >
+              <Image alt="icon" width={50} height={50} src="/icons8-add-record-100.png" />
+            </div>
+            {user?.role === Role.admin && (
               <DeleteFilled
                 className={cx(
                   'w-6 h-6 mx-2 text-error',
@@ -202,38 +251,21 @@ export default function CompanyPage() {
     }
   };
 
-  const { enqueueSnackbar } = useSnackbar();
+  const handleAddRecordNumber = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${idClicked}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: token,
+        },
+      });
+      setIsOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const token = sessionStorage.getItem('token')
-    ? sessionStorage.getItem('token')
-    : localStorage.getItem('token');
-  const [modalCreate, setModalCreate] = useState(false);
-  const [enterpriseId, setEnterpriseId] = useState();
-  const [companyName, setCompanyName] = useState();
-  const [affiliationName, setAffiliationName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [numberOfEmployees, setNumberOfEmployees] = useState('');
-  const [firstName, setFirstName] = useState('');
-
-  const [type, setType] = useState('name');
-  const [inputSearch, setInputSearch] = useState('');
-  const [search, setSearch] = useState('');
-
-  const [firstNameKatakana, setFirstNameKatakana] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [lastNameKatakana, setLastNameKatakana] = useState('');
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [validate, setValidate] = useState({
-    departmentName: '',
-    firstName: '',
-    firstNameKatakana: '',
-    lastName: '',
-    lastNameKatakana: '',
-    email: '',
-    phone: '',
-    numberOfEmployees: '',
-  });
   const checkValidateName = (name, type) => {
     const checkValidateFullName = validateName(name, type);
     setValidate({ ...validate, [type]: checkValidateFullName });
@@ -328,7 +360,7 @@ export default function CompanyPage() {
         setListCompany(data.payload.enterprise);
         setLastPage(data.payload._totalPage);
         setTotal(data.payload._max);
-        setIsDeleteSuccess(false)
+        setIsDeleteSuccess(false);
       }
     };
     getDataDetailCompany();
@@ -410,11 +442,6 @@ export default function CompanyPage() {
       });
     }
   };
-  const [file, setFile] = useState();
-  const [successList, setSuccessList] = useState();
-  const [failList, setFailList] = useState();
-  const [errorMessage, setErrorMessage] = useState();
-  const [modalResultFileExport, setModalResultFileExport] = useState(false);
 
   return (
     <div className="w-full font-bold">
@@ -505,6 +532,15 @@ export default function CompanyPage() {
           failList={failList}
           errorMessage={errorMessage}
           setModalResultFileExport={setModalResultFileExport}
+        />
+      )}
+      {isOpen && (
+        <ModalConfirm
+          title="Xác nhận"
+          handleOk={handleAddRecordNumber}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          message="Bạn có chắc muốn thêm 3 lượt ghi âm cho tài khoản này không?"
         />
       )}
     </div>

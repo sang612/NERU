@@ -90,7 +90,9 @@ export default function CreateCompanyPage() {
   return (
     <CardLayout>
       <div className="mt-2 w-[60%] mx-auto font-bold">
-        <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4 font-bold">会社登録</h1>
+        <h1 className="w-full text-center text-xl xsm:text-3xl text-skyBlue-300 mt-2 mb-4 font-bold">
+          会社登録
+        </h1>
         <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
           <div className="flex justify-start items-start w-full my-2">
             <div className="mb-4 h-14 flex items-center w-36">会社名</div>
@@ -104,9 +106,7 @@ export default function CreateCompanyPage() {
                     setCompanyName(e.target.value);
                   }}
                   validate={
-                    companyName
-                      ? () => checkValidateName(companyName, "companyName")
-                      : () => {}
+                    companyName ? () => checkValidateName(companyName, 'companyName') : () => {}
                   }
                   messageError={validate.companyName}
                   height="h-14"
@@ -116,9 +116,7 @@ export default function CreateCompanyPage() {
             </div>
           </div>
           <div className="flex justify-start items-start w-full my-2">
-            <div className="mb-4 h-14 flex items-center w-36">
-              メールアドレス
-            </div>
+            <div className="mb-4 h-14 flex items-center w-36">メールアドレス</div>
             <div className="flex-1 h-20">
               <div className="w-full h-full flex items-start">
                 <Input
@@ -140,7 +138,7 @@ export default function CreateCompanyPage() {
           <div className="w-full flex justify-around">
             <div className="w-5/12">
               <Button onClick={handleSubmit} classname="bg-primary" isLoading={isLoading}>
-                更新
+                登録
               </Button>
             </div>
             <div className="w-5/12">
