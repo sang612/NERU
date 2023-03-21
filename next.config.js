@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    loader: 'nerusoku',
+    loader: 'akamai',
     path: '/',
   },
   env: {
