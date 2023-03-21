@@ -107,16 +107,19 @@ export default function PersonalRegister() {
             dispatch(addNew(data.payload.user));
             dispatch(addToken(data.payload.token));
             dispatch(addLegal(data.payload.legal));
-            localStorage.setItem(
-              'user',
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            sessionStorage.setItem('token', data.payload.token);
+            sessionStorage.setItem(
+              'session_user',
               JSON.stringify({
                 id: data.payload.user.id,
                 role: data.payload.user.role,
                 isEnterprise: data.payload.user.isEnterprise,
                 record_number_of_user: data.payload.user.record_number_of_user,
+                isAnswer: data.payload.user.isAnswer,
               })
             );
-            localStorage.setItem('token', data.payload.token);
             if (!data?.payload?.user?.isFirstUpdatePass) router.push('/user/updateProfileEmployee');
             else router.push('/app-download');
           } else router.push('/auth/login');
