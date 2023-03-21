@@ -117,7 +117,7 @@ export default function Employee({ params }) {
                 setIsOpen(true);
               }}
             >
-              <Image alt="icon" width={50} height={50} src="/icons8-add-record-100.png" />
+              <Image alt="icon" width={50} height={50} src="/iconoir_mic-add.svg" />
             </div>
           </div>
         ),
