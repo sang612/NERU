@@ -30,6 +30,8 @@ export default function Employee({ params }) {
 
   const [total, setTotal] = useState(0);
   const [activeItem, setActiveItem] = useState();
+  const { enqueueSnackbar } = useSnackbar();
+
   const columns = useMemo(
     () => [
       {
@@ -162,16 +164,27 @@ export default function Employee({ params }) {
 
   const handleAddRecordNumber = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${idClicked}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
-      });
-      setIsOpen(false);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/user/${idClicked}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.status === 200 || data.status === 201) {
+        enqueueSnackbar('更新は成功しました。', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsOpen(false);
     }
   };
 
@@ -214,7 +227,6 @@ export default function Employee({ params }) {
     };
     getListEmployee();
   }, [currentPage, id, search, token, type, isDeleteSuccess]);
-  const { enqueueSnackbar } = useSnackbar();
 
   const menuItem = [
     { value: 'name', name: '姓名' },
@@ -267,11 +279,11 @@ export default function Employee({ params }) {
 
       {isOpen && (
         <ModalConfirm
-          title="Xác nhận"
+          title="記録回を更新する"
           handleOk={handleAddRecordNumber}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          message="Bạn có chắc muốn thêm 3 lượt ghi âm cho tài khoản này không?"
+          message="もう3 回の記録をこのアカウントに追加してもよろしいですか?"
         />
       )}
     </div>

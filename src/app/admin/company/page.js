@@ -253,15 +253,30 @@ export default function CompanyPage() {
 
   const handleAddRecordNumber = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${idClicked}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          accessToken: token,
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/admin/enterprise/${idClicked}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data.status === 200 || data.status === 201) {
+        enqueueSnackbar('更新は成功しました。', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+      }
       setIsOpen(false);
     } catch (error) {
+      enqueueSnackbar('見つかりません', {
+        variant: 'error',
+        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      });
       console.log(error);
     }
   };
@@ -536,11 +551,11 @@ export default function CompanyPage() {
       )}
       {isOpen && (
         <ModalConfirm
-          title="Xác nhận"
+          title="記録回を更新する"
           handleOk={handleAddRecordNumber}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          message="Bạn có chắc muốn thêm 3 lượt ghi âm cho tài khoản này không?"
+          message="全ての会社のアカウントに3 回の記録を追加してもよろしいですか?"
         />
       )}
     </div>
