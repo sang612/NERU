@@ -44,10 +44,10 @@ export const schema = yup.object().shape({
   Q10: yup
     .string()
     .nullable()
-    .test('is-valid-number', '* 1-70までの数字で入力してください。', function (value) {
+    .test('is-valid-number', '* 0-70までの数字で入力してください。', function (value) {
       if (!value) return true;
       const numValue = parseInt(value);
-      return !isNaN(numValue) && numValue >= 1 && numValue <= 70;
+      return !isNaN(numValue) && numValue >= 0 && numValue <= 70;
     })
     .when('Q9', {
       is: (val) => val === 'いいえ',
