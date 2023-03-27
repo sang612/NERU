@@ -282,7 +282,7 @@ export default function PersonalRegister() {
                 href="/auth/login/general"
                 className="text-base text-primary hover:cursor-pointer"
               >
-                アカウントを確認済みの場合はログインしてください。
+                すでに登録済みの方はこちらからサインインしてください。
               </Link>
             </div>
             <div className="w-full mb-4 flex justify-end">

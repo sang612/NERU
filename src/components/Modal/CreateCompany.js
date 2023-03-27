@@ -31,7 +31,7 @@ export const ModalCreateCompany = ({
   checkValidateEmail,
   checkValidateName,
   checkValidateNameKatakana,
-  setValidate
+  setValidate,
 }) => {
   const modalRef = useRef(null);
   const resetForm = () => {
@@ -43,7 +43,7 @@ export const ModalCreateCompany = ({
     setLastNameKatakana('');
     setEmail('');
     setPhone('');
-    setValidate('')
+    setValidate('');
   };
   useEffect(() => {
     function handleClickOutside(event) {
@@ -62,7 +62,9 @@ export const ModalCreateCompany = ({
     <div ref={modalRef}>
       <CardLayout>
         <div className="mt-2 w-[60%] mx-auto">
-          <h1 className="w-full text-center text-xl xsm:text-3xl text-primary mt-2 mb-4 font-bold">ユーザー登録</h1>
+          <h1 className="w-full text-center text-xl xsm:text-3xl text-primary mt-2 mb-4 font-bold">
+            ユーザー登録
+          </h1>
           <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">
             <div className="flex justify-start items-start w-full my-2">
               <div className="mb-4 h-14 flex items-center w-36">会社名</div>
@@ -90,7 +92,11 @@ export const ModalCreateCompany = ({
                     onChange={(e) => {
                       setAffiliationName(e.target.value);
                     }}
-                    validate={affiliationName ? () => checkValidateName(affiliationName, 'departmentName') : () => {}}
+                    validate={
+                      affiliationName
+                        ? () => checkValidateName(affiliationName, 'departmentName')
+                        : () => {}
+                    }
                     messageError={validate.departmentName}
                     height="h-14"
                     border="border-[1px]"
@@ -109,7 +115,11 @@ export const ModalCreateCompany = ({
                     onChange={(e) => {
                       setNumberOfEmployees(e.target.value);
                     }}
-                    validate={numberOfEmployees ? () => checkValidateNumberOfEmployee(numberOfEmployees) : () => {}}
+                    validate={
+                      numberOfEmployees
+                        ? () => checkValidateNumberOfEmployee(numberOfEmployees)
+                        : () => {}
+                    }
                     messageError={validate.numberOfEmployees}
                     height="h-14"
                     border="border-[1px]"
@@ -147,7 +157,9 @@ export const ModalCreateCompany = ({
                     onChange={(e) => {
                       setFirstName(e.target.value);
                     }}
-                    validate={firstName ? () => checkValidateName(firstName, 'firstName') : () => {}}
+                    validate={
+                      firstName ? () => checkValidateName(firstName, 'firstName') : () => {}
+                    }
                     messageError={validate.firstName}
                     height="h-14"
                     border="border-[1px]"
@@ -156,7 +168,7 @@ export const ModalCreateCompany = ({
               </div>
             </div>
             <div className="flex justify-start items-start w-full my-2">
-              <div className="mb-4 h-14 flex items-center w-36">姓ふりがな</div>
+              <div className="mb-4 h-14 flex items-center w-36">姓（カタカナ）</div>
               <div className="flex-1 h-20">
                 <div className="w-full h-full flex items-start">
                   <Input
@@ -167,7 +179,9 @@ export const ModalCreateCompany = ({
                       setLastNameKatakana(e.target.value);
                     }}
                     validate={
-                      lastNameKatakana ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName') : () => {}
+                      lastNameKatakana
+                        ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName')
+                        : () => {}
                     }
                     messageError={validate.lastNameKatakana}
                     height="h-14"
@@ -177,7 +191,7 @@ export const ModalCreateCompany = ({
               </div>
             </div>
             <div className="flex justify-start items-start w-full my-2">
-              <div className="mb-4 h-14 flex items-center w-36">名ふりがな</div>
+              <div className="mb-4 h-14 flex items-center w-36">名（カタカナ）</div>
               <div className="flex-1 h-20">
                 <div className="w-full h-full flex items-start">
                   <Input
@@ -188,7 +202,9 @@ export const ModalCreateCompany = ({
                       setFirstNameKatakana(e.target.value);
                     }}
                     validate={
-                      firstNameKatakana ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName') : () => {}
+                      firstNameKatakana
+                        ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName')
+                        : () => {}
                     }
                     messageError={validate.firstNameKatakana}
                     height="h-14"
@@ -266,7 +282,7 @@ export const ModalCreateCompanyByFile = ({
   setModalCreateByFile,
   handleChangeFileInput,
   isLoading,
-  companyName
+  companyName,
 }) => {
   const modalRef = useRef(null);
   useEffect(() => {
@@ -323,16 +339,25 @@ export const ModalCreateCompanyByFile = ({
                   classname="bg-primary w-full h-full block"
                   isLoading={isLoading}
                 >
-                  <Button classname="bg-primary text-xs whitespace-nowrap">雛形ファイルダウンロード</Button>
+                  <Button classname="bg-primary text-xs whitespace-nowrap">
+                    雛形ファイルダウンロード
+                  </Button>
                 </Link>
               </div>
               <div className="w-3/12 mr-2">
-                <Button onClick={handleSubmitFile} classname="bg-primary text-xs" isLoading={isLoading}>
+                <Button
+                  onClick={handleSubmitFile}
+                  classname="bg-primary text-xs"
+                  isLoading={isLoading}
+                >
                   更新
                 </Button>
               </div>
               <div className="w-3/12">
-                <Button onClick={() => setModalCreateByFile(false)} classname="bg-secondary text-xs">
+                <Button
+                  onClick={() => setModalCreateByFile(false)}
+                  classname="bg-secondary text-xs"
+                >
                   戻る
                 </Button>
               </div>
@@ -344,7 +369,12 @@ export const ModalCreateCompanyByFile = ({
   );
 };
 
-export const ModalResultFileExport = ({ successList, failList, errorMessage, setModalResultFileExport }) => (
+export const ModalResultFileExport = ({
+  successList,
+  failList,
+  errorMessage,
+  setModalResultFileExport,
+}) => (
   <CardLayout>
     <div className="mt-2 w-[60%] mx-auto">
       <div className="w-full px-4 md:p-6 lg:p-8 xl:p-10">

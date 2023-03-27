@@ -11,6 +11,13 @@ import { schema } from './schema';
 import { useEffect, useState } from 'react';
 import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { useSnackbar } from 'notistack';
+import { DatePicker} from 'antd';
+import moment from 'moment';
+
+const disabledDate = (current) => {
+  return current && current >= moment().endOf('day');
+};
+
 export default function SurveyPage() {
   const router = useRouter();
   const user = sessionStorage.getItem('session_user')
@@ -73,6 +80,11 @@ export default function SurveyPage() {
     26: { text: '年 間' },
   };
 
+  const [dateValue, setDateValue] = useState('');
+  const onChange = (date, dateString) => {
+    setValue('Q1', dateString);
+    setDateValue(dateString);
+  };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
       ...prevState,
@@ -94,6 +106,7 @@ export default function SurveyPage() {
 
   const onSubmit = async (datas) => {
     setIsLoading(true);
+    datas = { ...datas, Q1: dateValue };
 
     try {
       const result = listSurvey.reduce(
@@ -110,33 +123,34 @@ export default function SurveyPage() {
         },
         { user: user.id, answer: [] }
       );
+      console.log('result', result);
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            accessToken: token,
-          },
-          body: JSON.stringify(result),
-        }
-      );
-      const data = await response.json();
-      setIsLoading(false);
-      if (data.status !== 200 && data.status !== 201) {
-        enqueueSnackbar(data.message ? data?.message : data?.error, {
-          variant: 'error',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        });
-        return;
-      } else if (data.status === 200 || data.status === 201) {
-        enqueueSnackbar('質問の回答が完了しました。', {
-          variant: 'success',
-          anchorOrigin: { vertical: 'top', horizontal: 'right' },
-        });
-        router.push('/app-download');
-      }
+      // const response = await fetch(
+      //   `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question`,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       accessToken: token,
+      //     },
+      //     body: JSON.stringify(result),
+      //   }
+      // );
+      // const data = await response.json();
+      // setIsLoading(false);
+      // if (data.status !== 200 && data.status !== 201) {
+      //   enqueueSnackbar(data.message ? data?.message : data?.error, {
+      //     variant: 'error',
+      //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      //   });
+      //   return;
+      // } else if (data.status === 200 || data.status === 201) {
+      //   enqueueSnackbar('質問の回答が完了しました。', {
+      //     variant: 'success',
+      //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
+      //   });
+      //   router.push('/app-download');
+      // }
     } catch (error) {
       setIsLoading(false);
       enqueueSnackbar('答えを伝えるのは失敗します。', {
@@ -243,7 +257,7 @@ export default function SurveyPage() {
     clearErrors,
     setValue,
   ]);
-
+  
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form
@@ -283,29 +297,61 @@ export default function SurveyPage() {
                     />
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
-                        <SurveyInput
-                          name={item.question_id}
-                          key={item.question_id}
-                          className={`${item.question_type === 'number' ? 'pr-[40%]' : ''}`}
-                          type={item.question_type}
-                          max={item.question_type === 'date' && newDate}
-                          register={register}
-                          min={item.question_type === 'number' ? 0 : ''}
-                          defaultValue={item?.answer_by_user[0]?.answer || ''}
-                          id={'Q' + item.question_title}
-                          onKeyPress={preventMinus}
-                          onPaste={preventPasteNegative}
-                          disabled={
-                            (item.question_title === '10' && answers['9'] === 'はい') ||
-                            (item.question_title === '11' && answers['9'] === 'いいえ') ||
-                            (item.question_title === '26' && answers['24'] === 'いいえ') ||
-                            (item.question_title === '26' && answers['25'] === 'いいえ') ||
-                            (item.question_title === '21' && answers['20'] === 'な し')
-                          }
-                          validationMessage={errors['Q' + item.question_title]?.message}
-                        >
-                          {errors['Q' + item.question_title]?.message}
-                        </SurveyInput>
+                        {item.question_type === 'date' ? (
+                          <>
+                            <DatePicker
+                              className="text-xl"
+                              onChange={onChange}
+                              placeholder="日付を選択"
+                              status={errors.date ? 'error' : 'validating'}
+                              disabledDate={disabledDate}
+                              style={{
+                                height: '3.5rem',
+                                width: '100%',
+                                border: `2px solid ${
+                                  errors['Q' + item.question_title]?.message ? '#f43f5e' : '#50C3C5'
+                                }`,
+                                borderRadius: '0.375rem',
+                                cursor: 'pointer',
+                                fontSize: '1.25rem',
+                                lineHeight: ' 1.75rem',
+                                fontWeight: 400,
+                                paddingLeft: '0.5rem',
+                                outline: '2px solid transparent',
+                              }}
+                            />
+                            {errors['Q' + item.question_title]?.message && (
+                              <span className="text-error font-normal text-sm">
+                                {errors['Q' + item.question_title]?.message}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <SurveyInput
+                            name={item.question_id}
+                            key={item.question_id}
+                            className={`${item.question_type === 'number' ? 'pr-[40%]' : ''}`}
+                            type={item.question_type}
+                            max={item.question_type === 'date' && newDate}
+                            register={register}
+                            min={item.question_type === 'number' ? 0 : ''}
+                            defaultValue={item?.answer_by_user[0]?.answer || ''}
+                            id={'Q' + item.question_title}
+                            onKeyPress={preventMinus}
+                            onPaste={preventPasteNegative}
+                            disabled={
+                              (item.question_title === '10' && answers['9'] === 'はい') ||
+                              (item.question_title === '11' && answers['9'] === 'いいえ') ||
+                              (item.question_title === '26' && answers['24'] === 'いいえ') ||
+                              (item.question_title === '26' && answers['25'] === 'いいえ') ||
+                              (item.question_title === '21' && answers['20'] === 'な し')
+                            }
+                            validationMessage={errors['Q' + item.question_title]?.message}
+                          >
+                            {errors['Q' + item.question_title]?.message}
+                          </SurveyInput>
+                        )}
+
                         {titleMap[item.question_title] && (
                           <div className="absolute right-[15px] top-[15px]">
                             {titleMap[item.question_title].text}
