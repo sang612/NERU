@@ -18,7 +18,7 @@ export default function SurveyPage() {
     : JSON.parse(localStorage.getItem('user'));
   useEffect(() => {
     if (!user) router.replace('auth/login');
-  }, []);
+  }, [router, user]);
   const date = new Date();
   const newDate = `${date.getFullYear()}-${
     date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()
@@ -43,42 +43,39 @@ export default function SurveyPage() {
 
   const [listSurvey, setListSurvey] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [answerElevent, setAnswerElevent] = useState([]);
+  console.log('--- DATA ---', answerElevent);
+
   const [answers, setAnswers] = useState({
-    9: null,
-    20: null,
-    24: null,
-    25: null,
-    27: null,
-    32: null,
-    33: null,
+    12: null,
   });
 
-  const titleToContentMap = {
-    5: '普段の生活習慣',
-    14: '就寝中',
-    17: '起床',
-    19: '日中',
-    20: '健康状態について',
-  };
-
   const titleMap = {
-    5: { text: '時間' },
-    2: { text: 'センチ' },
-    3: { text: 'キログラム' },
-    7: { text: '日' },
-    8: { text: '合' },
-    10: { text: '年 間' },
-    11: { text: '本' },
-    21: { text: 'kg' },
-    26: { text: '年 間' },
+    2: { text: 'cm' },
+    3: { text: 'kg' },
   };
-
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
       ...prevState,
       [numberQuestion]: answer,
     }));
+    if (parseInt(numberQuestion) === 11) {
+      if (answer === 'なし') {
+        setValue('Q11', 'なし');
+        setAnswerElevent(['なし']);
+      } else {
+        const find = answerElevent.find((item) => item === answer);
+        if (find) {
+          setAnswerElevent(answerElevent.filter((finds) => finds !== find));
+        } else {
+          setAnswerElevent((pre) => [...pre.filter((item) => item !== 'なし'), answer]);
+        }
+      }
+    }
   };
+  useEffect(() => {
+    setValue('Q11', answerElevent);
+  }, [answerElevent, setValue]);
   const preventPasteNegative = (e) => {
     const clipboardData = e.clipboardData || window.Clipboard;
     const pastedData = parseFloat(clipboardData.getData('text'));
@@ -94,7 +91,6 @@ export default function SurveyPage() {
 
   const onSubmit = async (datas) => {
     setIsLoading(true);
-
     try {
       const result = listSurvey.reduce(
         (acc, item) => {
@@ -146,24 +142,7 @@ export default function SurveyPage() {
       throw error;
     }
   };
-  const render = (item) => {
-    return Object.entries(titleToContentMap).map(([title, content]) => {
-      if (item.question_title === title) {
-        return (
-          <>
-            <div
-              className="w-full text-center text-2xl border-t-primary border-t-[3px] py-4 mt-4"
-              key={title}
-            >
-              {content}
-            </div>
-          </>
-        );
-      } else {
-        return null;
-      }
-    });
-  };
+
   function formatDescription(description) {
     if (description.includes('break')) {
       return description.replaceAll('break', '<br/>');
@@ -203,46 +182,11 @@ export default function SurveyPage() {
     getDataDetailCompany();
   }, [token, user?.id]);
   useEffect(() => {
-    if (allValues.Q9 === 'はい') {
-      setValue('Q10', '');
-      clearErrors('Q10');
+    if (allValues.Q12 === 'いいえ') {
+      setValue('Q13', '');
+      clearErrors('Q13');
     }
-    if (allValues.Q9 === 'いいえ') {
-      setValue('Q11', '');
-      clearErrors('Q11');
-    }
-    if (allValues.Q20 === 'な し') {
-      setValue('Q21', '');
-      clearErrors('Q21');
-    }
-    if (allValues.Q24 === 'いいえ') {
-      setValue('Q25', null);
-      clearErrors('Q25');
-      setValue('Q26', '');
-      clearErrors('Q26');
-    }
-    if (allValues.Q25 === 'いいえ') {
-      setValue('Q26', '');
-      clearErrors('Q26');
-    }
-    if (allValues.Q27 === 'いいえ') {
-      setValue('Q28', null);
-      clearErrors('Q28');
-    }
-    if (allValues.Q32 === 'いいえ') {
-      setValue('Q33', null);
-      clearErrors('Q33');
-    }
-  }, [
-    allValues.Q20,
-    allValues.Q24,
-    allValues.Q25,
-    allValues.Q27,
-    allValues.Q32,
-    allValues.Q9,
-    clearErrors,
-    setValue,
-  ]);
+  }, [allValues.Q12, clearErrors, setValue]);
 
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
@@ -251,9 +195,9 @@ export default function SurveyPage() {
         encType="multipart/form-data"
         className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full"
       >
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
+        <h1 className="w-full text-3xl text-center md:text-4xl xl:text-5xl text-primary">
           オクチィ
-          <span className="align-middle text-6xl md:text-6xl xl:text-7xl font-bold">Q</span>
+          <span className="text-6xl font-bold align-middle md:text-6xl xl:text-7xl">Q</span>
         </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <p className="text-2xl text-third md:text-3xl xl:text-4xl">普段の生活習慣</p>
@@ -267,7 +211,6 @@ export default function SurveyPage() {
               })
               .map((item) => (
                 <>
-                  {render(item)}
                   <div key={item.question_id} className="mt-[40px]">
                     <label
                       dangerouslySetInnerHTML={{
@@ -295,13 +238,6 @@ export default function SurveyPage() {
                           id={'Q' + item.question_title}
                           onKeyPress={preventMinus}
                           onPaste={preventPasteNegative}
-                          disabled={
-                            (item.question_title === '10' && answers['9'] === 'はい') ||
-                            (item.question_title === '11' && answers['9'] === 'いいえ') ||
-                            (item.question_title === '26' && answers['24'] === 'いいえ') ||
-                            (item.question_title === '26' && answers['25'] === 'いいえ') ||
-                            (item.question_title === '21' && answers['20'] === 'な し')
-                          }
                           validationMessage={errors['Q' + item.question_title]?.message}
                         >
                           {errors['Q' + item.question_title]?.message}
@@ -321,18 +257,15 @@ export default function SurveyPage() {
                             name={item.question_id}
                             value={option.content}
                             key={option.id}
+                            type={item.question_title === '11' ? true : false}
                             id={'Q' + item.question_title}
                             register={register}
-                            defaultChecked={option.content === item.answer_by_user[0]?.answer}
+                            defaultChecked={item.answer_by_user[0]?.answer.includes(option.content)}
                             onChange={() => handleChange(option.content, item.question_title)}
-                            disabled={
-                              (item.question_title === '33' && answers['32'] === 'いいえ') ||
-                              (item.question_title === '25' && answers['24'] === 'いいえ') ||
-                              (item.question_title === '28' && answers['27'] === 'いいえ')
-                            }
+                            disabled={item.question_title === '13' && answers['12'] === 'いいえ'}
                           />
                         ))}
-                        <span className="text-error font-normal text-sm">
+                        <span className="text-sm font-normal text-error">
                           {errors['Q' + item.question_title]?.message}
                         </span>
                       </div>

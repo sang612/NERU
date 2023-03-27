@@ -8,6 +8,7 @@ export const InputRadioSurvey = ({
   register,
   onChange,
   disabled,
+  type,
 }) => {
   const handleChange = (e) => {
     if (onChange) {
@@ -23,11 +24,11 @@ export const InputRadioSurvey = ({
       >
         <label
           htmlFor={`${name}_${value}`}
-          className="radio-label flex items-center w-full h-full hover:cursor-pointer"
+          className="flex items-center w-full h-full radio-label hover:cursor-pointer"
         >
           <input
-            className="radio-input m-0 invisible peer"
-            type="radio"
+            className="invisible m-0 radio-input peer"
+            type={type ? 'checkbox' : 'radio'}
             name={name}
             id={`${name}_${value}`}
             value={value}
