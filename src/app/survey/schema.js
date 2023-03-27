@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const schema = yup.object().shape({
-  Q1: yup.string().required('* 入力してください。'),
+  Q1: yup.string().required('入力してください。'),
   Q2: yup
     .string()
     .required('* 入力してください。')

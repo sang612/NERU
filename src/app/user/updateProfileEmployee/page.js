@@ -132,7 +132,7 @@ export default function EnterpriseRegister() {
             disabled
             name="employeeNumber"
             type="text"
-            value={user.id}
+            value={legal?.number_of_employee}
             placeholder="社員番号"
           />
           <Input disabled name="mr" type="text" value={user.last_name} placeholder="姓" />

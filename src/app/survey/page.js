@@ -1,7 +1,7 @@
 'use client';
 import { SurveyInput } from '@/components/Input';
 import { Button } from '@/components/Button/button';
-
+import dayjs from 'dayjs';
 import { Inter } from '@next/font/google';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,13 @@ import { schema } from './schema';
 import { useEffect, useState } from 'react';
 import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { useSnackbar } from 'notistack';
+import { DatePicker } from 'antd';
+import moment from 'moment';
+
+const disabledDate = (current) => {
+  return current && current >= moment().endOf('day');
+};
+
 export default function SurveyPage() {
   const router = useRouter();
   const user = sessionStorage.getItem('session_user')
@@ -44,7 +51,6 @@ export default function SurveyPage() {
   const [listSurvey, setListSurvey] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [answerElevent, setAnswerElevent] = useState([]);
-  console.log('--- DATA ---', answerElevent);
 
   const [answers, setAnswers] = useState({
     12: null,
@@ -53,6 +59,12 @@ export default function SurveyPage() {
   const titleMap = {
     2: { text: 'cm' },
     3: { text: 'kg' },
+  };
+
+  const [dateValue, setDateValue] = useState('');
+  const onChange = (date, dateString) => {
+    setValue('Q1', dateString);
+    setDateValue(dateString);
   };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
@@ -91,6 +103,8 @@ export default function SurveyPage() {
 
   const onSubmit = async (datas) => {
     setIsLoading(true);
+    datas = { ...datas, Q1: dateValue };
+
     try {
       const result = listSurvey.reduce(
         (acc, item) => {
@@ -106,7 +120,6 @@ export default function SurveyPage() {
         },
         { user: user.id, answer: [] }
       );
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question`,
         {
@@ -226,22 +239,56 @@ export default function SurveyPage() {
                     />
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
-                        <SurveyInput
-                          name={item.question_id}
-                          key={item.question_id}
-                          className={`${item.question_type === 'number' ? 'pr-[40%]' : ''}`}
-                          type={item.question_type}
-                          max={item.question_type === 'date' && newDate}
-                          register={register}
-                          min={item.question_type === 'number' ? 0 : ''}
-                          defaultValue={item?.answer_by_user[0]?.answer || ''}
-                          id={'Q' + item.question_title}
-                          onKeyPress={preventMinus}
-                          onPaste={preventPasteNegative}
-                          validationMessage={errors['Q' + item.question_title]?.message}
-                        >
-                          {errors['Q' + item.question_title]?.message}
-                        </SurveyInput>
+                        {item.question_type === 'date' ? (
+                          <>
+                            <DatePicker
+                              format="DD/MM/YYYY"
+                              defaultValue={dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')}
+                              className="text-xl"
+                              onChange={onChange}
+                              placeholder="日付を選択"
+                              status={errors.date ? 'error' : 'validating'}
+                              disabledDate={disabledDate}
+                              style={{
+                                height: '3.5rem',
+                                width: '100%',
+                                border: `2px solid ${
+                                  errors['Q' + item.question_title]?.message ? '#f43f5e' : '#50C3C5'
+                                }`,
+                                borderRadius: '0.375rem',
+                                cursor: 'pointer',
+                                fontSize: '1.25rem',
+                                lineHeight: ' 1.75rem',
+                                fontWeight: 700,
+                                paddingLeft: '0.5rem',
+                                outline: '2px solid transparent',
+                              }}
+                            />
+                            {errors['Q' + item.question_title]?.message && (
+                              <span className="text-sm font-normal text-error">
+                                {errors['Q' + item.question_title]?.message}
+                              </span>
+                            )}
+                          </>
+                        ) : (
+                          <SurveyInput
+                            name={item.question_id}
+                            key={item.question_id}
+                            className={`${item.question_type === 'number' ? 'pr-[40%]' : ''}`}
+                            type={item.question_type}
+                            max={item.question_type === 'date' && newDate}
+                            register={register}
+                            min={item.question_type === 'number' ? 0 : ''}
+                            defaultValue={item?.answer_by_user[0]?.answer || ''}
+                            id={'Q' + item.question_title}
+                            onKeyPress={preventMinus}
+                            onPaste={preventPasteNegative}
+                            validationMessage={errors['Q' + item.question_title]?.message}
+                          >
+                            {errors['Q' + item.question_title]?.message}
+                          </SurveyInput>
+                        )}
+
                         {titleMap[item.question_title] && (
                           <div className="absolute right-[15px] top-[15px]">
                             {titleMap[item.question_title].text}
