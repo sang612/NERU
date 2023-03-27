@@ -123,34 +123,32 @@ export default function SurveyPage() {
         },
         { user: user.id, answer: [] }
       );
-      console.log('result', result);
-
-      // const response = await fetch(
-      //   `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question`,
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       accessToken: token,
-      //     },
-      //     body: JSON.stringify(result),
-      //   }
-      // );
-      // const data = await response.json();
-      // setIsLoading(false);
-      // if (data.status !== 200 && data.status !== 201) {
-      //   enqueueSnackbar(data.message ? data?.message : data?.error, {
-      //     variant: 'error',
-      //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
-      //   });
-      //   return;
-      // } else if (data.status === 200 || data.status === 201) {
-      //   enqueueSnackbar('質問の回答が完了しました。', {
-      //     variant: 'success',
-      //     anchorOrigin: { vertical: 'top', horizontal: 'right' },
-      //   });
-      //   router.push('/app-download');
-      // }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/answer-question`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: token,
+          },
+          body: JSON.stringify(result),
+        }
+      );
+      const data = await response.json();
+      setIsLoading(false);
+      if (data.status !== 200 && data.status !== 201) {
+        enqueueSnackbar(data.message ? data?.message : data?.error, {
+          variant: 'error',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        return;
+      } else if (data.status === 200 || data.status === 201) {
+        enqueueSnackbar('質問の回答が完了しました。', {
+          variant: 'success',
+          anchorOrigin: { vertical: 'top', horizontal: 'right' },
+        });
+        router.push('/app-download');
+      }
     } catch (error) {
       setIsLoading(false);
       enqueueSnackbar('答えを伝えるのは失敗します。', {
