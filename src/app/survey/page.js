@@ -40,13 +40,11 @@ export default function SurveyPage() {
     handleSubmit,
     clearErrors,
     control,
-    watch,
     formState: { errors },
   } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
   });
-  const dateReceived = watch('expiryAt');
   const allValues = getValues();
   const { enqueueSnackbar } = useSnackbar();
 
