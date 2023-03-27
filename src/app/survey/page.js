@@ -11,7 +11,7 @@ import { schema } from './schema';
 import { useEffect, useState } from 'react';
 import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { useSnackbar } from 'notistack';
-import { DatePicker} from 'antd';
+import { DatePicker } from 'antd';
 import moment from 'moment';
 
 const disabledDate = (current) => {
@@ -255,7 +255,7 @@ export default function SurveyPage() {
     clearErrors,
     setValue,
   ]);
-  
+
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form
@@ -298,6 +298,7 @@ export default function SurveyPage() {
                         {item.question_type === 'date' ? (
                           <>
                             <DatePicker
+                              format="DD/MM/YYYY"
                               className="text-xl"
                               onChange={onChange}
                               placeholder="日付を選択"
