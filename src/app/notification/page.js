@@ -50,7 +50,7 @@ export default function UploadPage() {
         <div className="w-full">
           <div className="text-center font-[700] text-2xl text-third md:text-3xl xl:text-4xl my-[50px] sssm:my-[120px]">
             ご利用にあたっては <span className="block">{amount}(税込)</span> をお支払いください。 <br />
-            3回録音できます。
+            1回録音できます。
           </div>
           <div className="w-full">
             <Button
