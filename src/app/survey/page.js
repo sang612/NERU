@@ -4,7 +4,7 @@ import { Button } from '@/components/Button/button';
 import dayjs from 'dayjs';
 import { Inter } from '@next/font/google';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 const inter = Inter({ subsets: ['latin'] });
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from './schema';
@@ -39,12 +39,14 @@ export default function SurveyPage() {
     setValue,
     handleSubmit,
     clearErrors,
+    control,
+    watch,
     formState: { errors },
   } = useForm({
     mode: 'all',
     resolver: yupResolver(schema),
   });
-
+  const dateReceived = watch('expiryAt');
   const allValues = getValues();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -73,7 +75,7 @@ export default function SurveyPage() {
     }));
     if (parseInt(numberQuestion) === 11) {
       if (answer === 'なし') {
-        setValue('Q11', 'なし');
+        setValue('Q11', ['なし']);
         setAnswerElevent(['なし']);
       } else {
         const find = answerElevent.find((item) => item === answer);
@@ -241,32 +243,44 @@ export default function SurveyPage() {
                       <div className="relative mt-[12px]">
                         {item.question_type === 'date' ? (
                           <>
-                            <DatePicker
-                              format="DD/MM/YYYY"
-                              defaultValue={
-                                item?.answer_by_user[0]?.answer[0] &&
-                                dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')
-                              }
-                              className="text-xl"
-                              onChange={onChange}
-                              placeholder="日付を選択"
-                              status={errors.date ? 'error' : 'validating'}
-                              disabledDate={disabledDate}
-                              style={{
-                                height: '3.5rem',
-                                width: '100%',
-                                border: `2px solid ${
-                                  errors['Q' + item.question_title]?.message ? '#f43f5e' : '#50C3C5'
-                                }`,
-                                borderRadius: '0.375rem',
-                                cursor: 'pointer',
-                                fontSize: '1.25rem',
-                                lineHeight: ' 1.75rem',
-                                fontWeight: 700,
-                                paddingLeft: '0.5rem',
-                                outline: '2px solid transparent',
-                              }}
+                            <Controller
+                              render={({ field: { ref, ...field } }) => (
+                                <DatePicker
+                                  {...field}
+                                  inputRef={ref}
+                                  format="DD/MM/YYYY"
+                                  defaultValue={
+                                    item?.answer_by_user[0]?.answer[0] &&
+                                    dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')
+                                  }
+                                  className="text-xl"
+                                  onChange={onChange}
+                                  placeholder="日付を選択"
+                                  status={errors.date ? 'error' : 'validating'}
+                                  disabledDate={disabledDate}
+                                  style={{
+                                    height: '3.5rem',
+                                    width: '100%',
+                                    border: `2px solid ${
+                                      errors['Q' + item.question_title]?.message
+                                        ? '#f43f5e'
+                                        : '#50C3C5'
+                                    }`,
+                                    borderRadius: '0.375rem',
+                                    cursor: 'pointer',
+                                    fontSize: '1.25rem',
+                                    lineHeight: ' 1.75rem',
+                                    fontWeight: 700,
+                                    paddingLeft: '0.5rem',
+                                    outline: '2px solid transparent',
+                                  }}
+                                />
+                              )}
+                              control={control}
+                              register={register('Q' + item.question_title)}
+                              name="expiryAt"
                             />
+
                             {errors['Q' + item.question_title]?.message && (
                               <span className="text-sm font-normal text-error">
                                 {errors['Q' + item.question_title]?.message}
