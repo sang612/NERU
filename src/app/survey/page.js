@@ -243,7 +243,10 @@ export default function SurveyPage() {
                           <>
                             <DatePicker
                               format="DD/MM/YYYY"
-                              defaultValue={dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')}
+                              defaultValue={
+                                item?.answer_by_user[0]?.answer[0] &&
+                                dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')
+                              }
                               className="text-xl"
                               onChange={onChange}
                               placeholder="日付を選択"
