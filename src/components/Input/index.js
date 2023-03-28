@@ -111,7 +111,7 @@ export const SurveyInput = ({
         onKeyPress={onKeyPress}
         {...register(id)}
       />
-      <div className="text-error font-normal text-sm">{children}</div>
+      <div className="text-sm font-normal text-error">{children}</div>
     </div>
   );
 };

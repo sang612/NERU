@@ -23,7 +23,7 @@ export const schema = yup.object().shape({
   Q8: yup.string().required('* 入力してください。'),
   Q9: yup.string().required('* 入力してください。'),
   Q10: yup.string().required('* 入力してください。'),
-  Q11: yup.array().required('* 入力してください。'),
+  Q11: yup.array().typeError('* 入力してください。').required('* 入力してください。'),
   Q12: yup.string().required('* 入力してください。'),
   Q13: yup
     .string()

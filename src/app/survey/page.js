@@ -85,9 +85,21 @@ export default function SurveyPage() {
       }
     }
   };
+
   useEffect(() => {
-    setValue('Q11', answerElevent);
-  }, [answerElevent, setValue]);
+    setValue(
+      'Q1',
+      listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
+        .answer[0]
+    );
+    answerElevent?.length > 0 && setValue('Q11', answerElevent);
+    if (allValues.Q12 === 'いいえ') {
+      setAnswers((prevState) => ({
+        ...prevState,
+        [12]: 'いいえ',
+      }));
+    }
+  }, [allValues.Q12, answerElevent, listSurvey, setValue]);
   const preventPasteNegative = (e) => {
     const clipboardData = e.clipboardData || window.Clipboard;
     const pastedData = parseFloat(clipboardData.getData('text'));
@@ -103,7 +115,13 @@ export default function SurveyPage() {
 
   const onSubmit = async (datas) => {
     setIsLoading(true);
-    datas = { ...datas, Q1: dateValue };
+    datas = {
+      ...datas,
+      Q1:
+        dateValue  ||
+        listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
+          .answer[0],
+    };
 
     try {
       const result = listSurvey.reduce(
