@@ -90,7 +90,7 @@ export default function SurveyPage() {
     setValue(
       'Q1',
       listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
-        .answer[0]
+        ?.answer[0]
     );
     answerElevent?.length > 0 && setValue('Q11', answerElevent);
     if (allValues.Q12 === 'いいえ') {

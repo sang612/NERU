@@ -255,7 +255,7 @@ export const ModalCreateCompany = ({
             <div className="w-full flex justify-around">
               <div className="w-5/12">
                 <Button onClick={handleSubmit} classname="bg-primary" isLoading={isLoading}>
-                  更新
+                  登録
                 </Button>
               </div>
               <div className="w-5/12">
@@ -350,7 +350,7 @@ export const ModalCreateCompanyByFile = ({
                   classname="bg-primary text-xs"
                   isLoading={isLoading}
                 >
-                  更新
+                  登録
                 </Button>
               </div>
               <div className="w-3/12">

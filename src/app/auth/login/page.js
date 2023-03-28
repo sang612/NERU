@@ -238,6 +238,12 @@ export default function LoginPage() {
           </div>
           <div className="w-full mb-4 flex flex-col justify-center items-end">
             <div
+              onClick={() => router.push('/auth/login/employee')}
+              className="text-base text-primary hover:cursor-pointer"
+            >
+              法人のアカウントでログインする場合
+            </div>
+            <div
               onClick={() => setActiveItem(true)}
               className="text-base text-primary hover:cursor-pointer"
             >

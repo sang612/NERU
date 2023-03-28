@@ -105,6 +105,7 @@ export default function LoginGeneralPage() {
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           if (data.payload.user.role === Role.admin) router.push('/admin/company');
+          else if (data.payload?.user?.isEnterprise) router.push('/notification/second');
           else router.push('/notification');
         }
       } catch (error) {
