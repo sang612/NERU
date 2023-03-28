@@ -340,7 +340,7 @@ export default function SurveyPage() {
                             type={item.question_title === '11' ? true : false}
                             id={'Q' + item.question_title}
                             register={register}
-                            defaultChecked={item.answer_by_user[0]?.answer.includes(option.content)}
+                            defaultChecked={item.answer_by_user[0]?.answer?.includes(option.content)}
                             onChange={() => handleChange(option.content, item.question_title)}
                             disabled={item.question_title === '13' && answers['12'] === 'いいえ'}
                           />
