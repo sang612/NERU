@@ -89,11 +89,17 @@ export default function SurveyPage() {
     allValues.Q11 === '高血圧 (上130以上)' && setAnswerElevent(['高血圧 (上130以上)']);
   }, [allValues.Q11]);
   useEffect(() => {
+    setDateValue(
+      listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
+        ?.answer[0]
+    );
     setValue(
       'Q1',
       listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
         ?.answer[0]
     );
+  }, [listSurvey, setValue]);
+  useEffect(() => {
     answerElevent?.length > 0 && setValue('Q11', answerElevent);
     if (allValues.Q12 === 'いいえ') {
       setAnswers((prevState) => ({
@@ -114,15 +120,12 @@ export default function SurveyPage() {
       e.preventDefault();
     }
   };
-
+  console.log('--- DATA ---', allValues);
   const onSubmit = async (datas) => {
     setIsLoading(true);
     datas = {
       ...datas,
-      Q1:
-        dateValue ||
-        listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
-          .answer[0],
+      Q1: dateValue,
     };
 
     try {
