@@ -283,7 +283,7 @@ export default function Employee({ params }) {
           handleOk={handleAddRecordNumber}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          message="もう3 回の記録をこのアカウントに追加してもよろしいですか?"
+          message="もう1 回の記録をこのアカウントに追加してもよろしいですか?"
         />
       )}
     </div>

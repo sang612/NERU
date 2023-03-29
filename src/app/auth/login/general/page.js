@@ -105,7 +105,9 @@ export default function LoginGeneralPage() {
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           if (data.payload.user.role === Role.admin) router.push('/admin/company');
-          else if (data.payload?.user?.isEnterprise) router.push('/notification/second');
+          else if (data.payload?.user?.isEnterprise && !data.payload?.user?.isUpload) router.push('/notification/second');
+          else if (data.payload?.user?.isEnterprise && !data.payload?.user?.isAnswer) router.push('/survey');
+          else if (data.payload?.user?.isEnterprise && data.payload?.user?.isUpload && data.payload?.user?.isAnswer) router.push('/app-download');
           else router.push('/notification');
         }
       } catch (error) {

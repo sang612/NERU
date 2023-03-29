@@ -555,7 +555,7 @@ export default function CompanyPage() {
           handleOk={handleAddRecordNumber}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          message="全ての会社のアカウントに3 回の記録を追加してもよろしいですか?"
+          message="全ての会社のアカウントに1 回の記録を追加してもよろしいですか?"
         />
       )}
     </div>
