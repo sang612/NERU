@@ -85,7 +85,9 @@ export default function SurveyPage() {
       }
     }
   };
-
+  useEffect(() => {
+    allValues.Q11 === '高血圧 (上130以上)' && setAnswerElevent(['高血圧 (上130以上)']);
+  }, [allValues.Q11]);
   useEffect(() => {
     setValue(
       'Q1',
@@ -118,7 +120,7 @@ export default function SurveyPage() {
     datas = {
       ...datas,
       Q1:
-        dateValue  ||
+        dateValue ||
         listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
           .answer[0],
     };
@@ -340,7 +342,9 @@ export default function SurveyPage() {
                             type={item.question_title === '11' ? true : false}
                             id={'Q' + item.question_title}
                             register={register}
-                            defaultChecked={item.answer_by_user[0]?.answer?.includes(option.content)}
+                            defaultChecked={item.answer_by_user[0]?.answer?.includes(
+                              option.content
+                            )}
                             onChange={() => handleChange(option.content, item.question_title)}
                             disabled={item.question_title === '13' && answers['12'] === 'いいえ'}
                           />
