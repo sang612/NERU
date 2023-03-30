@@ -11,15 +11,15 @@ export const Banner = () => {
   return (
     <>
       {!modalEmployeeWelcome && (
-        <div className="mx-auto h-full xsm:w-[540px] min-h-screen bg-[#d0eaeb]">
+        <div className="mx-auto h-screen xsm:w-[540px] min-h-screen bg-[#d0eaeb]">
           <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-            <div className="mx-auto">
-              <WelcomeImage3 width="100%" height="auto" />
+            <div className="mx-auto h-[30%]">
+              <WelcomeImage3 width="100%" height="100%" />
             </div>
-            <div className="flex flex-row justify-center my-[9px]">
-              <WelcomeImage width={250} height={250} />
+            <div className="flex flex-row justify-center my-[9px] h-[30%]">
+              <WelcomeImage width={250} height="100%" />
             </div>
-            <div className="mt-[32px] w-full">
+            <div className="mt-[32px] w-full max-h-[30%]">
               <Button
                 onClick={() => {
                   setEmployeeWelcome(true);
@@ -42,7 +42,9 @@ export const Banner = () => {
           </div>
         </div>
       )}
-      {modalEmployeeWelcome && <EmployeeWelcome setEmployeeWelcome={setEmployeeWelcome} userType={userType} />}
+      {modalEmployeeWelcome && (
+        <EmployeeWelcome setEmployeeWelcome={setEmployeeWelcome} userType={userType} />
+      )}
     </>
   );
 };

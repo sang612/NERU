@@ -67,7 +67,7 @@ export const ModalCreateUser = ({
           </div>
         </div>
         <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">姓ふりがな</div>
+          <div className="mb-4 h-14 flex items-center w-36">姓(カタカナ)</div>
           <div className="flex-1 h-20">
             <div className="w-full h-full flex items-start">
               <Input
@@ -86,7 +86,7 @@ export const ModalCreateUser = ({
           </div>
         </div>
         <div className="flex justify-start items-start w-full my-2">
-          <div className="mb-4 h-14 flex items-center w-36">名ふりがな</div>
+          <div className="mb-4 h-14 flex items-center w-36">名(カタカナ)</div>
           <div className="flex-1 h-20">
             <div className="w-full h-full flex items-start">
               <Input

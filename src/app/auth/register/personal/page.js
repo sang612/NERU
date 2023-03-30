@@ -131,22 +131,28 @@ export default function PersonalRegister() {
         throw error;
       }
     } else {
-      setValidate({ ...checkValidate, acceptPolicy: '続行するには利用規約とプライバシーポリシーに同意してください。' });
+      setValidate({
+        ...checkValidate,
+        acceptPolicy: '続行するには利用規約とプライバシーポリシーに同意してください。',
+      });
     }
   };
   const handleSendMail = async () => {
     const checkValidateEmail = validateEmail(emailForgetPassword);
     if (!checkValidateEmail) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: emailForgetPassword,
-          }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user/forget-password`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: emailForgetPassword,
+            }),
+          }
+        );
         const data = await response.json();
         if (data.status !== 200 && data.status !== 201) {
           enqueueSnackbar(data.message ? data?.message : data?.error, {
@@ -179,7 +185,9 @@ export default function PersonalRegister() {
   return (
     <div className={` mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff] relative`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">サインアップ</h1>
+        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">
+          サインアップ
+        </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <Input
             name="lastName"
@@ -195,12 +203,16 @@ export default function PersonalRegister() {
           <Input
             name="lastNameKatakana"
             type="text"
-            placeholder="名ふりがな"
+            placeholder="名(カタカナ)"
             value={lastNameKatakana}
             onChange={(e) => {
               setLastNameKatakana(e.target.value);
             }}
-            validate={lastNameKatakana ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName') : () => {}}
+            validate={
+              lastNameKatakana
+                ? () => checkValidateNameKatakana(lastNameKatakana, 'lastName')
+                : () => {}
+            }
             messageError={validate.lastNameKatakana}
           />
           <Input
@@ -217,12 +229,16 @@ export default function PersonalRegister() {
           <Input
             name="firstNameKatakana"
             type="text"
-            placeholder="姓ふりがな"
+            placeholder="姓(カタカナ)"
             value={firstNameKatakana}
             onChange={(e) => {
               setFirstNameKatakana(e.target.value);
             }}
-            validate={firstNameKatakana ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName') : () => {}}
+            validate={
+              firstNameKatakana
+                ? () => checkValidateNameKatakana(firstNameKatakana, 'firstName')
+                : () => {}
+            }
             messageError={validate.firstNameKatakana}
           />
           <Input
@@ -306,16 +322,28 @@ export default function PersonalRegister() {
 
           <div className="left-0 w-full">
             <div className="w-full mb-4 flex justify-between">
-              <div onClick={() => router.push('auth/login')} className="text-base text-primary hover:cursor-pointer">
+              <div
+                onClick={() => router.push('auth/login')}
+                className="text-base text-primary hover:cursor-pointer"
+              >
                 ログイン
               </div>
-              <div onClick={() => setActiveItem(true)} className="text-base text-primary hover:cursor-pointer">
+              <div
+                onClick={() => setActiveItem(true)}
+                className="text-base text-primary hover:cursor-pointer"
+              >
                 パスワードをお忘れの場合
               </div>
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-center">
               <div className="w-full text-base text-third flex justify-end">
-                <Link href="/terms-of-service" className='text-primary underline'>利用規約</Link>と<Link href="/privacy-policy" className='text-primary underline'>プライバシーポリシー</Link>
+                <Link href="/terms-of-service" className="text-primary underline">
+                  利用規約
+                </Link>
+                と
+                <Link href="/privacy-policy" className="text-primary underline">
+                  プライバシーポリシー
+                </Link>
                 に同意
               </div>
               <div
@@ -327,7 +355,11 @@ export default function PersonalRegister() {
               </div>
               {!acceptPolicy && <h3 className="text-error">{validate.acceptPolicy}</h3>}
             </div>
-            <Button classname="bg-primary mt-[20px] ssm:mt-[60px]" onClick={handleSubmit} isLoading={isLoading}>
+            <Button
+              classname="bg-primary mt-[20px] ssm:mt-[60px]"
+              onClick={handleSubmit}
+              isLoading={isLoading}
+            >
               サインアップ
             </Button>
           </div>
