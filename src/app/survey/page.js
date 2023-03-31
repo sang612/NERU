@@ -47,7 +47,10 @@ export default function SurveyPage() {
   });
   const allValues = getValues();
   const { enqueueSnackbar } = useSnackbar();
-
+  const [mode, setMode] = useState('year');
+  const onChanger = (value, mode) => {
+    setMode(mode);
+  };
   const [listSurvey, setListSurvey] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [answerElevent, setAnswerElevent] = useState([]);
@@ -63,8 +66,14 @@ export default function SurveyPage() {
 
   const [dateValue, setDateValue] = useState('');
   const onChange = (date, dateString) => {
+    if (!date) {
+      setMode('year');
+    }
     setValue('Q1', dateString);
     setDateValue(dateString);
+  };
+  const handleFocus = (event) => {
+    event.target.blur();
   };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
@@ -269,13 +278,17 @@ export default function SurveyPage() {
                                 <DatePicker
                                   {...field}
                                   inputRef={ref}
-                                  format="DD/MM/YYYY"
+                                  format="YYYY/MM/DD/"
+                                  readOnly
+                                  onFocus={handleFocus}
+                                  mode={mode}
                                   defaultValue={
                                     item?.answer_by_user[0]?.answer[0] &&
-                                    dayjs(item?.answer_by_user[0]?.answer[0], 'DD-MM-YYYY')
+                                    dayjs(item?.answer_by_user[0]?.answer[0], 'YYYY-MM-DD/')
                                   }
                                   className="text-xl"
                                   onChange={onChange}
+                                  onPanelChange={onChanger}
                                   placeholder="日付を選択"
                                   status={errors.date ? 'error' : 'validating'}
                                   disabledDate={disabledDate}
