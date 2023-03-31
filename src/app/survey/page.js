@@ -129,7 +129,6 @@ export default function SurveyPage() {
       e.preventDefault();
     }
   };
-  console.log('--- DATA ---', allValues);
   const onSubmit = async (datas) => {
     setIsLoading(true);
     datas = {
@@ -278,13 +277,13 @@ export default function SurveyPage() {
                                 <DatePicker
                                   {...field}
                                   inputRef={ref}
-                                  format="YYYY/MM/DD/"
+                                  format="YYYY/MM/DD"
                                   readOnly
                                   onFocus={handleFocus}
                                   mode={mode}
                                   defaultValue={
                                     item?.answer_by_user[0]?.answer[0] &&
-                                    dayjs(item?.answer_by_user[0]?.answer[0], 'YYYY-MM-DD/')
+                                    dayjs(item?.answer_by_user[0]?.answer[0], 'YYYY-MM-DD')
                                   }
                                   className="text-xl"
                                   onChange={onChange}

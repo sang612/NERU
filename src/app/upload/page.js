@@ -109,7 +109,7 @@ export default function UploadPage() {
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-center text-3xl md:text-4xl xl:text-5xl text-primary">横顔画像の登録</h1>
+        <h1 className="w-full text-3xl text-center md:text-4xl xl:text-5xl text-primary">横顔画像の登録</h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">
             画像をクリックしてアップロードしてください
