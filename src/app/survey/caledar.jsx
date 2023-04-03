@@ -71,7 +71,7 @@ export default function Caledar({
           <Select
             onChange={handleChangeYear}
             defaultValue={defaultYear || 'Year'}
-            className="w-[100px] sm:w-[155px]"
+            className="w-[97px] md:w-[155px]"
             style={{
               border: `${children ? '2.1px solid red' : '2.1px solid rgb(80, 195, 197)'}`,
               borderRadius: '.6rem',
@@ -82,7 +82,7 @@ export default function Caledar({
           <Select
             defaultValue={defaultMonth || 'Month'}
             onChange={handleChangeMonth}
-            className="w-[100px] sm:w-[155px] "
+            className="w-[97px] md:w-[155px] "
             style={{
               border: `${children ? '2.1px solid red' : '2.1px solid rgb(80, 195, 197)'}`,
               borderRadius: '.6rem',
@@ -94,7 +94,7 @@ export default function Caledar({
             defaultValue={defaultDay || 'Day'}
             value={dateState}
             onChange={handleChangeDay}
-            className="w-[100px] sm:w-[155px]"
+            className="w-[97px] md:w-[155px]"
             style={{
               border: `${children ? '2.1px solid red' : '2.1px solid rgb(80, 195, 197)'}`,
               borderRadius: '.6rem',
