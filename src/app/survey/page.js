@@ -1,22 +1,16 @@
 'use client';
-import { SurveyInput } from '@/components/Input';
 import { Button } from '@/components/Button/button';
-import dayjs from 'dayjs';
+import { SurveyInput } from '@/components/Input';
+import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Inter } from '@next/font/google';
 import { useRouter } from 'next/navigation';
-import { Controller, useForm } from 'react-hook-form';
-const inter = Inter({ subsets: ['latin'] });
-import { yupResolver } from '@hookform/resolvers/yup';
-import { schema } from './schema';
-import { useEffect, useState } from 'react';
-import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { useSnackbar } from 'notistack';
-import { DatePicker } from 'antd';
-import moment from 'moment';
-
-const disabledDate = (current) => {
-  return current && current >= moment().endOf('day');
-};
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Caledar from './caledar';
+import { schema } from './schema';
+const inter = Inter({ subsets: ['latin'] });
 
 export default function SurveyPage() {
   const router = useRouter();
@@ -39,7 +33,6 @@ export default function SurveyPage() {
     setValue,
     handleSubmit,
     clearErrors,
-    control,
     formState: { errors },
   } = useForm({
     mode: 'all',
@@ -47,14 +40,13 @@ export default function SurveyPage() {
   });
   const allValues = getValues();
   const { enqueueSnackbar } = useSnackbar();
-  const [mode, setMode] = useState('year');
-  const onChanger = (value, mode) => {
-    setMode(mode);
-  };
+
   const [listSurvey, setListSurvey] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [answerElevent, setAnswerElevent] = useState([]);
-
+  const [yearState, setYearState] = useState();
+  const [monthState, setMonthState] = useState();
+  const [dateState, setDateState] = useState();
   const [answers, setAnswers] = useState({
     12: null,
   });
@@ -64,17 +56,6 @@ export default function SurveyPage() {
     3: { text: 'kg' },
   };
 
-  const [dateValue, setDateValue] = useState('');
-  const onChange = (date, dateString) => {
-    if (!date) {
-      setMode('year');
-    }
-    setValue('Q1', dateString);
-    setDateValue(dateString);
-  };
-  const handleFocus = (event) => {
-    event.target.blur();
-  };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
       ...prevState,
@@ -97,17 +78,7 @@ export default function SurveyPage() {
   useEffect(() => {
     allValues.Q11 === '高血圧 (上130以上)' && setAnswerElevent(['高血圧 (上130以上)']);
   }, [allValues.Q11]);
-  useEffect(() => {
-    setDateValue(
-      listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
-        ?.answer[0]
-    );
-    setValue(
-      'Q1',
-      listSurvey.filter((item) => parseInt(item.question_title) === 1)[0]?.answer_by_user[0]
-        ?.answer[0]
-    );
-  }, [listSurvey, setValue]);
+
   useEffect(() => {
     answerElevent?.length > 0 && setValue('Q11', answerElevent);
     if (allValues.Q12 === 'いいえ') {
@@ -117,6 +88,11 @@ export default function SurveyPage() {
       }));
     }
   }, [allValues.Q12, answerElevent, listSurvey, setValue]);
+  useEffect(() => {
+    if (yearState && monthState && dateState) {
+      setValue('Q1', `${yearState}/${monthState}/${dateState}`);
+    }
+  }, [dateState, monthState, setValue, yearState]);
   const preventPasteNegative = (e) => {
     const clipboardData = e.clipboardData || window.Clipboard;
     const pastedData = parseFloat(clipboardData.getData('text'));
@@ -131,10 +107,6 @@ export default function SurveyPage() {
   };
   const onSubmit = async (datas) => {
     setIsLoading(true);
-    datas = {
-      ...datas,
-      Q1: dateValue,
-    };
 
     try {
       const result = listSurvey.reduce(
@@ -230,7 +202,10 @@ export default function SurveyPage() {
       setValue('Q13', '');
       clearErrors('Q13');
     }
-  }, [allValues.Q12, clearErrors, setValue]);
+    if (dateState && monthState && yearState) {
+      clearErrors('Q1');
+    }
+  }, [allValues.Q12, clearErrors, dateState, monthState, setValue, yearState]);
 
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
@@ -271,55 +246,19 @@ export default function SurveyPage() {
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
                         {item.question_type === 'date' ? (
-                          <>
-                            <Controller
-                              render={({ field: { ref, ...field } }) => (
-                                <DatePicker
-                                  {...field}
-                                  inputRef={ref}
-                                  format="YYYY/MM/DD"
-                                  readOnly
-                                  onFocus={handleFocus}
-                                  mode={mode}
-                                  defaultValue={
-                                    item?.answer_by_user[0]?.answer[0] &&
-                                    dayjs(item?.answer_by_user[0]?.answer[0], 'YYYY-MM-DD')
-                                  }
-                                  className="text-xl"
-                                  onChange={onChange}
-                                  onPanelChange={onChanger}
-                                  placeholder="日付を選択"
-                                  status={errors.date ? 'error' : 'validating'}
-                                  disabledDate={disabledDate}
-                                  style={{
-                                    height: '3.5rem',
-                                    width: '100%',
-                                    border: `2px solid ${
-                                      errors['Q' + item.question_title]?.message
-                                        ? '#f43f5e'
-                                        : '#50C3C5'
-                                    }`,
-                                    borderRadius: '0.375rem',
-                                    cursor: 'pointer',
-                                    fontSize: '1.25rem',
-                                    lineHeight: ' 1.75rem',
-                                    fontWeight: 700,
-                                    paddingLeft: '0.5rem',
-                                    outline: '2px solid transparent',
-                                  }}
-                                />
-                              )}
-                              control={control}
-                              register={register('Q' + item.question_title)}
-                              name="expiryAt"
-                            />
-
-                            {errors['Q' + item.question_title]?.message && (
-                              <span className="text-sm font-normal text-error">
-                                {errors['Q' + item.question_title]?.message}
-                              </span>
-                            )}
-                          </>
+                          <Caledar
+                            dateState={dateState}
+                            setDateState={setDateState}
+                            monthState={monthState}
+                            setMonthState={setMonthState}
+                            yearState={yearState}
+                            setYearState={setYearState}
+                            defaultYear={item.answer_by_user[0]?.answer[0]?.split('/')[0] || ''}
+                            defaultMonth={item.answer_by_user[0]?.answer[0]?.split('/')[1] || ''}
+                            defaultDay={item.answer_by_user[0]?.answer[0]?.split('/')[2] || ''}
+                          >
+                            {errors['Q' + item.question_title]?.message}
+                          </Caledar>
                         ) : (
                           <SurveyInput
                             name={item.question_id}
