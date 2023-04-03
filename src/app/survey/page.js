@@ -91,6 +91,8 @@ export default function SurveyPage() {
   useEffect(() => {
     if (yearState && monthState && dateState) {
       setValue('Q1', `${yearState}/${monthState}/${dateState}`);
+    } else {
+      setValue('Q1', '');
     }
   }, [dateState, monthState, setValue, yearState]);
   const preventPasteNegative = (e) => {
