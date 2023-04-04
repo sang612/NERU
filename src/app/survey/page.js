@@ -221,7 +221,6 @@ export default function SurveyPage() {
           <span className="text-6xl font-bold align-middle md:text-6xl xl:text-7xl">Q</span>
         </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
-          <p className="text-2xl text-third md:text-3xl xl:text-4xl">普段の生活習慣</p>
           <div className="mt-[26.8px] text-left text-xl md:text-2xl xl:text-3xl">
             {listSurvey
               ?.sort(function (a, b) {
