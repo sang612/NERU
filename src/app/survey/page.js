@@ -256,14 +256,18 @@ export default function SurveyPage() {
     }
   }, [allValues.Q12, clearErrors, dateState, monthState, setValue, yearState]);
   useEffect(() => {
-    if (allValues.Q5 || allValues.Q6) {
+    const questionFive = listSurvey?.filter((sp) => sp.question_title === '5');
+    const value5 = questionFive[0]?.answer_by_user[0]?.answer[0];
+    const questionSix = listSurvey?.filter((sp) => sp.question_title === '6');
+    const value6 = questionSix[0]?.answer_by_user[0]?.answer[0];
+    if (value5 || value6) {
       if (stateQ === true) {
         setValue('Q5', '');
         setValue('Q6', '');
         setStateQ(false);
       }
     }
-  }, [allValues.Q5, allValues.Q6, setValue, stateQ]);
+  }, [listSurvey, setValue, stateQ]);
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form
