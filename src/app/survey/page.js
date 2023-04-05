@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/Button/button';
-import { SurveyInput } from '@/components/Input';
+import { Input, SurveyInput } from '@/components/Input';
 import { InputRadioSurvey } from '@/components/InputRadio/InputRadioSurvey';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Inter } from '@next/font/google';
@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Caledar from './caledar';
 import { schema } from './schema';
 const inter = Inter({ subsets: ['latin'] });
 
@@ -47,6 +46,7 @@ export default function SurveyPage() {
   const [yearState, setYearState] = useState();
   const [monthState, setMonthState] = useState();
   const [dateState, setDateState] = useState();
+  const [stateQ, setStateQ] = useState(true);
   const [answers, setAnswers] = useState({
     12: null,
   });
@@ -55,7 +55,44 @@ export default function SurveyPage() {
     2: { text: 'cm' },
     3: { text: 'kg' },
   };
+  const handleChangeYear = (e) => {
+    const year = parseInt(e.target.value);
+    if (year <= 0) {
+      return setYearState(1900);
+    }
+    const yearNow = new Date().getFullYear();
+    if (year >= yearNow) {
+      return setYearState(yearNow);
+    }
+    setYearState(year);
+  };
+  const handleChangeMonth = (e) => {
+    const month = parseInt(e.target.value);
+    if (month <= 0) {
+      return setMonthState(1);
+    }
 
+    if (month >= 12) {
+      return setMonthState(12);
+    }
+    setMonthState(e.target.value);
+  };
+  const handleChangeDays = (e) => {
+    const day = parseInt(e.target.value);
+    if (day <= 0) {
+      return setDateState(1);
+    }
+
+    const date = new Date(yearState, monthState - 1, 1);
+    const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    if (day >= lastDayOfMonth) {
+      return setDateState(lastDayOfMonth);
+    }
+    if (day >= 31) {
+      return setDateState(31);
+    }
+    setDateState(e.target.value);
+  };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
       ...prevState,
@@ -199,6 +236,7 @@ export default function SurveyPage() {
     };
     getDataDetailCompany();
   }, [token, user?.id]);
+
   useEffect(() => {
     if (allValues.Q12 === 'いいえ') {
       setValue('Q13', '');
@@ -208,6 +246,15 @@ export default function SurveyPage() {
       clearErrors('Q1');
     }
   }, [allValues.Q12, clearErrors, dateState, monthState, setValue, yearState]);
+  useEffect(() => {
+    if (allValues.Q5 || allValues.Q6) {
+      if (stateQ === true) {
+        setValue('Q5', '');
+        setValue('Q6', '');
+        setStateQ(false);
+      }
+    }
+  }, [allValues.Q5, allValues.Q6, setValue, stateQ]);
 
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
@@ -221,7 +268,6 @@ export default function SurveyPage() {
           <span className="text-6xl font-bold align-middle md:text-6xl xl:text-7xl">Q</span>
         </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
-          <p className="text-2xl text-third md:text-3xl xl:text-4xl">普段の生活習慣</p>
           <div className="mt-[26.8px] text-left text-xl md:text-2xl xl:text-3xl">
             {listSurvey
               ?.sort(function (a, b) {
@@ -248,19 +294,48 @@ export default function SurveyPage() {
                     {item.question_type !== 'option' && (
                       <div className="relative mt-[12px]">
                         {item.question_type === 'date' ? (
-                          <Caledar
-                            dateState={dateState}
-                            setDateState={setDateState}
-                            monthState={monthState}
-                            setMonthState={setMonthState}
-                            yearState={yearState}
-                            setYearState={setYearState}
-                            defaultYear={item.answer_by_user[0]?.answer[0]?.split('/')[0] || ''}
-                            defaultMonth={item.answer_by_user[0]?.answer[0]?.split('/')[1] || ''}
-                            defaultDay={item.answer_by_user[0]?.answer[0]?.split('/')[2] || ''}
-                          >
-                            {errors['Q' + item.question_title]?.message}
-                          </Caledar>
+                          <>
+                            <div className="flex gap-4">
+                              <Input
+                                name={item.question_id}
+                                type="number"
+                                onChange={handleChangeYear}
+                                placeholder="Year"
+                                min="1900"
+                                max={new Date()}
+                                value={yearState}
+                                defaultValue={
+                                  item?.answer_by_user[0]?.answer[0].split('/')[0] || ''
+                                }
+                                validationMessage={errors['Q' + item.question_title]?.message}
+                              />
+                              <Input
+                                name={item.question_id}
+                                onChange={handleChangeMonth}
+                                type="number"
+                                placeholder="Month"
+                                value={monthState}
+                                defaultValue={
+                                  item?.answer_by_user[0]?.answer[0].split('/')[1] || ''
+                                }
+                                validationMessage={errors['Q' + item.question_title]?.message}
+                              />
+                              <Input
+                                name={item.question_id}
+                                onChange={handleChangeDays}
+                                type="number"
+                                placeholder="Day"
+                                value={dateState}
+                                defaultValue={
+                                  item?.answer_by_user[0]?.answer[0].split('/')[2] || ''
+                                }
+                                validationMessage={errors['Q' + item.question_title]?.message}
+                              />
+                            </div>
+                            <span className="text-sm font-normal text-error">
+                              {errors['Q' + item.question_title]?.message}
+                            </span>
+                          </>
                         ) : (
                           <SurveyInput
                             name={item.question_id}

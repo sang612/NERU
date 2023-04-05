@@ -16,6 +16,7 @@ export const Input = ({
   min,
   onKeyDown,
   onPaste,
+  defaultValue
 }) => {
   return (
     <div
@@ -47,6 +48,7 @@ export const Input = ({
         min={min}
         onKeyDown={onKeyDown}
         onPaste={onPaste}
+        defaultValue={defaultValue}
       />
       <div className={`${!messageError && 'hidden'} text-error text-xs my-2 whitespace-nowrap`}>
         {messageError}
