@@ -64,7 +64,7 @@ export default function SurveyPage() {
     if (year >= yearNow) {
       return setYearState(yearNow);
     }
-    setYearState(e.target.value);
+    setYearState(year);
   };
   const handleChangeMonth = (e) => {
     const month = parseInt(e.target.value);
@@ -313,7 +313,6 @@ export default function SurveyPage() {
                                 type="number"
                                 onChange={handleChangeYear}
                                 placeholder="Year"
-                                max={2023}
                                 value={yearState}
                                 defaultValue={
                                   item?.answer_by_user[0]?.answer[0].split('/')[0] || ''
