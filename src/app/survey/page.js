@@ -236,7 +236,14 @@ export default function SurveyPage() {
     };
     getDataDetailCompany();
   }, [token, user?.id]);
-
+  useEffect(() => {
+    const questionOne = listSurvey?.filter((sp) => sp.question_title === '1');
+    const valueOne = questionOne[0]?.answer_by_user[0]?.answer[0];
+    if (valueOne) {
+      setValue('Q1', valueOne);
+    }
+  }, [listSurvey, setValue]);
+  console.log('--- DATA ---',allValues )
   useEffect(() => {
     if (allValues.Q12 === 'いいえ') {
       setValue('Q13', '');
@@ -255,7 +262,6 @@ export default function SurveyPage() {
       }
     }
   }, [allValues.Q5, allValues.Q6, setValue, stateQ]);
-
   return (
     <div className={`${inter.className} mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <form
