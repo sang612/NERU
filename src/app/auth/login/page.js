@@ -22,7 +22,7 @@ export default function LoginPage() {
   const [emailForgetPassword, setEmailForgetPassword] = useState('');
   const [tel, setTel] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberLogin, setRememberLogin] = useState(rememberMe);
+  const [rememberLogin, setRememberLogin] = useState(!rememberMe);
   const [isShowPass, setIsShowPass] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [validate, setValidate] = useState({

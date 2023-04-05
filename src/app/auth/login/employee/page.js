@@ -120,9 +120,10 @@ export default function PersonalRegister() {
                 isAnswer: data.payload.user.isAnswer,
               })
             );
-            if (!data?.payload?.user?.isFirstUpdatePass) router.push('/user/updateProfileEmployee');
-            else router.push('/app-download');
-          } else router.push('/auth/login');
+            if (!data?.payload?.user?.isFirstUpdatePass)
+              router.push('/user/updateProfileEmployee', { shallow: true });
+            else router.push('/app-download', { shallow: true });
+          } else router.push('/auth/login', { shallow: true });
         }
       } catch (error) {
         enqueueSnackbar('ロギングすることは失敗します。', {
