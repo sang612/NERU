@@ -55,6 +55,13 @@ export default function SurveyPage() {
     2: { text: 'cm' },
     3: { text: 'kg' },
   };
+  const changeDay = (month) => {
+    const date = new Date(yearState, month - 1, 1);
+    const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    if (dateState >= parseInt(lastDayOfMonth)) {
+      setDateState(parseInt(lastDayOfMonth));
+    }
+  };
   const handleChangeYear = (e) => {
     const year = parseInt(e.target.value);
     if (year <= 0) {
@@ -64,6 +71,7 @@ export default function SurveyPage() {
     if (year >= yearNow) {
       return setYearState(yearNow);
     }
+    changeDay(monthState);
     setYearState(year);
   };
   const handleChangeMonth = (e) => {
@@ -71,11 +79,11 @@ export default function SurveyPage() {
     if (month <= 0) {
       return setMonthState(1);
     }
-
     if (month >= 12) {
       return setMonthState(12);
     }
-    setMonthState(e.target.value);
+    changeDay(month);
+    setMonthState(month);
   };
   const handleChangeDays = (e) => {
     const day = parseInt(e.target.value);
@@ -91,7 +99,7 @@ export default function SurveyPage() {
     if (day >= 31) {
       return setDateState(31);
     }
-    setDateState(e.target.value);
+    setDateState(day);
   };
   const handleChange = (answer, numberQuestion) => {
     setAnswers((prevState) => ({
@@ -241,11 +249,26 @@ export default function SurveyPage() {
     const valueOne = questionOne[0]?.answer_by_user[0]?.answer[0];
     if (valueOne) {
       setValue('Q1', valueOne);
-      setYearState(valueOne.split('/')[0]);
-      setMonthState(valueOne.split('/')[1]);
-      setDateState(valueOne.split('/')[2]);
+      setYearState(parseInt(valueOne.split('/')[0]));
+      setMonthState(parseInt(valueOne.split('/')[1]));
+      setDateState(parseInt(valueOne.split('/')[2]));
     }
   }, [listSurvey, setValue]);
+  useEffect(() => {
+    const year = new Date().getFullYear();
+    const monthNow = new Date().getMonth() + 1;
+    const dayNow = new Date().getDay();
+
+    if (
+      yearState === parseInt(year) &&
+      parseInt(monthNow) <= monthState &&
+      dateState >= parseInt(dayNow)
+    ) {
+      setDateState(dayNow);
+      setMonthState(monthNow);
+      setYearState(year);
+    }
+  }, [dateState, monthState, yearState]);
   useEffect(() => {
     if (allValues.Q12 === 'いいえ') {
       setValue('Q13', '');
