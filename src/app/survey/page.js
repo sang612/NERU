@@ -64,7 +64,7 @@ export default function SurveyPage() {
     if (year >= yearNow) {
       return setYearState(yearNow);
     }
-    setYearState(year);
+    setYearState(e.target.value);
   };
   const handleChangeMonth = (e) => {
     const month = parseInt(e.target.value);
@@ -241,9 +241,11 @@ export default function SurveyPage() {
     const valueOne = questionOne[0]?.answer_by_user[0]?.answer[0];
     if (valueOne) {
       setValue('Q1', valueOne);
+      setYearState(valueOne.split('/')[0]);
+      setMonthState(valueOne.split('/')[1]);
+      setDateState(valueOne.split('/')[2]);
     }
   }, [listSurvey, setValue]);
-  console.log('--- DATA ---',allValues )
   useEffect(() => {
     if (allValues.Q12 === 'いいえ') {
       setValue('Q13', '');
@@ -307,8 +309,7 @@ export default function SurveyPage() {
                                 type="number"
                                 onChange={handleChangeYear}
                                 placeholder="Year"
-                                min="1900"
-                                max={new Date()}
+                                max={2023}
                                 value={yearState}
                                 defaultValue={
                                   item?.answer_by_user[0]?.answer[0].split('/')[0] || ''
