@@ -2,7 +2,6 @@
 
 import { NotifyModal } from '@/components/Modal/NotifyModal';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function ThirdNotification() {
   const router = useRouter();
@@ -12,15 +11,7 @@ export default function ThirdNotification() {
   const secondAction = () => {
     router.push('/notification/tutorial/step1');
   };
-  const user = sessionStorage.getItem('session_user')
-    ? JSON.parse(sessionStorage.getItem('session_user'))
-    : JSON.parse(localStorage.getItem('user'));
 
-  useEffect(() => {
-    if (user.isUpload) {
-      router.push('/app-download');
-    }
-  }, [router, user.isUpload]);
   return (
     <NotifyModal
       content="一度このアプリを閉じ

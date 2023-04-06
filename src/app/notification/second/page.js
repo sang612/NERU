@@ -13,6 +13,10 @@ export default function SecondNotification() {
   const secondAction = () => {
     router.push('/notification/third');
   };
+  const user = sessionStorage.getItem('session_user')
+    ? JSON.parse(sessionStorage.getItem('session_user'))
+    : JSON.parse(localStorage.getItem('user'));
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/payment/payment-intent-completed`, {
@@ -27,6 +31,9 @@ export default function SecondNotification() {
         redirect_status: searchParams.get('redirect_status'),
       }),
     });
+    if (user.isUpload) {
+      router.push('/app-download');
+    }
   }, []);
   return (
     <NotifyModal
