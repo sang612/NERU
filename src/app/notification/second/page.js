@@ -10,10 +10,6 @@ export default function SecondNotification() {
   const token = sessionStorage.getItem('token')
     ? sessionStorage.getItem('token')
     : localStorage.getItem('token');
-
-  // const firstAction = () => {
-  //   router.push('/notification');
-  // };
   const secondAction = () => {
     router.push('/notification/third');
   };

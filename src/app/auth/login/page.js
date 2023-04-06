@@ -75,6 +75,7 @@ export default function LoginPage() {
                 isEnterprise: data.payload.user.isEnterprise,
                 record_number_of_user: data.payload.user.record_number_of_user,
                 isAnswer: data.payload.user.isAnswer,
+                isUpload: data.payload.user.isUpload,
               })
             );
           } else {
@@ -89,6 +90,7 @@ export default function LoginPage() {
                 isEnterprise: data.payload.user.isEnterprise,
                 record_number_of_user: data.payload.user.record_number_of_user,
                 isAnswer: data.payload.user.isAnswer,
+                isUpload: data.payload.user.isUpload,
               })
             );
           }
