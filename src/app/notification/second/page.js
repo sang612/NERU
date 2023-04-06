@@ -32,7 +32,7 @@ export default function SecondNotification() {
       }),
     });
     if (user.isUpload) {
-      router.push('/app-download');
+      router.push('/survey');
     }
   }, []);
   return (
