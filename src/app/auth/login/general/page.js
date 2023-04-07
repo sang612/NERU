@@ -83,6 +83,7 @@ export default function LoginGeneralPage() {
                 isEnterprise: data.payload.user.isEnterprise,
                 record_number_of_user: data.payload.user.record_number_of_user,
                 isAnswer: data.payload.user.isAnswer,
+                isUpload: data.payload.user.isUpload,
               })
             );
           } else {
@@ -97,6 +98,7 @@ export default function LoginGeneralPage() {
                 isEnterprise: data.payload.user.isEnterprise,
                 record_number_of_user: data.payload.user.record_number_of_user,
                 isAnswer: data.payload.user.isAnswer,
+                isUpload: data.payload.user.isUpload,
               })
             );
           }
@@ -105,10 +107,20 @@ export default function LoginGeneralPage() {
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
           });
           if (data.payload.user.role === Role.admin) router.push('/admin/company');
-          else if (data.payload?.user?.isEnterprise && !data.payload?.user?.isUpload) router.push('/notification/second');
-          else if (data.payload?.user?.isEnterprise && !data.payload?.user?.isAnswer) router.push('/survey');
-          else if (data.payload?.user?.isEnterprise && data.payload?.user?.isUpload && data.payload?.user?.isAnswer) router.push('/app-download');
-          else router.push('/notification');
+          else {
+            if (data.payload?.user?.isEnterprise) {
+              if (!data.payload?.user?.isUpload) router.push('/notification/second');
+              if (!data.payload?.user?.isAnswer) router.push('/survey');
+              if (
+                data.payload?.user?.isEnterprise &&
+                data.payload?.user?.isUpload &&
+                data.payload?.user?.isAnswer
+              )
+                router.push('/app-download');
+            } else {
+              router.push('/notification');
+            }
+          }
         }
       } catch (error) {
         enqueueSnackbar('アカウントまたはパスワードが無効です', {

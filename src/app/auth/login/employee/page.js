@@ -122,7 +122,8 @@ export default function PersonalRegister() {
             );
             if (!data?.payload?.user?.isFirstUpdatePass)
               router.push('/user/updateProfileEmployee', { shallow: true });
-            else router.push('/app-download', { shallow: true });
+              if (!data?.payload?.user?.isUpload) router.push('/user/upload', { shallow: true });
+              else router.push('/survey', { shallow: true });
           } else router.push('/auth/login', { shallow: true });
         }
       } catch (error) {

@@ -31,10 +31,43 @@ export default function SecondNotification() {
         redirect_status: searchParams.get('redirect_status'),
       }),
     });
-    if (user.isUpload) {
-      router.push('/survey');
-    }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const getUserDetailtoCheckRecordNumberofUser = async () => {
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`,
+            {
+              method: 'GET',
+              headers: {
+                accessToken: token,
+              },
+            }
+          );
+          const data = await response.json();
+          if (data.payload.user.record_number_of_user > 0 && !data.payload.user.isUpload) {
+            router.replace('/notification/second');
+          }
+          if (data.payload.user.record_number_of_user > 0 && data.payload.user.isUpload) {
+            router.replace('/survey');
+          }
+          if (
+            (data.payload.user.record_number_of_user === 0 && data.payload.user.isEnterprise) ||
+            (data.payload.user.record_number_of_user > 0 &&
+              data.payload.user.isUpload &&
+              data.payload.user.isAnswer)
+          ) {
+            router.replace('/app-download');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      getUserDetailtoCheckRecordNumberofUser();
+    }
+  }, [router, token, user]);
   return (
     <NotifyModal
       content="あなたがいびきをしや

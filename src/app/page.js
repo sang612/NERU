@@ -13,9 +13,11 @@ export default function Home() {
     <div id="root">
       {user ? (
         user.role === 'Admin' ? (
-          router.replace('/admin/company')
+          router.replace('admin/company')
+        ) : user?.isEnterprise && user?.isUpload ? (
+          router.replace('/notification/second')
         ) : (
-          router.replace('/notification')
+          router.replace('/survey')
         )
       ) : (
         <Banner />
