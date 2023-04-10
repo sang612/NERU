@@ -51,7 +51,7 @@ export default function Employee({ params }) {
         title: '姓名',
         index: 'user_id',
         render: (value) => (
-          <div className="w-full text-left">{value?.first_name + ' ' + value?.last_name}</div>
+          <div className="w-full text-left">{value?.last_name + ' ' + value?.first_name}</div>
         ),
         className: 'min-w-[40px]',
         sorter: (a, b) => a.first_name.localeCompare(b.first_name),

@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { addImage } from '@/slices/userSlice';
+import { useEffect } from 'react';
 
 export default function UploadPage() {
   const { imageList } = useSelector((state) => state.user);
@@ -18,12 +19,15 @@ export default function UploadPage() {
   const [image2, setImage2] = useState();
   const [image3, setImage3] = useState();
   const [image4, setImage4] = useState();
+  const [isUpload, setIsUpload] = useState(false);
   const token = sessionStorage.getItem('token')
     ? sessionStorage.getItem('token')
     : localStorage.getItem('token');
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const user = sessionStorage.getItem('session_user') ? JSON.parse(sessionStorage.getItem('session_user')) : JSON.parse(localStorage.getItem('user'));
+  const user = sessionStorage.getItem('session_user')
+    ? JSON.parse(sessionStorage.getItem('session_user'))
+    : JSON.parse(localStorage.getItem('user'));
 
   const handleClick = (inputRef) => {
     inputRef.current.click();
@@ -69,13 +73,16 @@ export default function UploadPage() {
     formData.append('top', image3);
     formData.append('bottom', image4);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-image/`, {
-        method: 'POST',
-        headers: {
-          accessToken: token,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/upload-image/`,
+        {
+          method: 'POST',
+          headers: {
+            accessToken: token,
+          },
+          body: formData,
+        }
+      );
       const data = await response.json();
       if (data.status === 200 || data.status === 201) {
         const imageArr = [image1, image2, image3, image4];
@@ -104,12 +111,42 @@ export default function UploadPage() {
     }
   };
 
+  useEffect(() => {
+    const getDetailUser = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`,
+          {
+            method: 'GET',
+            headers: {
+              accessToken: token,
+            },
+          }
+        );
+        const data = await response.json();
+        if (data.status === 200 || data.status === 201) {
+          setIsUpload(data.payload.user.isUpload);
+        } else {
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getDetailUser();
+  }, []);
+  const handleSkipUpload = () => {
+    router.push('/survey');
+  };
+
   if (!user) router.replace('auth/login');
 
   return (
     <div className={`mx-auto h-full xsm:w-[540px] min-h-screen bg-[#ffffff]`}>
       <div className="text-center flex flex-col justify-center px-[26px] pt-[43.98px] pb-[60.07px] w-full h-full">
-        <h1 className="w-full text-3xl text-center md:text-4xl xl:text-5xl text-primary">横顔画像の登録</h1>
+        <h1 className="w-full text-3xl text-center md:text-4xl xl:text-5xl text-primary">
+          横顔画像の登録
+        </h1>
         <div className="w-full py-4 md:py-6 lg:py-8 xl:py-10">
           <p className="mt-[20px] text-2xl text-third md:text-3xl xl:text-4xl">
             画像をクリックしてアップロードしてください
@@ -159,7 +196,15 @@ export default function UploadPage() {
               title="口内"
             />
           </div>
-          <Button onClick={() => router.push('/notification/fourth')} classname="bg-secondary">
+          {isUpload && (
+            <Button onClick={handleSkipUpload} classname="bg-primary">
+              スキップ
+            </Button>
+          )}
+          <Button
+            onClick={() => router.push('/notification/fourth')}
+            classname="bg-secondary mt-[10.14px]"
+          >
             戻 る
           </Button>
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]" isLoading={isLoading}>

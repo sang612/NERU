@@ -27,13 +27,13 @@ export default function ModalConfirm({ isOpen, setIsOpen, handleOk, message, tit
             className="bg-primary w-1/3 text-white h-12 mx-2 my-4 rounded-md flex justify-center items-center"
             onClick={handleOk}
           >
-            同意
+            はい
           </button>
           <button
             className="w-1/3 h-12 text-white rounded-md my-4 bg-secondary cursor-pointer flex justify-center items-center"
             onClick={closeModal}
           >
-            キャンセル
+            いいえ
           </button>
         </div>
       </Modal>
