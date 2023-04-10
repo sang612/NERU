@@ -27,13 +27,18 @@ export default function UploadPage() {
             },
           });
           const data = await response.json();
-          if (
-            (data.payload.user.record_number_of_user === 0 && data.payload.user.isEnterprise) ||
-            (data.payload.user.record_number_of_user > 0 &&
-              data.payload.user.isUpload &&
-              data.payload.user.isAnswer)
-          ) {
-            router.replace('/app-download');
+          if (data.payload.user.isEnterprise) {
+            if (data.payload.user.record_number_of_user === 0) {
+              router.replace('/app-download');
+            } else {
+              router.replace('/notification/second');
+            }
+          } else {
+            if (data.payload.user.record_number_of_user === 0) {
+              router.replace('/notification');
+            } else {
+              router.replace('/notification/second');
+            }
           }
         } catch (e) {
           console.log(e);

@@ -30,7 +30,6 @@ export default function SecondNotification() {
     });
   }, []);
 
-  
   return (
     <NotifyModal
       content="あなたがいびきをしや
