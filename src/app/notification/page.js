@@ -27,9 +27,6 @@ export default function UploadPage() {
             },
           });
           const data = await response.json();
-          if (data.payload.user.record_number_of_user > 0 && data.payload.user.isUpload) {
-            router.replace('/survey');
-          }
           if (
             (data.payload.user.record_number_of_user === 0 && data.payload.user.isEnterprise) ||
             (data.payload.user.record_number_of_user > 0 &&

@@ -196,11 +196,6 @@ export default function UploadPage() {
               title="口内"
             />
           </div>
-          {isUpload && (
-            <Button onClick={handleSkipUpload} classname="bg-primary">
-              スキップ
-            </Button>
-          )}
           <Button
             onClick={() => router.push('/notification/fourth')}
             classname="bg-secondary mt-[10.14px]"
@@ -210,6 +205,11 @@ export default function UploadPage() {
           <Button onClick={handleSubmit} classname="bg-primary mt-[10.14px]" isLoading={isLoading}>
             登録する
           </Button>
+          {isUpload && (
+            <Button onClick={handleSkipUpload} classname="bg-primary my-2">
+              スキップ
+            </Button>
+          )}
         </div>
       </div>
     </div>
