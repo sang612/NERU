@@ -11,7 +11,7 @@ export default function SecondNotification() {
     ? sessionStorage.getItem('token')
     : localStorage.getItem('token');
   const secondAction = () => {
-    router.push('/notification/third');
+    router.push('/notification/third', undefined, { shallow: true });
   };
 
   useEffect(() => {
