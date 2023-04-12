@@ -46,6 +46,8 @@ export default function Home() {
       {user ? (
         user.role === 'Admin' ? (
           router.replace('admin/company')
+        ) : user.isEnterprise ? (
+          router.replace('/notification/second')
         ) : (
           router.replace('/notification')
         )
