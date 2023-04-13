@@ -22,7 +22,7 @@ export default function ModalConfirm({ isOpen, setIsOpen, handleOk, message, tit
       <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles} ariaHideApp={false}>
         <div className="font-black my-3 text-xl">{title}</div>
         <div className="my-3">{message}</div>
-        <div className="flex px-2">
+        <div className="flex px-2 justify-evenly">
           <button
             className="bg-primary w-1/3 text-white h-12 mx-2 my-4 rounded-md flex justify-center items-center"
             onClick={handleOk}

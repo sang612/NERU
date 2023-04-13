@@ -25,6 +25,7 @@ export default function UploadPage() {
     : localStorage.getItem('token');
   const { enqueueSnackbar } = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
+  const [fileList, setFileList] = useState([]);
   const user = sessionStorage.getItem('session_user')
     ? JSON.parse(sessionStorage.getItem('session_user'))
     : JSON.parse(localStorage.getItem('user'));
@@ -126,6 +127,9 @@ export default function UploadPage() {
         const data = await response.json();
         if (data.status === 200 || data.status === 201) {
           setIsUpload(data.payload.user.isUpload);
+          if (data.payload.user.isUpload) {
+            setFileList(data.payload.user.fileList?.slice(-4).reverse());
+          }
         } else {
           return;
         }
@@ -157,7 +161,7 @@ export default function UploadPage() {
               handleChange={handleChange}
               handleClick={handleClick}
               item={imageList[0]?.name ? imageList[0] : image1}
-              defaultSrc="/upload-tutorial-1.svg"
+              defaultSrc={fileList[0] ? fileList[0].url : '/upload-tutorial-1.svg'}
               alt="image1"
               index={1}
               title="顔写真正面"
@@ -168,7 +172,7 @@ export default function UploadPage() {
               handleChange={handleChange}
               handleClick={handleClick}
               item={imageList[1]?.name ? imageList[1] : image2}
-              defaultSrc="/upload-tutorial-2.svg"
+              defaultSrc={fileList[1] ? fileList[1].url : '/upload-tutorial-2.svg'}
               alt="image2"
               index={2}
               title="横顔(右)"
@@ -179,7 +183,7 @@ export default function UploadPage() {
               handleChange={handleChange}
               handleClick={handleClick}
               item={imageList[2]?.name ? imageList[2] : image3}
-              defaultSrc="/upload-tutorial-3.svg"
+              defaultSrc={fileList[2] ? fileList[2].url : '/upload-tutorial-3.svg'}
               alt="image3"
               index={3}
               title="横顔(左)"
@@ -190,7 +194,7 @@ export default function UploadPage() {
               handleChange={handleChange}
               handleClick={handleClick}
               item={imageList[3]?.name ? imageList[3] : image4}
-              defaultSrc="/upload-tutorial-4.svg"
+              defaultSrc={fileList[3] ? fileList[3].url : '/upload-tutorial-4.svg'}
               alt="image4"
               index={4}
               title="口内"

@@ -4,8 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    loader: 'akamai',
-    path: '/',
+    domains: ['nerusoku.s3.ap-northeast-3.amazonaws.com'],
   },
   env: {
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT,

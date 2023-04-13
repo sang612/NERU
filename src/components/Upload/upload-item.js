@@ -16,13 +16,19 @@ export const UploadItem = ({
 }) => (
   <div className={`h-[200px] w-half ${className}`} {...props}>
     <div className="w-full h-[80%] relative">
-      <input type="file" accept="image/*" className="hidden" ref={inputRef} onChange={(e) => handleChange(e, index)} />
+      <input
+        type="file"
+        accept="image/*"
+        className="hidden"
+        ref={inputRef}
+        onChange={(e) => handleChange(e, index)}
+      />
       <Image
         onClick={() => handleClick(inputRef)}
         src={item ? URL.createObjectURL(item) : defaultSrc}
         fill
         alt={alt}
-        style={item && { objectFit: 'contain', objectPosition: 'center' }}
+        style={{ objectFit: 'contain', objectPosition: 'center' }}
       />
     </div>
     <div className={`${desc ? 'bg-[#d0eaeb] ' : ''}p-2 text-center`}>
