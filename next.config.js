@@ -4,7 +4,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['nerusoku.s3.ap-northeast-3.amazonaws.com'],
+    domains: ['nerusoku.s3.ap-northeast-3.amazonaws.com', 'nerusoku.s3.amazonaws.com'],
   },
   env: {
     NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT,
