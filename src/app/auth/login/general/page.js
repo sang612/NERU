@@ -108,17 +108,16 @@ export default function LoginGeneralPage() {
           });
           if (data.payload.user.role === Role.admin) router.push('/admin/company');
           else {
-            if (data.payload?.user?.isEnterprise) {
-              if (!data.payload?.user?.isUpload) router.push('/notification/second');
-              if (!data.payload?.user?.isAnswer) router.push('/survey');
-              if (
-                data.payload?.user?.isEnterprise &&
-                data.payload?.user?.isUpload &&
-                data.payload?.user?.isAnswer
-              )
-                router.push('/app-download');
+            if (data.payload.user.record_number_of_user === 0) {
+              router.replace(
+                data.payload.user.isEnterprise ? '/app-download' : '/notification',
+                undefined,
+                { shallow: true }
+              );
+            } else if (data.payload.user.isAnswer) {
+              router.replace('/app-download', undefined, { shallow: true });
             } else {
-              router.push('/notification');
+              router.replace('/notification/second', undefined, { shallow: true });
             }
           }
         }

@@ -11,11 +11,8 @@ export default function SecondNotification() {
     ? sessionStorage.getItem('token')
     : localStorage.getItem('token');
   const secondAction = () => {
-    router.push('/notification/third');
+    router.push('/notification/third', undefined, { shallow: true });
   };
-  const user = sessionStorage.getItem('session_user')
-    ? JSON.parse(sessionStorage.getItem('session_user'))
-    : JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -33,41 +30,6 @@ export default function SecondNotification() {
     });
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      const getUserDetailtoCheckRecordNumberofUser = async () => {
-        try {
-          const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/user-auth/detail/${user.id}`,
-            {
-              method: 'GET',
-              headers: {
-                accessToken: token,
-              },
-            }
-          );
-          const data = await response.json();
-          if (data.payload.user.record_number_of_user > 0 && !data.payload.user.isUpload) {
-            router.replace('/notification/second');
-          }
-          if (data.payload.user.record_number_of_user > 0 && data.payload.user.isUpload) {
-            router.replace('/survey');
-          }
-          if (
-            (data.payload.user.record_number_of_user === 0 && data.payload.user.isEnterprise) ||
-            (data.payload.user.record_number_of_user > 0 &&
-              data.payload.user.isUpload &&
-              data.payload.user.isAnswer)
-          ) {
-            router.replace('/app-download');
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      };
-      getUserDetailtoCheckRecordNumberofUser();
-    }
-  }, [router, token, user]);
   return (
     <NotifyModal
       content="あなたがいびきをしや
